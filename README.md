@@ -1,27 +1,47 @@
-# EyedeeWeb
+<p align="center">
+  <a href="https://github.com/eyedee-id/eyedee-web">
+    <img src="https://files.eyedee.id/images/logo.png" width="200px" />
+  </a>
+</p>
 
-This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 12.1.2.
+<h1 align="center">eyedee</h1>
+<p align="center">
+  <strong>Aplikasi Open Source untuk berbagi cerita, chatting secara anonim</strong>
+</p>
 
-## Development server
+<div align="center">
+  <h3>
+    <a href="https://github.com/eyedee-id/eyedee-web/">Documentation</a>
+    <span> | </span>
+    <a href="https://eyedee.id">Website</a>
+  </h3>
+</div>
 
-Run `ng serve` for a dev server. Navigate to `http://localhost:4200/`. The app will automatically reload if you change any of the source files.
+<p align="center">
+  <a href="./LICENSE">
+    <img src="https://img.shields.io/badge/License-MIT-brightgreen?style=flat-square" alt="License">
+  </a>
+  <a href="./CODE_OF_CONDUCT.md">
+    <img src="https://img.shields.io/badge/Contributor%20Covenant-v2.0%20adopted-ff69b4.svg?style=flat-square" alt="Contributor Covenant">
+  </a>
+</p>
+<p align="center">
+  <a href="https://github.com/eyedee-id/eyedee-web/workflows">
+    <img src="https://img.shields.io/github/workflow/status/eyedee-id/eyedee-web/CI/master?style=flat-square" alt="Build"/>
+  </a>
+  <a href="https://coveralls.io/github/eyedee-id/eyedee-web">
+    <img src="https://img.shields.io/coveralls/github/eyedee-id/eyedee-web/master?style=flat-square" alt="Coverage">
+  </a>
+  <a href="https://github.com/eyedee-id/eyedee-web/releases">
+    <img src="https://img.shields.io/github/v/release/eyedee-id/eyedee-web?label=version&style=flat-square" alt="Version">
+  </a>
+</p>
 
-## Code scaffolding
+<br/>
 
-Run `ng generate component component-name` to generate a new component. You can also use `ng generate directive|pipe|service|class|guard|interface|enum|module`.
+### Kontribusi
+Ayo bantu kami mendevelop aplikasi gabut ini dengan berkontribusi! [cara kontribusi](CONTRIBUTING.md).
+Kami juga memiliki [Kode Etik](CODE_OF_CONDUCT.md) dalam berkontribusi.
 
-## Build
-
-Run `ng build` to build the project. The build artifacts will be stored in the `dist/` directory.
-
-## Running unit tests
-
-Run `ng test` to execute the unit tests via [Karma](https://karma-runner.github.io).
-
-## Running end-to-end tests
-
-Run `ng e2e` to execute the end-to-end tests via a platform of your choice. To use this command, you need to first add a package that implements end-to-end testing capabilities.
-
-## Further help
-
-To get more help on the Angular CLI use `ng help` or go check out the [Angular CLI Overview and Command Reference](https://angular.io/cli) page.
+### Lisensi
+Lisensi EyeDee frontend adalah [MIT License](LICENSE).
