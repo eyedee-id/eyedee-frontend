@@ -1,1 +1,282 @@
 /* You can add global styles to this file, and also import other style files */
+
+@import '~normalize.css';
+@import "src/shared/styles/milligram";
+
+
+body {
+  color: $color-secondary;
+  font-family: 'Roboto', 'Helvetica Neue', 'Helvetica', 'Arial', sans-serif;
+  font-size: 1.6em;
+  font-weight: 300;
+  letter-spacing: .01em;
+  line-height: 1.6;
+  padding: 0;
+  margin: 0;
+}
+
+.wrapper {
+  display: block;
+  overflow: auto;
+  position: relative;
+  width: 100%;
+
+  .navigation .container, .container, {
+    max-width: 80rem;
+  }
+
+  div.container {
+    border-top: 0;
+    padding-bottom: 7.5rem;
+    padding-top: 7.5rem;
+  }
+
+  div.container-full {
+    max-width: 100vw;
+    border-top: 0;
+    padding: 7.5rem 2rem;
+  }
+}
+
+.navigation {
+  background: $color-tertiary;
+  border-bottom: .1rem solid $color-quinary;
+  display: block;
+  height: 5.2rem;
+  left: 0;
+  max-width: 100%;
+  position: fixed;
+  right: 0;
+  top: 0;
+  width: 100%;
+  z-index: 2;
+
+  .container {
+    padding-bottom: 0;
+    padding-top: 0;
+  }
+}
+
+.navigation-title {
+  display: inline;
+  font-size: 1.6rem;
+  line-height: 5.2rem;
+  padding: 0;
+  text-decoration: none;
+
+  color: $color-secondary;
+  font-family: Gotham Rounded A, Gotham Rounded B, Helvetica Neue, Arial, sans-serif;
+  position: relative;
+
+  .img {
+    fill: $color-primary;
+    height: 2rem;
+    position: relative;
+    top: .3rem;
+  }
+
+  .title {
+    display: inline;
+    font-size: 1.6rem;
+    line-height: 5.2rem;
+    padding: 0;
+    text-decoration: none;
+  }
+}
+
+.navigation-list {
+  list-style: none;
+  margin-bottom: 0;
+  margin-right: 5rem;
+
+  .navigation-item {
+    float: left;
+    margin-bottom: 0;
+    margin-left: 2.5rem;
+    position: relative;
+
+    .navigation-link {
+      display: inline;
+      font-size: 1.6rem;
+      line-height: 5.2rem;
+      padding: 0;
+      text-decoration: none;
+    }
+  }
+}
+
+@media(min-width: 80rem) {
+  .navigation .navigation-list {
+    margin-right: 0;
+  }
+}
+
+.octocat {
+  border: 0;
+  color: $color-tertiary;
+  fill: $color-primary;
+  height: 5.2rem;
+  position: fixed;
+  right: 0;
+  top: 0;
+  width: 5.2rem;
+  z-index: 2
+}
+
+.octocat:hover .octocat-arm {
+  animation: b .56s infinite;
+  transform-origin: 13rem 10.6rem
+}
+
+.octocat .octocat-arm,
+.octocat .octocat-body {
+  fill: $color-tertiary
+}
+
+@keyframes b {
+  0%,
+  50% {
+    transform: rotate(0)
+  }
+  25%,
+  75% {
+    transform: rotate(-25deg)
+  }
+}
+
+
+.lds-ellipsis {
+  display: inline-block;
+  position: relative;
+  width: 80px;
+  height: 3rem;
+}
+
+.lds-ellipsis div {
+  position: absolute;
+  width: 1rem;
+  height: 1rem;
+  top: calc(50% - 0.5rem);
+  border-radius: 50%;
+  background: $color-primary;
+  animation-timing-function: cubic-bezier(0, 1, 1, 0);
+}
+
+.lds-ellipsis div:nth-child(1) {
+  left: 8px;
+  animation: lds-ellipsis1 0.6s infinite;
+}
+
+.lds-ellipsis div:nth-child(2) {
+  left: 8px;
+  animation: lds-ellipsis2 0.6s infinite;
+}
+
+.lds-ellipsis div:nth-child(3) {
+  left: 32px;
+  animation: lds-ellipsis2 0.6s infinite;
+}
+
+.lds-ellipsis div:nth-child(4) {
+  left: 56px;
+  animation: lds-ellipsis3 0.6s infinite;
+}
+
+@keyframes lds-ellipsis1 {
+  0% {
+    transform: scale(0);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+
+@keyframes lds-ellipsis3 {
+  0% {
+    transform: scale(1);
+  }
+  100% {
+    transform: scale(0);
+  }
+}
+
+@keyframes lds-ellipsis2 {
+  0% {
+    transform: translate(0, 0);
+  }
+  100% {
+    transform: translate(24px, 0);
+  }
+}
+
+.column-md-none {
+  display: none !important;
+}
+
+@media(min-width: 80rem) {
+  .column-md-none {
+    display: block !important;
+  }
+}
+
+/* Custom size */
+.button-small {
+  font-size: .8rem;
+  height: 2.8rem;
+  line-height: 2.8rem;
+  padding: 0 1.5rem;
+}
+
+.button-large {
+  font-size: 1.4rem;
+  height: 4.5rem;
+  line-height: 4.5rem;
+  padding: 0 2rem;
+}
+
+
+.text-danger {
+  font-weight: normal;
+  color: $color-danger;
+  font-style: italic
+}
+
+.margin-0 {
+  margin: 0 !important;
+}
+
+.margin-1 {
+  margin: 1rem !important;
+}
+
+.margin-2 {
+  margin: 2rem !important;
+}
+
+.margin-3 {
+  margin: 3rem !important;
+}
+
+.margin-left-1 {
+  margin-left: 1rem !important;
+}
+
+.width-100 {
+  width: 100%;
+}
+
+.text-center {
+  text-align: center;
+}
+
+.text-right {
+  text-align: right;
+}
+
+.display-flex {
+  display: flex;
+}
+
+.align-items-center {
+  align-items: center;
+}

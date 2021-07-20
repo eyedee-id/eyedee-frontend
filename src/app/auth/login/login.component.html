@@ -1,0 +1,68 @@
+<div class="container login">
+
+  <div class="row">
+    <div class="column">
+      <h2>Masuk</h2>
+    </div>
+  </div>
+  <blockquote>
+    <p><em>cie, udah ga sabar nyurahin isi unek-unek lo yaa?</em></p>
+  </blockquote>
+
+  <form [formGroup]="form" (ngSubmit)="login()">
+    <fieldset [disabled]="loading.login">
+      <label for="username">
+        username
+        <small class="text-danger">
+          <ng-container *ngIf="form.controls['username']?.touched && form.controls['username'].invalid">
+            * username wajib diisi!
+          </ng-container>
+        </small>
+      </label>
+      <input type="text" placeholder="username" id="username" formControlName="username">
+      <label for="password">
+        password
+        <small class="text-danger">
+          <ng-container
+            *ngIf="form.controls['password']?.touched && form.controls['password']?.errors?.required">
+            * password wajib diisi!
+          </ng-container>
+          <ng-container
+            *ngIf="form.controls['password']?.touched && form.controls['password']?.errors?.minlength">
+            * panjang password minimal 5 huruf woy!
+          </ng-container>
+        </small>
+      </label>
+      <input type="password" placeholder="password" id="password" formControlName="password">
+
+      <ng-container *ngIf="!loading.login; else loadingLogin">
+        <button class="button-primary" type="submit" [disabled]="form.invalid">
+          masuk
+        </button>
+
+        <ng-container *ngIf="error.login">
+          <small class="text-danger">
+            * {{ error.login }}
+          </small>
+        </ng-container>
+      </ng-container>
+      <ng-template #loadingLogin>
+        <div class="lds-ellipsis">
+          <div></div>
+          <div></div>
+          <div></div>
+          <div></div>
+        </div>
+      </ng-template>
+    </fieldset>
+  </form>
+
+  <div class="float-right">
+    <p>
+      belum punya akun?
+      <a routerLink="../register">
+        daftar disini
+      </a>
+    </p>
+  </div>
+</div>

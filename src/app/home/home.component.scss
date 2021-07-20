@@ -1,0 +1,33 @@
+@import "src/shared/styles/Color";
+
+.header {
+  background-color: $color-tertiary;
+  min-height: 100vh;
+  padding-top: 5rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  .container {
+    border-top: 0;
+    //padding-bottom: 7.5rem;
+    //padding-top: 7.5rem;
+    position: relative;
+    text-align: center;
+
+    .img {
+      height: 15rem;
+      margin-bottom: 2rem;
+
+      path {
+        animation: 7s a forwards;
+        fill: $color-primary;
+        stroke: $color-primary;
+        stroke-dasharray: 38321;
+        stroke-miterlimit: 10;
+        stroke-width: 15px;
+      }
+    }
+  }
+}
+
