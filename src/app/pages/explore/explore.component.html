@@ -75,7 +75,7 @@
 
       </div>
 
-      <ng-container *ngIf="!authService.user">
+      <ng-container *ngIf="!(authService.loggedIn | async)">
         <div class="footer-login-text">
           <a class="button button-clear button-large" routerLink="/auth/login">
             masuk untuk melihat lebih lanjut!
@@ -83,7 +83,7 @@
         </div>
       </ng-container>
 
-      <ng-container *ngIf="authService.user">
+      <ng-container *ngIf="(authService.loggedIn | async)">
         <div class="text-center margin-3">
           <ng-container [ngTemplateOutlet]="templateLoading"></ng-container>
         </div>

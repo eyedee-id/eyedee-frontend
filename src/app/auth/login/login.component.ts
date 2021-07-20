@@ -18,33 +18,39 @@ export class LoginComponent implements OnInit, OnDestroy {
     password: new FormControl(null, {
       validators: [
         Validators.required,
-        Validators.minLength(5),
+        Validators.minLength(8),
       ]
     }),
   })
 
   loading = {
     login: false,
+    resend: false,
   };
 
   error: {
-    [key: string]: null | string,
+    [key: string]: null | string | boolean,
   } = {
     login: null,
+    user_no_confirmed: false,
+    resend: null,
   };
+
+  userConfirmationEmail: string | null = null;
 
   subscription: {
     [key: string]: null | Subscription,
   } = {
     form: null,
     login: null,
+    resend: null,
   };
 
   constructor(
     private ref: ChangeDetectorRef,
     private route: ActivatedRoute,
     private router: Router,
-    private authService: AuthService,
+    public authService: AuthService,
   ) {
   }
 
@@ -67,25 +73,51 @@ export class LoginComponent implements OnInit, OnDestroy {
       return;
     }
     this.loading.login = true;
-    this.ref.markForCheck();
+    this.error.login = null;
+    this.error.resend = null;
+    this.error.user_no_confirmed = false;
+    this.ref.detectChanges();
 
-    this.authService.login(this.form.value)
+    this.authService.signIn(this.form.value.username, this.form.value.password)
       .subscribe(res => {
+        this.router.navigate(['/pages']);
+      }, err => {
         this.loading.login = false;
-        this.ref.markForCheck();
-      }, () => {
-        this.loading.login = false;
-        this.error.login = code.error.internal_server_error;
+        if (err?.message === 'User is not confirmed.') {
+          this.error.user_no_confirmed = true;
+        }
+        this.error.login = err.message ?? code.error.internal_server_error;
         this.form.markAsPristine();
-
-        /**
-         * @todo: dummy auth
-         */
-        this.authService.user = true;
-        this.router.navigate(['/pages/explore']);
-
-        this.ref.markForCheck();
+        this.ref.detectChanges();
       })
+  }
+
+
+  resendCode() {
+    if (this.form.controls['username'].invalid) {
+      return;
+    }
+
+    const value = this.form.value;
+    const username = value.username;
+    this.error.login = null;
+    this.error.resend = null;
+    this.loading.resend = true;
+    this.ref.detectChanges();
+
+    this.authService.resendSignUp(username)
+      .subscribe(
+        res => {
+          this.userConfirmationEmail = res?.CodeDeliveryDetails?.Destination ?? null;
+
+          this.loading.resend = false;
+          this.ref.detectChanges();
+        },
+        err => {
+          this.loading.resend = false;
+          this.error.resend = err.message ?? code.error.internal_server_error;
+          this.ref.detectChanges();
+        });
   }
 
 }

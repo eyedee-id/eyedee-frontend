@@ -10,7 +10,7 @@
   </blockquote>
 
   <form [formGroup]="form" (ngSubmit)="login()">
-    <fieldset [disabled]="loading.login">
+    <fieldset [disabled]="loading.login || loading.resend">
       <label for="username">
         username
         <small class="text-danger">
@@ -29,13 +29,13 @@
           </ng-container>
           <ng-container
             *ngIf="form.controls['password']?.touched && form.controls['password']?.errors?.minlength">
-            * panjang password minimal 5 huruf woy!
+            * panjang password minimal 8 huruf woy!
           </ng-container>
         </small>
       </label>
       <input type="password" placeholder="password" id="password" formControlName="password">
 
-      <ng-container *ngIf="!loading.login; else loadingLogin">
+      <ng-container *ngIf="!loading.login && !loading.resend; else loadingLogin">
         <button class="button-primary" type="submit" [disabled]="form.invalid">
           masuk
         </button>
@@ -44,6 +44,21 @@
           <small class="text-danger">
             * {{ error.login }}
           </small>
+        </ng-container>
+        <ng-container *ngIf="error.resend">
+          <small class="text-danger">
+            * {{ error.resend }}
+          </small>
+        </ng-container>
+        <ng-container *ngIf="this.error.user_no_confirmed && form.controls['username'].valid">
+          &nbsp;<small>(<a class="cursor-pointer" (click)="resendCode()">kirim ulang kode verifikasi</a>)</small>
+        </ng-container>
+
+        <ng-container *ngIf="userConfirmationEmail">
+          <br>
+          kode verifikasi berhasil terkirim ke email <i>{{ userConfirmationEmail }}</i>
+          <br>
+          <a routerLink="/auth/register/confirmation">klik disini untuk memasukan kode</a>
         </ng-container>
       </ng-container>
       <ng-template #loadingLogin>

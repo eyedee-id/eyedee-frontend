@@ -7,11 +7,6 @@
 
   <form [formGroup]="form" (ngSubmit)="register()">
     <fieldset [disabled]="loading.register">
-      <label for="name">
-        nama samaran
-        <small style="font-weight: normal"><i>* opsional</i></small>
-      </label>
-      <input type="text" placeholder="Bill Gates" id="name" formControlName="name">
       <label for="username">
         username
         <small class="text-danger">
@@ -21,6 +16,15 @@
         </small>
       </label>
       <input type="text" placeholder="username" id="username" formControlName="username">
+      <label for="email">
+        email
+        <small class="text-danger">
+          <ng-container *ngIf="form.controls['email']?.touched && form.controls['email'].invalid">
+            * email wajib diisi!
+          </ng-container>
+        </small>
+      </label>
+      <input type="text" placeholder="email" id="email" formControlName="email">
       <label for="password">
         password
         <small class="text-danger">
@@ -30,13 +34,13 @@
           </ng-container>
           <ng-container
             *ngIf="form.controls['password']?.touched && form.controls['password']?.errors?.minlength">
-            * panjang password minimal 5 huruf woy!
+            * panjang password minimal 8 huruf woy!
           </ng-container>
         </small>
       </label>
       <input type="password" placeholder="password" id="password" formControlName="password">
 
-      <ng-container *ngIf="!loading.register; else loadingregister">
+      <ng-container *ngIf="!loading.register; else loadingRegister">
         <button class="button-primary" type="submit" [disabled]="form.invalid">
           daftar
         </button>
@@ -47,14 +51,6 @@
           </small>
         </ng-container>
       </ng-container>
-      <ng-template #loadingregister>
-        <div class="lds-ellipsis">
-          <div></div>
-          <div></div>
-          <div></div>
-          <div></div>
-        </div>
-      </ng-template>
     </fieldset>
   </form>
 
@@ -67,3 +63,13 @@
     </p>
   </div>
 </div>
+
+
+<ng-template #loadingRegister>
+  <div class="lds-ellipsis">
+    <div></div>
+    <div></div>
+    <div></div>
+    <div></div>
+  </div>
+</ng-template>

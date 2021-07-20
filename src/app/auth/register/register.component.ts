@@ -1,8 +1,9 @@
-import {ChangeDetectionStrategy, Component, OnDestroy, OnInit} from '@angular/core';
+import {ChangeDetectionStrategy, ChangeDetectorRef, Component, OnDestroy, OnInit} from '@angular/core';
 import {FormControl, FormGroup, Validators} from '@angular/forms';
 import {Subscription} from 'rxjs';
 import {AuthService} from '../../../shared/services/auth.service';
 import {code} from '../../../shared/libs/code';
+import {Router} from '@angular/router';
 
 @Component({
   selector: 'app-register',
@@ -12,15 +13,21 @@ import {code} from '../../../shared/libs/code';
 })
 export class RegisterComponent implements OnInit, OnDestroy {
   form = new FormGroup({
-    name: new FormControl(null),
+    email: new FormControl(null, {
+      validators: [
+        Validators.required,
+        Validators.email,
+      ]
+    }),
     username: new FormControl(null, Validators.required),
     password: new FormControl(null, {
       validators: [
         Validators.required,
-        Validators.minLength(5),
+        Validators.minLength(8),
       ]
     }),
-  })
+  });
+
 
   loading = {
     register: false,
@@ -36,10 +43,11 @@ export class RegisterComponent implements OnInit, OnDestroy {
     [key: string]: null | Subscription,
   } = {
     form: null,
-    register: null,
   };
 
   constructor(
+    private router: Router,
+    private ref: ChangeDetectorRef,
     private authService: AuthService,
   ) {
   }
@@ -63,15 +71,16 @@ export class RegisterComponent implements OnInit, OnDestroy {
       return;
     }
     this.loading.register = true;
+    this.ref.detectChanges();
 
-    this.authService.register(this.form.value)
+    this.authService.signUp(this.form.value)
       .subscribe(res => {
+        this.router.navigate(['/auth/register/confirmation']);
+      }, err => {
         this.loading.register = false;
-      }, () => {
-        this.loading.register = false;
-        this.error.register = code.error.internal_server_error;
+        this.error.register = err.message ?? code.error.internal_server_error;
         this.form.markAsPristine();
+        this.ref.detectChanges();
       })
   }
-
 }

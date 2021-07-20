@@ -1,0 +1,63 @@
+<div class="container register">
+
+  <h2>Konfirmasi email</h2>
+  <blockquote>
+    <p><em>cie, udah ga sabar nyurahin isi unek-unek lo yaa?</em></p>
+  </blockquote>
+
+  <form [formGroup]="formConfirmation" (ngSubmit)="onSubmitConfirmation()">
+    <fieldset [disabled]="loading.confirm">
+      <label for="verification-email">
+        email
+        <small class="text-danger">
+          <ng-container
+            *ngIf="formConfirmation.controls['email']?.touched && formConfirmation.controls['email'].invalid">
+            * email wajib diisi!
+          </ng-container>
+        </small>
+      </label>
+      <input type="text" placeholder="email" id="verification-email" formControlName="email">
+      <label for="code">
+        kode verifikasi
+        <small class="text-danger">
+          <ng-container
+            *ngIf="formConfirmation.controls['code']?.touched && formConfirmation.controls['code']?.errors?.required">
+            * kode verifikasi wajib diisi!
+          </ng-container>
+        </small>
+      </label>
+      <input type="text" placeholder="code" id="code" formControlName="code">
+
+      <ng-container *ngIf="!loading.confirm; else loadingRegister">
+        <button class="button-primary" type="submit" [disabled]="formConfirmation.invalid">
+          konfirmasi
+        </button>
+
+        <ng-container *ngIf="error.confirm">
+          <small class="text-danger">
+            * {{ error.confirm }}
+          </small>
+        </ng-container>
+      </ng-container>
+    </fieldset>
+  </form>
+
+  <div class="float-right">
+    <p>
+      sudah punya akun?
+      <a routerLink="/auth/login">
+        masuk disini
+      </a>
+    </p>
+  </div>
+</div>
+
+
+<ng-template #loadingRegister>
+  <div class="lds-ellipsis">
+    <div></div>
+    <div></div>
+    <div></div>
+    <div></div>
+  </div>
+</ng-template>

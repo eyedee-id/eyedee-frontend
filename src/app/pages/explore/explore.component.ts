@@ -129,18 +129,18 @@ export class ExploreComponent implements OnInit, OnDestroy, AfterContentChecked 
 
     this.loading.confide = true;
     this.formConfide.controls['text'].disable();
-    this.ref.markForCheck();
+    this.ref.detectChanges();
 
-    this.authService.login(this.formConfide.value)
-      .subscribe(res => {
-        this.loading.confide = false;
-      }, () => {
-        this.loading.confide = false;
-        this.error.confide = code.error.internal_server_error;
-        this.formConfide.controls['text'].enable();
-        this.formConfide.markAsPristine();
-        this.ref.markForCheck();
-      })
+    // this.authService.login(this.formConfide.value)
+    //   .subscribe(res => {
+    //     this.loading.confide = false;
+    //   }, () => {
+    //     this.loading.confide = false;
+    //     this.error.confide = code.error.internal_server_error;
+    //     this.formConfide.controls['text'].enable();
+    //     this.formConfide.markAsPristine();
+    //     this.ref.detectChanges();
+    //   })
   }
 
 }

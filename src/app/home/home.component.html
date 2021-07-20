@@ -17,10 +17,18 @@
       <i><small>secara</small><br><b>anonim</b></i>
       <br>
     </p>
-    <a class="button" title="Login dengan username" routerLink="/auth/login">
-      Login dengan username
-    </a>
-    <br>
-    <a class="button button-clear" routerLink="/auth/register">Daftar</a>
+    <ng-container *ngIf="(authService.loggedIn | async); else templateLogin">
+      <a class="button" title="Login dengan username" routerLink="/pages/explore">
+        mulai explore!
+      </a>
+    </ng-container>
   </section>
 </header>
+
+<ng-template #templateLogin>
+  <a class="button" title="Login dengan username" routerLink="/auth/login">
+    Login dengan username
+  </a>
+  <br>
+  <a class="button button-clear" routerLink="/auth/register">Daftar</a>
+</ng-template>

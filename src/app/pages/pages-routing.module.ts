@@ -10,6 +10,11 @@ const routes: Routes = [
     component: PagesComponent,
     children: [
       {
+        path: '',
+        redirectTo: 'explore',
+        pathMatch: 'full',
+      },
+      {
         path: 'explore',
         component: ExploreComponent,
       },
