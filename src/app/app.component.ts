@@ -31,9 +31,10 @@ export class AppComponent implements OnInit, OnDestroy, AfterViewInit {
       .subscribe(async () => {
       });
 
-    this.authService.me()
-      .subscribe(res => {
-      })
+    // this.authService.me()
+    //   .subscribe(res => {
+    //     console.log(res);
+    //   })
 
   }
 

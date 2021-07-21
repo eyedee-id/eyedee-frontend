@@ -1,16 +1,17 @@
 import {
-  AfterContentChecked,
   ChangeDetectionStrategy,
   ChangeDetectorRef,
   Component,
-  ElementRef,
   OnDestroy,
-  OnInit, ViewChild
+  OnInit
 } from '@angular/core';
-import {FormControl, FormGroup, Validators} from '@angular/forms';
 import {fromEvent, Subject, Subscription} from 'rxjs';
 import {AuthService} from '../../shared/services/auth.service';
 import {takeUntil} from 'rxjs/operators';
+import {ConfideService} from '../../shared/services/confide.service';
+import {code} from '../../shared/libs/code';
+import {ConfideModel} from '../../shared/models/confide.model';
+
 
 @Component({
   selector: 'app-explore',
@@ -18,46 +19,21 @@ import {takeUntil} from 'rxjs/operators';
   styleUrls: ['./explore.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class ExploreComponent implements OnInit, OnDestroy, AfterContentChecked {
+export class ExploreComponent implements OnInit, OnDestroy {
 
-  confideMaxLength = 300;
-
-  confides: Array<{
-    id: number | string,
-    name: string,
-    username: string,
-    at_created: string,
-    photo_url?: string,
-    total_comment?: number,
-    text: string,
-    hashtags?: Array<string>,
-  }> = [];
-
-  formConfide = new FormGroup({
-    text: new FormControl(null, {
-      validators: [
-        Validators.required,
-        Validators.minLength(5),
-        Validators.maxLength(this.confideMaxLength),
-      ]
-    })
-  });
+  confides: Array<ConfideModel> = [];
 
   loading = {
-    confide: false,
-    confides: true,
+    confides: false,
   };
 
   error: {
     [key: string]: null | string,
-  } = {
-    confide: null,
-  };
+  } = {};
 
   subscription: {
     [key: string]: null | Subscription,
   } = {
-    confide: null,
     confides: null,
   };
 
@@ -66,74 +42,20 @@ export class ExploreComponent implements OnInit, OnDestroy, AfterContentChecked 
   destroy$ = this.destroy.asObservable();
 
   constructor(
-    private elRef: ElementRef,
     private ref: ChangeDetectorRef,
     public authService: AuthService,
+    private confideService: ConfideService,
   ) {
 
   }
 
   ngOnInit(): void {
-    setTimeout(() => {
-      let confides = [
-        {
-          id: '14g',
-          name: 'Jokowi Dodo',
-          username: 'jokowi',
-          at_created: '1 days ago',
-          photo_url: 'https://cdn.dribbble.com/users/4167412/avatars/small/65dd329f0993a84b4a325abce6337b7c.png?1625924074',
-          total_comment: 3,
-          text: 'The time to move forward is now',
-          hashtags: ['indonesia', 'ppkm', 'covid19']
-        },
-        {
-          id: '14h',
-          name: 'Mas Bro',
-          username: 'masbro',
-          at_created: '2 days ago',
-          total_comment: 5,
-          text: ` Tidak seperti anggapan banyak orang, Lorem Ipsum bukanlah teks-teks yang diacak. Ia berakar dari sebuah
-              naskah sastra latin klasik dari era 45 sebelum masehi, hingga bisa dipastikan usianya telah mencapai lebih
-              dari 2000 tahun.`,
-          hashtags: ['lorem']
-        },
-        {
-          id: '14j',
-          name: 'Gilbert',
-          username: 'gilbert',
-          at_created: '2 days ago',
-          total_comment: 9,
-          text: 'Ada banyak variasi tulisan Lorem Ipsum yang tersedia, tapi kebanyakan sudah mengalami perubahan bentuk, entah karena unsur humor atau kalimat yang diacak hingga nampak sangat tidak masuk akal. Jika anda ingin menggunakan tulisan Lorem Ipsum, anda harus yakin tidak ada bagian yang memalukan yang tersembunyi di tengah naskah tersebut.',
-        },
-        {
-          id: '14l',
-          name: 'SBY',
-          username: 'ronaldo',
-          at_created: '4 days ago',
-          total_comment: 7,
-          text: 'Sudah merupakan fakta bahwa seorang pembaca akan terpengaruh oleh isi tulisan dari sebuah halaman saat ia melihat tata letaknya.',
-          hashtags: ['curhat'],
-        }
-      ];
 
-      confides = [...confides, ...confides, ...confides];
-
-      this.confides = confides.map((i, idx) => {
-        return {
-          ...i,
-          id: idx + 1,
-        }
-      });
-
-      this.loading.confides = false;
-      this.ref.detectChanges();
-
-      this.initAutoScroll();
-    }, 3000);
+    this.getConfides(true);
   }
 
-  public trackById(index: number, item: any) {
-    return item.id;
+  public trackById(index: number, item: ConfideModel) {
+    return item.confide_id;
   }
 
   ngOnDestroy() {
@@ -142,34 +64,6 @@ export class ExploreComponent implements OnInit, OnDestroy, AfterContentChecked 
     }
 
     this.destroy.next();
-  }
-
-  ngAfterContentChecked() {
-    const textAreas = this.elRef.nativeElement.querySelectorAll('textarea');
-    for (let i = 0; i < textAreas.length; i++) {
-      textAreas[i].style.height = textAreas[i].scrollHeight + 'px';
-    }
-  }
-
-  confideSubmit() {
-    if (this.formConfide.invalid) {
-      return;
-    }
-
-    this.loading.confide = true;
-    this.formConfide.controls['text'].disable();
-    this.ref.detectChanges();
-
-    // this.authService.login(this.formConfide.value)
-    //   .subscribe(res => {
-    //     this.loading.confide = false;
-    //   }, () => {
-    //     this.loading.confide = false;
-    //     this.error.confide = code.error.internal_server_error;
-    //     this.formConfide.controls['text'].enable();
-    //     this.formConfide.markAsPristine();
-    //     this.ref.detectChanges();
-    //   })
   }
 
   initAutoScroll() {
@@ -188,28 +82,53 @@ export class ExploreComponent implements OnInit, OnDestroy, AfterContentChecked 
     }
   }
 
-  getConfides() {
+  getConfides(init = false) {
     if (this.loading.confides) {
       return;
     }
 
-    console.log('get confides');
+    if (this.subscription.confides && !this.subscription.confides.closed) {
+      this.subscription.confides.unsubscribe();
+    }
+
+    let params = {};
+    if (!init) {
+      // check latest confides id
+      const latestIdx = this.confides.length - 1;
+      params = {
+        at_created: this.confides[latestIdx].at_created,
+        confide_id: this.confides[latestIdx].confide_id,
+      }
+    }
+
+    this.error.confides = null;
     this.loading.confides = true;
     this.ref.markForCheck();
 
-    setTimeout(() => {
-      const confides = [...this.confides, ...this.confides, ...this.confides];
+    this.confideService
+      .confideExplore(params)
+      .subscribe(res => {
+        if (res.status) {
 
-      this.confides = confides.map((i, idx) => {
-        return {
-          ...i,
-          id: idx + 1,
+          if (init) {
+            this.confides = res.data;
+          } else {
+            this.confides = [...this.confides, ...res.data];
+          }
+        } else {
+          this.error.confides = res.message ?? code.error.internal_server_error;
         }
-      });
 
-      this.loading.confides = false;
-      this.ref.markForCheck();
+        this.loading.confides = false;
+        this.ref.detectChanges();
 
-    }, 2000);
+        if (init) {
+          this.initAutoScroll();
+        }
+      }, err => {
+        this.error.confides = err.message ?? code.error.internal_server_error;
+        this.loading.confides = false;
+        this.ref.detectChanges();
+      })
   }
 }

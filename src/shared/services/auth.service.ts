@@ -1,10 +1,10 @@
 import {Injectable} from '@angular/core';
-import {HttpClient, HttpHeaders} from '@angular/common/http';
 import {BehaviorSubject, Observable, of} from 'rxjs';
 import {fromPromise} from 'rxjs/internal-compatibility';
 import {catchError, map, switchMap, tap} from 'rxjs/operators';
 import {Router} from '@angular/router';
 import {Auth} from '@aws-amplify/auth';
+import {ApiService} from './api.service';
 
 interface UserModel {
   username: string;
@@ -18,8 +18,10 @@ export class AuthService {
   public loggedIn: BehaviorSubject<boolean>;
   public user: UserModel | null = null;
 
+  private serviceV1 = 'v1/auth';
+
   constructor(
-    private http: HttpClient,
+    private apiService: ApiService,
     private router: Router,
   ) {
     this.loggedIn = new BehaviorSubject<boolean>(false);
@@ -80,17 +82,6 @@ export class AuthService {
   }
 
   me() {
-    return fromPromise(Auth.currentSession())
-      .pipe(
-        switchMap(
-          res => {
-            return this.http.get('https://4x71706xqd.execute-api.ap-southeast-1.amazonaws.com/auth/v1/me', {
-              headers: new HttpHeaders({
-                Authorization: res.getIdToken().getJwtToken(),
-              }),
-            });
-          }
-        )
-      )
+    return this.apiService.get(this.serviceV1, '/me');
   }
 }

@@ -1,0 +1,27 @@
+@import "src/shared/styles/Color";
+
+.form-confide {
+
+  textarea {
+    max-width: 100%;
+    min-width: 100%;
+    border: none;
+    margin: 0 !important;
+    overflow: hidden;
+  }
+
+  textarea:hover, textarea:focus, textarea:not(:placeholder-shown) {
+    border: 0.1rem solid $color-primary !important;
+    outline: 0;
+  }
+
+  div {
+    display: flex;
+    justify-content: space-between;
+
+    p {
+      margin: 0;
+      text-align: right;
+    }
+  }
+}
