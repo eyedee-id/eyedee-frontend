@@ -12,6 +12,8 @@ import {ReactiveFormsModule} from '@angular/forms';
 import {AuthComponent} from './auth/auth.component';
 import {AccountComponent} from './auth/account/account.component';
 import { RegisterConfirmationComponent } from './auth/register-confirmation/register-confirmation.component';
+import { ServiceWorkerModule } from '@angular/service-worker';
+import { environment } from '../environments/environment';
 
 @NgModule({
   declarations: [
@@ -29,6 +31,12 @@ import { RegisterConfirmationComponent } from './auth/register-confirmation/regi
     AppRoutingModule,
     HttpClientModule,
     ReactiveFormsModule,
+    ServiceWorkerModule.register('ngsw-worker.js', {
+      enabled: environment.production,
+      // Register the ServiceWorker as soon as the app is stable
+      // or after 30 seconds (whichever comes first).
+      registrationStrategy: 'registerWhenStable:30000'
+    }),
   ],
   providers: [],
   bootstrap: [AppComponent]

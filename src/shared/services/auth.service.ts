@@ -1,10 +1,10 @@
 import {Injectable} from '@angular/core';
-import {HttpClient} from '@angular/common/http';
+import {HttpClient, HttpHeaders} from '@angular/common/http';
 import {AuthState, CognitoUserInterface} from '@aws-amplify/ui-components';
 import {BehaviorSubject, Observable, of} from 'rxjs';
 import {fromPromise} from 'rxjs/internal-compatibility';
 import {Auth} from 'aws-amplify';
-import {catchError, map, tap} from 'rxjs/operators';
+import {catchError, map, switchMap, tap} from 'rxjs/operators';
 import {Router} from '@angular/router';
 
 @Injectable({
@@ -70,12 +70,18 @@ export class AuthService {
       );
   }
 
-  register(
-    data: {
-      username: string,
-      password: string,
-    }
-  ) {
-    return this.http.post('', data);
+  me() {
+    return fromPromise(Auth.currentSession())
+      .pipe(
+        switchMap(
+          res => {
+            return this.http.get('https://4x71706xqd.execute-api.ap-southeast-1.amazonaws.com/auth/v1/me', {
+              headers: new HttpHeaders({
+                Authorization: res.getIdToken().getJwtToken(),
+              }),
+            });
+          }
+        )
+      )
   }
 }
