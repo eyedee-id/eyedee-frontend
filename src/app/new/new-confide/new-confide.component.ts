@@ -26,13 +26,14 @@ export class NewConfideComponent implements OnInit, OnDestroy, AfterContentCheck
   confideMaxLength = 300;
 
   formConfide = new FormGroup({
+    is_anonim: new FormControl(false),
     text: new FormControl(null, {
       validators: [
         Validators.required,
         Validators.minLength(5),
         Validators.maxLength(this.confideMaxLength),
       ]
-    })
+    }),
   });
 
   loading = {
@@ -80,19 +81,17 @@ export class NewConfideComponent implements OnInit, OnDestroy, AfterContentCheck
       return;
     }
 
+    const value = this.formConfide.value;
     this.error.confide = null;
     this.loading.confide = true;
     this.formConfide.controls['text'].disable();
     this.ref.detectChanges();
 
-    this.confideService.confideNew({
-      text: this.formConfide.value.text,
-    })
+    this.confideService.confideNew(value)
       .subscribe(res => {
         console.log(res);
         if (res.status) {
-          console.log('asdsa');
-          // this.router.navigate(['/explore']);
+          this.router.navigate(['/explore']);
         } else {
           console.log(res.message);
           this.error.confide = res.message ?? code.error.internal_server_error;

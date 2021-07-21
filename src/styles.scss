@@ -34,7 +34,7 @@ body {
 
   div.container {
     border-top: 0;
-    padding: 2rem 2rem;
+    padding: 2rem 2rem 5rem;
     background: $color-initial;
   }
 
@@ -170,6 +170,11 @@ body {
 .margin-left-1 {
   margin-left: 1rem !important;
 }
+
+.margin-top-3 {
+  margin-top: 3rem !important;
+}
+
 
 .width-100 {
   width: 100%;

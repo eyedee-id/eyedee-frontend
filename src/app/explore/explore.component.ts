@@ -11,6 +11,10 @@ import {takeUntil} from 'rxjs/operators';
 import {ConfideService} from '../../shared/services/confide.service';
 import {code} from '../../shared/libs/code';
 import {ConfideModel} from '../../shared/models/confide.model';
+import * as dayjs from 'dayjs';
+import * as relativeTime from 'dayjs/plugin/relativeTime';
+
+dayjs.extend(relativeTime);
 
 
 @Component({
@@ -21,6 +25,7 @@ import {ConfideModel} from '../../shared/models/confide.model';
 })
 export class ExploreComponent implements OnInit, OnDestroy {
 
+  noMoreConfide = false;
   confides: Array<ConfideModel> = [];
 
   loading = {
@@ -38,7 +43,6 @@ export class ExploreComponent implements OnInit, OnDestroy {
   };
 
   destroy = new Subject();
-
   destroy$ = this.destroy.asObservable();
 
   constructor(
@@ -110,10 +114,19 @@ export class ExploreComponent implements OnInit, OnDestroy {
       .subscribe(res => {
         if (res.status) {
 
-          if (init) {
-            this.confides = res.data;
+          if (res.data.length === 0) {
+            this.noMoreConfide = true;
           } else {
-            this.confides = [...this.confides, ...res.data];
+
+            for (const item of res.data) {
+              item.at_created_string = dayjs(item.at_created).fromNow();
+            }
+
+            if (init) {
+              this.confides = res.data;
+            } else {
+              this.confides = [...this.confides, ...res.data];
+            }
           }
         } else {
           this.error.confides = res.message ?? code.error.internal_server_error;

@@ -9,4 +9,5 @@ export interface ConfideModel {
   total_comment?: number;
   text: string;
   hashtags?: Array<string>;
+  at_created_string: string;
 }

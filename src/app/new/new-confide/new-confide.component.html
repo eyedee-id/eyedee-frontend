@@ -2,19 +2,29 @@
   <h3 *ngIf="independent">mau curhat?</h3>
 
   <form class="form-confide" [formGroup]="formConfide" (ngSubmit)="confideSubmit()">
-        <textarea [maxLength]="confideMaxLength"
-                  placeholder="tulis curhatan lo disini!" formControlName="text">
-        </textarea>
+    <textarea [maxLength]="confideMaxLength"
+              placeholder="tulis curhatan lo disini!" formControlName="text">
+    </textarea>
     <ng-container *ngIf="!loading.confide; else templateLoading">
       <ng-container *ngIf="formConfide.controls['text'].value">
         <div>
-          <div class="display-flex align-items-center">
-            <button class="button margin-0" [disabled]="formConfide.invalid">curhat sekarang!</button>
-            <ng-container *ngIf="error.confide">
-              <small class="text-danger margin-0 margin-left-1">
-                * {{ error.confide }}
-              </small>
-            </ng-container>
+          <div>
+            <div>
+              <button class="button" [disabled]="formConfide.invalid">curhat sekarang!</button>
+              <ng-container *ngIf="error.confide">
+                <small class="text-danger margin-0 margin-left-1">
+                  * {{ error.confide }}
+                </small>
+              </ng-container>
+            </div>
+            <div class="options">
+              <small>opsi</small>
+              <hr>
+              <div>
+                <label class="label-inline" for="is-anonim">curhat sebagai anonim</label>
+                <input type="checkbox" id="is-anonim" formControlName="is_anonim" [disabled]="loading.confide">
+              </div>
+            </div>
           </div>
           <div>
             <p>
