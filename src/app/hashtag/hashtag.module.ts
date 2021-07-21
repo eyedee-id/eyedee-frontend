@@ -3,6 +3,7 @@ import { CommonModule } from '@angular/common';
 
 import { HashtagRoutingModule } from './hashtag-routing.module';
 import {HashtagComponent} from './hashtag.component';
+import {NavigationBottomModule} from '../../shared/components/navigation-bottom/navigation-bottom.module';
 
 
 @NgModule({
@@ -11,7 +12,8 @@ import {HashtagComponent} from './hashtag.component';
   ],
   imports: [
     CommonModule,
-    HashtagRoutingModule
+    HashtagRoutingModule,
+    NavigationBottomModule
   ]
 })
 export class HashtagModule { }

@@ -7,6 +7,7 @@ import {HomeComponent} from './home/home.component';
 import {HttpClientModule} from '@angular/common/http';
 import {ServiceWorkerModule} from '@angular/service-worker';
 import {environment} from '../environments/environment';
+import {NavigationTopModule} from '../shared/components/navigation-top/navigation-top.module';
 
 @NgModule({
   declarations: [
@@ -23,6 +24,7 @@ import {environment} from '../environments/environment';
       // or after 30 seconds (whichever comes first).
       registrationStrategy: 'registerWhenStable:30000'
     }),
+    NavigationTopModule,
   ],
   providers: [],
   bootstrap: [AppComponent]

@@ -6,16 +6,15 @@
   padding-top: 7.5rem;
 }
 
-.column-tweets {
+.column-confides {
   flex: 0 0 100%;
   padding: 0;
-}
 
-@media(min-width: 80rem) {
-  .column-tweets {
+  @media(min-width: 80rem) {
     flex: 0 0 60%;
-    max-width: 80rem;
+    max-width: 60%;
   }
+
 }
 
 .form-confide {
@@ -45,36 +44,38 @@
 }
 
 
-.tweets {
-  .tweet:first-child {
+.confides {
+  .confide:first-child {
     border-top-right-radius: 0.4rem;
     border-top-left-radius: 0.4rem;
   }
-  .tweet:last-child {
+
+  .confide:last-child {
     border-bottom-right-radius: 0.4rem;
     border-bottom-left-radius: 0.4rem;
   }
-  .tweet:nth-child(even) {
+
+  .confide:nth-child(even) {
     border-top: none;
     border-bottom: none;
   }
 
-  .tweet:last-child:nth-child(even) {
+  .confide:last-child:nth-child(even) {
     border-bottom: 1px solid $color-quinary;
   }
 }
 
-.tweet {
+.confide {
   border: 1px solid $color-quinary;
   padding: 1rem;
   display: flex;
 
   img, .img {
     border-radius: 50%;
-    width: 5rem;
-    min-width: 5rem;
-    height: 5rem;
-    margin: 0 1rem;
+    width: 3rem;
+    min-width: 3rem;
+    height: 3rem;
+    margin-right: 1rem;
   }
 
   .img {
@@ -86,14 +87,36 @@
   }
 }
 
-.tweet .user {
+.confide .user {
   font-weight: 400;
+
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  width: 100%;
+  margin-bottom: 1rem;
+
+  .user-name {
+    display: none;
+  }
 }
 
-.tweet .footer {
+.user-content {
   display: flex;
   flex-direction: column;
   justify-content: space-between;
+  width: 100%;
+}
+
+
+.confide .footer {
+  display: flex;
+  flex-direction: column-reverse;
+  justify-content: space-between;
+
+  @media(min-width: 80rem) {
+    flex-direction: row;
+  }
 
   div {
     small {
@@ -107,12 +130,6 @@
     small:last-child {
       margin-right: 0;
     }
-  }
-}
-
-@media(min-width: 80rem) {
-  .tweet .footer {
-    flex-direction: row;
   }
 }
 

@@ -10,62 +10,73 @@
     <!--TOP 10 HASHTAGS-->
 
 
-    <div class="column column-tweets">
+    <div class="column column-confides">
 
-      <form class="form-confide" [formGroup]="formConfide" (ngSubmit)="confideSubmit()">
+      <ng-container *ngIf="false">
+        <form class="form-confide" [formGroup]="formConfide" (ngSubmit)="confideSubmit()">
         <textarea [maxLength]="confideMaxLength"
                   placeholder="tulis curhatan lo disini!" formControlName="text">
         </textarea>
-        <ng-container *ngIf="!loading.confide; else templateLoading">
-          <ng-container *ngIf="formConfide.controls['text'].value">
-            <div>
-              <div class="display-flex align-items-center">
-                <button class="button margin-0" [disabled]="formConfide.invalid">curhat sekarang!</button>
-                <ng-container *ngIf="error.confide">
-                  <small class="text-danger margin-0 margin-left-1">
-                    * {{ error.confide }}
-                  </small>
-                </ng-container>
-              </div>
+          <ng-container *ngIf="!loading.confide; else templateLoading">
+            <ng-container *ngIf="formConfide.controls['text'].value">
               <div>
-                <p>
-                  <small>{{ formConfide.controls['text'].value?.length }} / {{ confideMaxLength }}</small>
-                </p>
+                <div class="display-flex align-items-center">
+                  <button class="button margin-0" [disabled]="formConfide.invalid">curhat sekarang!</button>
+                  <ng-container *ngIf="error.confide">
+                    <small class="text-danger margin-0 margin-left-1">
+                      * {{ error.confide }}
+                    </small>
+                  </ng-container>
+                </div>
+                <div>
+                  <p>
+                    <small>{{ formConfide.controls['text'].value?.length }} / {{ confideMaxLength }}</small>
+                  </p>
+                </div>
               </div>
-            </div>
+            </ng-container>
           </ng-container>
-        </ng-container>
-      </form>
+        </form>
+      </ng-container>
 
       <ng-container *ngIf="!loading.confides || confides.length > 0">
         <h3>curhatan</h3>
       </ng-container>
 
-      <div class="tweets">
+      <div class="confides">
         <ng-container *ngFor="let confide of confides; trackBy : trackById">
-          <div class="tweet">
-            <div>
-              <ng-container *ngIf="confide.photo_url; else templateNoPhoto">
-                <img [src]="confide.photo_url" alt="">
-              </ng-container>
-            </div>
+          <div class="confide">
             <div class="width-100">
               <div class="user">
-                {{ confide?.name }}
-                <small>
+                <div class="line-height-0">
+                  <ng-container *ngIf="confide.photo_url; else templateNoPhoto">
+                    <img [src]="confide.photo_url" alt="">
+                  </ng-container>
+                </div>
+                <ng-template #templateNoPhoto>
+                  <div class="img">{{ confide?.username ? confide.username[0] : 'e'  }}</div>
+                </ng-template>
+                <div class="user-name">
+                  {{ confide?.name }}
+                </div>
+                <small class="user-username">
                   <a [routerLink]="'/' + confide?.username">@{{ confide?.username }}</a>
                 </small>
               </div>
-              <div>{{ confide.text }}</div>
-              <div class="footer">
+              <div class="user-content">
                 <div>
-                  <small>{{ confide.at_created }}</small>
-                  <small><a href="">{{ confide.total_comment }} comments</a></small>
+                  <div>{{ confide.text }}</div>
                 </div>
-                <div>
-                  <ng-container *ngFor="let hashtag of confide?.hashtags">
-                    <small><a [routerLink]="'/hashtag/' + hashtag">#{{ hashtag }}</a></small>
-                  </ng-container>
+                <div class="footer">
+                  <div>
+                    <small>{{ confide.at_created }}</small>
+                    <small><a href="">{{ confide.total_comment }} comments</a></small>
+                  </div>
+                  <div>
+                    <ng-container *ngFor="let hashtag of confide?.hashtags">
+                      <small><a [routerLink]="'/hashtag/' + hashtag">#{{ hashtag }}</a></small>
+                    </ng-container>
+                  </div>
                 </div>
               </div>
             </div>
@@ -104,10 +115,7 @@
   </div>
 </div>
 
-
-<ng-template #templateNoPhoto>
-  <div class="img">photo</div>
-</ng-template>
+<app-navigation-bottom></app-navigation-bottom>
 
 <ng-template #templateLoading>
   <div class="lds-ellipsis">
