@@ -1,0 +1,24 @@
+<ng-container *ngIf="!loading.init; else templateLoading">
+  <h4>curhat dengan orang!</h4>
+  <dl>
+    <ng-container *ngFor="let user of top10users">
+      <dt>
+        <a [routerLink]="'/' + user?.username">
+          {{ user?.username }}
+          <small>(@{{ user?.username }})</small>
+        </a>
+      </dt>
+    </ng-container>
+  </dl>
+</ng-container>
+
+<ng-template #templateLoading>
+  <div class="text-center">
+    <div class="lds-ellipsis">
+      <div></div>
+      <div></div>
+      <div></div>
+      <div></div>
+    </div>
+  </div>
+</ng-template>

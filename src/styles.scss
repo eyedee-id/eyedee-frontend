@@ -6,6 +6,7 @@
 
 body {
   color: $color-secondary;
+  background: $color-initial;
   font-family: 'Roboto', 'Helvetica Neue', 'Helvetica', 'Arial', sans-serif;
   font-size: 1.6em;
   font-weight: 300;
@@ -20,21 +21,24 @@ body {
   overflow: auto;
   position: relative;
   width: 100%;
+  margin-top: 5rem;
+  max-height: calc(100vh - 5rem);
 
-  .navigation .container, .container, {
+  .container, {
     max-width: 80rem;
   }
 
   div.container {
     border-top: 0;
-    padding-bottom: 7.5rem;
-    padding-top: 7.5rem;
+    padding: 2rem 2rem;
+    background: $color-initial;
   }
 
   div.container-full {
     max-width: 100vw;
     border-top: 0;
-    padding: 7.5rem 2rem;
+    padding: 2rem 2rem;
+    background: $color-initial;
   }
 }
 
@@ -42,7 +46,7 @@ body {
   background: $color-tertiary;
   border-bottom: .1rem solid $color-quinary;
   display: block;
-  height: 5.2rem;
+  height: 5rem;
   left: 0;
   max-width: 100%;
   position: fixed;
@@ -54,6 +58,7 @@ body {
   .container {
     padding-bottom: 0;
     padding-top: 0;
+    max-width: 80rem;
   }
 }
 
@@ -281,4 +286,17 @@ body {
 
 .cursor-pointer {
   cursor: pointer;
+}
+
+
+.sidebar {
+  flex-grow: 1;
+  flex-basis: 300px;
+  align-self: start;
+  position: sticky;
+  top: 0;
+  margin-top: 2rem;
+}
+
+.sidebar .component {
 }

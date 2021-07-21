@@ -1,11 +1,14 @@
 import {Injectable} from '@angular/core';
 import {HttpClient, HttpHeaders} from '@angular/common/http';
-import {AuthState, CognitoUserInterface} from '@aws-amplify/ui-components';
 import {BehaviorSubject, Observable, of} from 'rxjs';
 import {fromPromise} from 'rxjs/internal-compatibility';
-import {Auth} from 'aws-amplify';
 import {catchError, map, switchMap, tap} from 'rxjs/operators';
 import {Router} from '@angular/router';
+import {Auth} from '@aws-amplify/auth';
+
+interface UserModel {
+  username: string;
+}
 
 @Injectable({
   providedIn: 'root'
@@ -13,6 +16,7 @@ import {Router} from '@angular/router';
 export class AuthService {
 
   public loggedIn: BehaviorSubject<boolean>;
+  public user: UserModel | null = null;
 
   constructor(
     private http: HttpClient,
@@ -25,10 +29,15 @@ export class AuthService {
     return fromPromise(Auth.currentAuthenticatedUser())
       .pipe(
         map(result => {
+          this.user = {
+            username: result?.username
+          };
+
           this.loggedIn.next(true);
           return true;
         }),
         catchError(error => {
+          this.user = null;
           this.loggedIn.next(false);
           return of(false);
         })

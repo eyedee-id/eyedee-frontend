@@ -1,20 +1,20 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { AuthComponent } from './auth.component';
+import { TopTenHashtagsComponent } from './top-ten-hashtags.component';
 
-describe('AuthComponent', () => {
-  let component: AuthComponent;
-  let fixture: ComponentFixture<AuthComponent>;
+describe('TopTenHashtagsComponent', () => {
+  let component: TopTenHashtagsComponent;
+  let fixture: ComponentFixture<TopTenHashtagsComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ AuthComponent ]
+      declarations: [ TopTenHashtagsComponent ]
     })
     .compileComponents();
   });
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(AuthComponent);
+    fixture = TestBed.createComponent(TopTenHashtagsComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

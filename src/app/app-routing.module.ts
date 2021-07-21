@@ -1,12 +1,7 @@
 import {NgModule} from '@angular/core';
 import {RouterModule, Routes} from '@angular/router';
-import {LoginComponent} from './auth/login/login.component';
-import {RegisterComponent} from './auth/register/register.component';
 import {HomeComponent} from './home/home.component';
-import {AuthComponent} from './auth/auth.component';
 import {AuthGuard} from '../shared/guards/auth.guard';
-import {AccountComponent} from './auth/account/account.component';
-import {RegisterConfirmationComponent} from './auth/register-confirmation/register-confirmation.component';
 
 const routes: Routes = [
   {
@@ -14,27 +9,24 @@ const routes: Routes = [
     component: HomeComponent,
   },
   {
-    path: 'auth/login',
-    component: LoginComponent,
+    path: 'auth',
+    loadChildren: () => import('./auth/auth.module').then(m => m.AuthModule),
   },
   {
-    path: 'auth/register',
-    component: RegisterComponent,
-  },
-  {
-    path: 'auth/register/confirmation',
-    component: RegisterConfirmationComponent,
-  },
-  {
-    path: 'auth/account',
-    component: AccountComponent,
+    path: 'explore',
+    loadChildren: () => import('./explore/explore.module').then(m => m.ExploreModule),
     canActivate: [AuthGuard],
   },
   {
-    path: 'pages',
-    loadChildren: () => import('./pages/pages.module').then(value => value.PagesModule),
+    path: 'hashtag/:hashtag',
+    loadChildren: () => import('./hashtag/hashtag.module').then(m => m.HashtagModule),
     canActivate: [AuthGuard],
-  }
+  },
+  {
+    path: ':username',
+    loadChildren: () => import('./user/user.module').then(m => m.UserModule),
+    canActivate: [AuthGuard],
+  },
 ];
 
 @NgModule({

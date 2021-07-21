@@ -1,21 +1,17 @@
 <div class="container-full">
   <div class="row">
-    <div class="column column-md-none">
-      <h4>yang lagi hits di #hastag</h4>
-      <dl>
-        <dt><a href="">#bantuindonesia</a></dt>
-        <dt><a href="">#keuangan</a></dt>
-        <dt><a href="">#milenial</a></dt>
-        <dt><a href="">#covid19</a></dt>
-        <dt><a href="">#ppkm</a></dt>
-        <dt><a href="">#indonesia</a></dt>
-        <dt><a href="">#cinta</a></dt>
-        <dt><a href="">#pernikahandini</a></dt>
-        <dt><a href="">#rezaarab</a></dt>
-        <dt><a href="">#instagram</a></dt>
-      </dl>
-    </div>
+
+    <!--TOP 10 HASHTAGS-->
+    <aside class="column column-md-none sidebar" style="max-width: 20%;">
+      <div class="component">
+        <app-top-ten-hashtags></app-top-ten-hashtags>
+      </div>
+    </aside>
+    <!--TOP 10 HASHTAGS-->
+
+
     <div class="column column-tweets">
+
       <form class="form-confide" [formGroup]="formConfide" (ngSubmit)="confideSubmit()">
         <textarea [maxLength]="confideMaxLength"
                   placeholder="tulis curhatan lo disini!" formControlName="text">
@@ -41,9 +37,12 @@
         </ng-container>
       </form>
 
-      <div class="tweets">
-        <ng-container *ngFor="let confide of confides">
+      <ng-container *ngIf="!loading.confides || confides.length > 0">
+        <h3>curhatan</h3>
+      </ng-container>
 
+      <div class="tweets">
+        <ng-container *ngFor="let confide of confides; trackBy : trackById">
           <div class="tweet">
             <div>
               <ng-container *ngIf="confide.photo_url; else templateNoPhoto">
@@ -54,7 +53,7 @@
               <div class="user">
                 {{ confide?.name }}
                 <small>
-                  <a href="">@{{ confide?.username }}</a>
+                  <a [routerLink]="'/' + confide?.username">@{{ confide?.username }}</a>
                 </small>
               </div>
               <div>{{ confide.text }}</div>
@@ -64,8 +63,8 @@
                   <small><a href="">{{ confide.total_comment }} comments</a></small>
                 </div>
                 <div>
-                  <ng-container *ngFor="let tag of confide?.tags">
-                    <small><a href="">#{{ tag }}</a></small>
+                  <ng-container *ngFor="let hashtag of confide?.hashtags">
+                    <small><a [routerLink]="'/hashtag/' + hashtag">#{{ hashtag }}</a></small>
                   </ng-container>
                 </div>
               </div>
@@ -83,48 +82,25 @@
         </div>
       </ng-container>
 
-      <ng-container *ngIf="(authService.loggedIn | async)">
-        <div class="text-center margin-3">
-          <ng-container [ngTemplateOutlet]="templateLoading"></ng-container>
-        </div>
-      </ng-container>
+      <div class="text-center margin-3">
+        <ng-container *ngIf="!loading.confides; else templateLoading">
+          <a class="button button-clear button-large" (click)="getConfides()">
+            lihat lainnya
+          </a>
+        </ng-container>
+      </div>
 
     </div>
-    <div class="column column-md-none text-right">
-      <h4>curhat dengan orang!</h4>
-      <dl>
-        <dt>
-          <a href="">
-            Jokowi
-            <small>(@jokowi)</small>
-          </a>
-        </dt>
-        <dt>
-          <a href="">
-            Gofar
-            <small>(@pergijauh)</small>
-          </a>
-        </dt>
-        <dt>
-          <a href="">
-            Mata Najwa
-            <small>(@najwa)</small>
-          </a>
-        </dt>
-        <dt>
-          <a href="">
-            Wushh wushh
-            <small>(@wushhh)</small>
-          </a>
-        </dt>
-        <dt>
-          <a href="">
-            gilbert
-            <small>(@gilbert)</small>
-          </a>
-        </dt>
-      </dl>
+
+
+    <!--TOP 10 USERS-->
+    <div class="column column-md-none sidebar text-right" style="max-width: 20%;">
+      <div class="component">
+        <app-top-ten-users></app-top-ten-users>
+      </div>
     </div>
+    <!--TOP 10 USERS-->
+
   </div>
 </div>
 

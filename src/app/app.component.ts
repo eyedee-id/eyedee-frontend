@@ -8,8 +8,7 @@ import {
   Renderer2
 } from '@angular/core';
 import {AuthService} from '../shared/services/auth.service';
-import {onAuthUIStateChange} from '@aws-amplify/ui-components';
-import {Auth} from 'aws-amplify';
+import {Auth} from '@aws-amplify/auth';
 
 @Component({
   selector: 'app-root',
@@ -29,18 +28,13 @@ export class AppComponent implements OnInit, OnDestroy, AfterViewInit {
 
   ngOnInit() {
     this.authService.isAuthenticated()
-      .subscribe(res => {
+      .subscribe(async () => {
       });
 
     this.authService.me()
       .subscribe(res => {
-        console.log(res);
       })
 
-    onAuthUIStateChange((authState, authData) => {
-      this.authService.isAuthenticated();
-      this.ref.detectChanges();
-    })
   }
 
   ngAfterViewInit() {
@@ -49,6 +43,5 @@ export class AppComponent implements OnInit, OnDestroy, AfterViewInit {
   }
 
   ngOnDestroy() {
-    return onAuthUIStateChange;
   }
 }
