@@ -2,6 +2,7 @@ import {NgModule} from '@angular/core';
 import {RouterModule, Routes} from '@angular/router';
 import {HomeComponent} from './home/home.component';
 import {AuthGuard} from '../shared/guards/auth.guard';
+import {LayoutComponent} from "./layout/layout.component";
 
 const routes: Routes = [
   {
@@ -13,25 +14,41 @@ const routes: Routes = [
     loadChildren: () => import('./auth/auth.module').then(m => m.AuthModule),
   },
   {
-    path: 'explore',
-    loadChildren: () => import('./explore/explore.module').then(m => m.ExploreModule),
-    canActivate: [AuthGuard],
-  },
-  {
-    path: 'hashtag/:hashtag',
-    loadChildren: () => import('./hashtag/hashtag.module').then(m => m.HashtagModule),
-    canActivate: [AuthGuard],
-  },
-  {
-    path: 'new',
-    loadChildren: () => import('./new/new.module').then(m => m.NewModule),
-    canActivate: [AuthGuard],
-  },
-  {
-    path: ':username',
-    loadChildren: () => import('./user/user.module').then(m => m.UserModule),
-    canActivate: [AuthGuard],
-  },
+    path: '',
+    component: LayoutComponent,
+    children: [
+      {
+        path: 'account',
+        loadChildren: () => import('./layout/account/account.module').then(m => m.AccountModule),
+        canActivate: [AuthGuard],
+      },
+      {
+        path: 'explore',
+        loadChildren: () => import('./layout/explore/explore.module').then(m => m.ExploreModule),
+        canActivate: [AuthGuard],
+      },
+      {
+        path: 'trending',
+        loadChildren: () => import('./layout/trending/trending.module').then(m => m.TrendingModule),
+        canActivate: [AuthGuard],
+      },
+      {
+        path: 'hashtag/:hashtag',
+        loadChildren: () => import('./layout/hashtag/hashtag.module').then(m => m.HashtagModule),
+        canActivate: [AuthGuard],
+      },
+      {
+        path: 'new',
+        loadChildren: () => import('./layout/new/new.module').then(m => m.NewModule),
+        canActivate: [AuthGuard],
+      },
+      {
+        path: ':username',
+        loadChildren: () => import('./layout/user/user.module').then(m => m.UserModule),
+        canActivate: [AuthGuard],
+      },
+    ],
+  }
 ];
 
 @NgModule({

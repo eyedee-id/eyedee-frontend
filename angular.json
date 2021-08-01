@@ -133,6 +133,7 @@
   },
   "defaultProject": "eyedee-web",
   "cli": {
+    "analytics": "4a4f5a5b-8474-42c8-aa18-0e51f48e2602",
     "defaultCollection": "@angular-eslint/schematics"
   }
 }

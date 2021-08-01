@@ -9,8 +9,8 @@ import {
 import {FormControl, FormGroup, Validators} from '@angular/forms';
 import {Subscription} from 'rxjs';
 import {Router} from '@angular/router';
-import {ConfideService} from '../../../shared/services/confide.service';
-import {code} from '../../../shared/libs/code';
+import {ConfideService} from '../../../../shared/services/confide.service';
+import {code} from '../../../../shared/libs/code';
 
 @Component({
   selector: 'app-new-confide',

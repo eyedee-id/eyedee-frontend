@@ -22,12 +22,7 @@
 
       <ng-template #templateNavigationLoggedIn>
         <li class="navigation-item">
-          <a class="navigation-link" routerLink="/explore">
-            Explore
-          </a>
-        </li>
-        <li class="navigation-item">
-          <a class="navigation-link" routerLink="/auth/account">
+          <a class="navigation-link" [routerLink]="'/' +  authService.user?.username">
             @{{ authService.user?.username }}
           </a>
         </li>

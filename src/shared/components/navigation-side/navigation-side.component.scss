@@ -1,0 +1,37 @@
+.button-confide {
+  //width: 100%;
+  //font-weight: bold;
+  font-size: 1.5rem;
+
+  &.active {
+    font-weight: bold;
+  }
+}
+
+dl > dt {
+  a {
+    display: inline-flex;
+
+    svg:first-child {
+      display: block;
+    }
+
+    svg:last-child {
+      display: none;
+    }
+
+    font-size: 2rem;
+  }
+
+  a.active {
+    svg:first-child {
+      display: none;
+    }
+
+    svg:last-child {
+      display: block;
+    }
+
+    font-weight: bold;
+  }
+}

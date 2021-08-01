@@ -1,4 +1,5 @@
 import {ChangeDetectionStrategy, Component, OnInit} from '@angular/core';
+import {AuthService} from "../../services/auth.service";
 
 @Component({
   selector: 'app-navigation-bottom',
@@ -8,7 +9,9 @@ import {ChangeDetectionStrategy, Component, OnInit} from '@angular/core';
 })
 export class NavigationBottomComponent implements OnInit {
 
-  constructor() { }
+  constructor(
+    public authService: AuthService,
+  ) { }
 
   ngOnInit(): void {
   }

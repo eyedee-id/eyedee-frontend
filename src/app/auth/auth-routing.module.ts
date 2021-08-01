@@ -3,7 +3,7 @@ import {RouterModule, Routes} from '@angular/router';
 import {LoginComponent} from './login/login.component';
 import {RegisterComponent} from './register/register.component';
 import {RegisterConfirmationComponent} from './register-confirmation/register-confirmation.component';
-import {AccountComponent} from './account/account.component';
+import {AccountComponent} from '../layout/account/account.component';
 import {AuthGuard} from '../../shared/guards/auth.guard';
 
 const routes: Routes = [
@@ -21,11 +21,6 @@ const routes: Routes = [
       {
         path: 'register/confirmation',
         component: RegisterConfirmationComponent,
-      },
-      {
-        path: 'account',
-        component: AccountComponent,
-        canActivate: [AuthGuard],
       },
     ]
   },

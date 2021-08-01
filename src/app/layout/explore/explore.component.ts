@@ -6,11 +6,11 @@ import {
   OnInit
 } from '@angular/core';
 import {fromEvent, Subject, Subscription} from 'rxjs';
-import {AuthService} from '../../shared/services/auth.service';
+import {AuthService} from '../../../shared/services/auth.service';
 import {takeUntil} from 'rxjs/operators';
-import {ConfideService} from '../../shared/services/confide.service';
-import {code} from '../../shared/libs/code';
-import {ConfideModel} from '../../shared/models/confide.model';
+import {ConfideService} from '../../../shared/services/confide.service';
+import {code} from '../../../shared/libs/code';
+import {ConfideModel} from '../../../shared/models/confide.model';
 import * as dayjs from 'dayjs';
 import * as relativeTime from 'dayjs/plugin/relativeTime';
 
@@ -72,7 +72,6 @@ export class ExploreComponent implements OnInit, OnDestroy {
 
   initAutoScroll() {
     const main = document.getElementsByTagName('main').item(0) ?? null;
-    console.log(main);
     if (main) {
 
       fromEvent(main, 'scroll')
@@ -118,16 +117,29 @@ export class ExploreComponent implements OnInit, OnDestroy {
             this.noMoreConfide = true;
           } else {
 
-            for (const item of res.data) {
-              item.at_created_string = dayjs(item.at_created).fromNow();
-            }
+            this.ref.detach();
 
             if (init) {
+              for (const item of res.data) {
+                item.at_created_string = dayjs(item.at_created).fromNow();
+              }
+
               this.confides = res.data;
             } else {
-              this.confides = [...this.confides, ...res.data];
+
+              // Pre allocate size
+              const arr1Length = this.confides.length;
+              const arr2Length = res.data.length;
+
+              this.confides.length = arr1Length + arr2Length;
+              for (let i = 0; i < arr2Length; i++) {
+                res.data[i].at_created_string = dayjs(res.data[i].at_created).fromNow();
+                this.confides[arr1Length + i] = res.data[i]
+              }
             }
           }
+
+          this.ref.reattach();
         } else {
           this.error.confides = res.message ?? code.error.internal_server_error;
         }
