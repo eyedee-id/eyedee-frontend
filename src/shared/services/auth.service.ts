@@ -59,8 +59,8 @@ export class AuthService {
   }
 
   /** signup */
-  public signUp(data: { username: string, password: string, email: string }): Observable<any> {
-    return fromPromise(Auth.signUp(data.username, data.password, data.email));
+  public signUp(data: { username: string, password: string, email: string, attributes: any}): Observable<any> {
+    return fromPromise(Auth.signUp(data));
   }
 
   /** confirm code */

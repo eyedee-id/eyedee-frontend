@@ -19,8 +19,11 @@
       <label for="email">
         email
         <small class="text-danger">
-          <ng-container *ngIf="form.controls['email']?.touched && form.controls['email'].invalid">
+          <ng-container *ngIf="form.controls['email']?.touched && form.controls['email']?.errors?.required">
             * email wajib diisi!
+          </ng-container>
+          <ng-container *ngIf="form.controls['email']?.touched && form.controls['email']?.errors?.email">
+            * format email salah
           </ng-container>
         </small>
       </label>
@@ -39,6 +42,20 @@
         </small>
       </label>
       <input type="password" placeholder="password" id="password" formControlName="password">
+      <label for="password-confirmation">
+        konfirmasi password
+        <small class="text-danger">
+          <ng-container
+            *ngIf="form.controls['password_confirmation']?.touched && form.controls['password_confirmation']?.errors?.required">
+            * konfirmasi password wajib diisi!
+          </ng-container>
+          <ng-container
+            *ngIf="form.controls['password_confirmation']?.touched && form.controls['password_confirmation']?.errors?.isMatching === false">
+            * password nya ga sama!
+          </ng-container>
+        </small>
+      </label>
+      <input type="password" placeholder="konfirmasi password" id="password-confirmation" formControlName="password_confirmation">
 
       <ng-container *ngIf="!loading.register; else loadingRegister">
         <button class="button-primary" type="submit" [disabled]="form.invalid">

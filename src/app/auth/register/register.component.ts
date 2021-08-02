@@ -1,5 +1,5 @@
 import {ChangeDetectionStrategy, ChangeDetectorRef, Component, OnDestroy, OnInit} from '@angular/core';
-import {FormControl, FormGroup, Validators} from '@angular/forms';
+import {AbstractControl, FormControl, FormGroup, ValidationErrors, Validators} from '@angular/forms';
 import {Subscription} from 'rxjs';
 import {AuthService} from '../../../shared/services/auth.service';
 import {code} from '../../../shared/libs/code';
@@ -13,17 +13,24 @@ import {Router} from '@angular/router';
 })
 export class RegisterComponent implements OnInit, OnDestroy {
   form = new FormGroup({
+    username: new FormControl(null, Validators.required),
     email: new FormControl(null, {
       validators: [
         Validators.required,
         Validators.email,
       ]
     }),
-    username: new FormControl(null, Validators.required),
     password: new FormControl(null, {
       validators: [
         Validators.required,
         Validators.minLength(8),
+      ]
+    }),
+    password_confirmation: new FormControl(null, {
+      validators: [
+        Validators.required,
+        Validators.minLength(8),
+        this.matchValues('password'),
       ]
     }),
   });
@@ -65,6 +72,15 @@ export class RegisterComponent implements OnInit, OnDestroy {
     }
   }
 
+  matchValues(matchTo: string): (control: AbstractControl) => ValidationErrors | null {
+    return (control: AbstractControl): ValidationErrors | null => {
+      // @ts-ignore
+      return !!control.parent && !!control.parent.value && control.value === control.parent.controls[matchTo].value
+        ? null
+        : {isMatching: false};
+    };
+  }
+
   register(): void {
     if (this.form.invalid) {
       this.form.markAllAsTouched();
@@ -75,7 +91,7 @@ export class RegisterComponent implements OnInit, OnDestroy {
 
     this.authService.signUp(this.form.value)
       .subscribe(res => {
-        this.router.navigate(['/auth/register/confirmation']);
+        this.router.navigate(['/auth/login']);
       }, err => {
         this.loading.register = false;
         this.error.register = err.message ?? code.error.internal_server_error;
