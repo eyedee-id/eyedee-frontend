@@ -111,7 +111,7 @@ export class ExploreComponent implements OnInit, OnDestroy {
     this.loading.confides = true;
     this.ref.markForCheck();
 
-    this.confideService
+    this.subscription.confides = this.confideService
       .confideExplore(params)
       .subscribe(res => {
         if (res.status) {

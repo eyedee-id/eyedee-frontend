@@ -7,6 +7,7 @@ import {Auth} from '@aws-amplify/auth';
 import {ApiService} from './api.service';
 
 interface UserModel {
+  user_id?: string;
   username: string;
 }
 
@@ -28,11 +29,11 @@ export class AuthService {
   }
 
   public isAuthenticated(): Observable<boolean> {
-    return fromPromise(Auth.currentAuthenticatedUser())
+    return fromPromise(Auth.currentUserInfo())
       .pipe(
         map(result => {
-          console.log(result);
           this.user = {
+            user_id: result?.attributes?.sub,
             username: result?.username
           };
 
@@ -60,8 +61,14 @@ export class AuthService {
   }
 
   /** signup */
-  public signUp(data: { username: string, password: string, email: string, attributes: any}): Observable<any> {
-    return fromPromise(Auth.signUp(data));
+  public signUp(data: { username: string, password: string, email: string }): Observable<any> {
+    return fromPromise(Auth.signUp({
+      username: data.username,
+      password: data.password,
+      attributes: {
+        email: data.email,
+      }
+    }));
   }
 
   /** confirm code */

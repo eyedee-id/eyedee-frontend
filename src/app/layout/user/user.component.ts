@@ -2,6 +2,8 @@ import {ChangeDetectionStrategy, ChangeDetectorRef, Component, OnDestroy, OnInit
 import {ActivatedRoute, Router} from '@angular/router';
 import {Subscription} from "rxjs";
 import {AuthService} from "../../../shared/services/auth.service";
+import {UserService} from "../../../shared/services/user.service";
+import {code} from "../../../shared/libs/code";
 
 @Component({
   selector: 'app-user',
@@ -11,20 +13,31 @@ import {AuthService} from "../../../shared/services/auth.service";
 })
 export class UserComponent implements OnInit, OnDestroy {
 
-  username = null;
+  username: string = '';
   user: any = null;
+
+  loading = {
+    user: false,
+  };
+
+  error: {
+    [key: string]: null | string,
+  } = {
+    user: null,
+  };
 
   subscription: {
     [key: string]: null | Subscription,
   } = {
     username: null,
+    user: null,
   };
 
   constructor(
     private router: Router,
     private route: ActivatedRoute,
     private ref: ChangeDetectorRef,
-    private authService: AuthService,
+    private userService: UserService,
   ) {
 
   }
@@ -44,9 +57,32 @@ export class UserComponent implements OnInit, OnDestroy {
   }
 
   getUser() {
-    this.user = {
-      username: 'gilbert',
-      photo_url: 'https://s3.arkjp.net/misskey/thumbnail-40729057-08ff-49c8-9366-609481a2de9e.png'
+    if (this.loading.user) {
+      return;
     }
+
+    if (this.subscription.user && !this.subscription.user.closed) {
+      this.subscription.user.unsubscribe();
+    }
+
+    this.loading.user = true;
+    this.ref.markForCheck();
+
+    this.subscription.user = this.userService.userGet(this.username)
+      .subscribe(res => {
+        if (res.status) {
+          this.user = res.data;
+          this.router.navigate([this.user.user_id, 'confides'], {relativeTo: this.route});
+        } else {
+          this.error.user = res.message ?? code.error.internal_server_error;
+        }
+
+        this.loading.user = false;
+        this.ref.detectChanges();
+      }, err => {
+        this.error.user = err.message ?? code.error.internal_server_error;
+        this.loading.user = false;
+        this.ref.detectChanges();
+      });
   }
 }

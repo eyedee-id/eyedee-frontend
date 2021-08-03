@@ -52,6 +52,8 @@ body {
     max-width: 100vw;
     border-top: 0;
     background: $color-initial;
+    display: flex;
+    flex-direction: row;
 
     @media(min-width: 80rem) {
       padding: 2rem 2rem;

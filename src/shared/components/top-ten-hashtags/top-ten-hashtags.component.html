@@ -1,9 +1,11 @@
 <ng-container *ngIf="!loading.init; else templateLoading">
   <h4>yang lagi hits di #hastag</h4>
   <dl>
-    <ng-container *ngFor="let hashtag of top10hashtags">
-      <dt><a [routerLink]="'/hashtag/' + hashtag">#{{hashtag}}</a></dt>
-    </ng-container>
+    <dt><a href="#">#comingsoon!</a></dt>
+    <!--  @TODO: next feature (trending)-->
+    <!--    <ng-container *ngFor="let hashtag of top10hashtags">-->
+    <!--      <dt><a [routerLink]="'/hashtag/' + hashtag">#{{hashtag}}</a></dt>-->
+    <!--    </ng-container>-->
   </dl>
 </ng-container>
 

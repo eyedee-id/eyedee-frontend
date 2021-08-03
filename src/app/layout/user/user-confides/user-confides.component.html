@@ -13,9 +13,9 @@
             <ng-template #templateNoPhoto>
               <div class="img">{{ confide.username[0]  }}</div>
             </ng-template>
-            <!--                  <div class="user-name">-->
-            <!--                    {{ confide.name }}-->
-            <!--                  </div>-->
+            <!--            <div class="user-name">-->
+            <!--              {{ confide.name }}-->
+            <!--            </div>-->
             <small class="user-username">
               <a [routerLink]="'/' + confide.username">@{{ confide.username }}</a>
             </small>
@@ -29,7 +29,8 @@
           <div class="footer">
             <div>
               <small>{{ confide.at_created_string }}</small>
-              <small><a [routerLink]="'/confide/' + confide.confide_id">{{ confide.total_comment }} comments</a></small>
+              <!--  @TODO: next feature (user: comments)-->
+              <!--              <small><a [routerLink]="'/confide/' + confide.confide_id">{{ confide.total_comment }} comments</a></small>-->
             </div>
             <div>
               <ng-container *ngFor="let hashtag of confide?.hashtags">

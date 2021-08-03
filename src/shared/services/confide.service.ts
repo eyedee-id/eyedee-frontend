@@ -23,4 +23,8 @@ export class ConfideService {
   confideExplore(params: any): Observable<ApiModel<Array<ConfideModel>>> {
     return this.apiService.get(this.serviceV1, '/explore', params);
   }
+
+  confideUser(params: any): Observable<ApiModel<Array<ConfideModel>>> {
+    return this.apiService.get(this.serviceV1, '/user', params);
+  }
 }

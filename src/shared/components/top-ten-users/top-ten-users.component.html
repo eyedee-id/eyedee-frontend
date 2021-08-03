@@ -1,14 +1,20 @@
 <ng-container *ngIf="!loading.init; else templateLoading">
   <h4>curhat dengan orang!</h4>
   <dl>
-    <ng-container *ngFor="let user of top10users">
-      <dt>
-        <a [routerLink]="'/' + user?.username">
-          {{ user?.username }}
-          <small>(@{{ user?.username }})</small>
-        </a>
-      </dt>
-    </ng-container>
+    <dt>
+      <a href="#">
+        @comingsoon!
+      </a>
+    </dt>
+    <!--  @TODO: next feature (trending)-->
+    <!--    <ng-container *ngFor="let user of top10users">-->
+    <!--      <dt>-->
+    <!--        <a [routerLink]="'/' + user?.username">-->
+    <!--          {{ user?.username }}-->
+    <!--          <small>(@{{ user?.username }})</small>-->
+    <!--        </a>-->
+    <!--      </dt>-->
+    <!--    </ng-container>-->
   </dl>
 </ng-container>
 

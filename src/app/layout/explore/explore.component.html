@@ -33,7 +33,8 @@
           <div class="footer">
             <div>
               <small>{{ confide.at_created_string }}</small>
-              <small><a [routerLink]="'/confide/' + confide.confide_id">{{ confide.total_comment }} comments</a></small>
+              <!--  @TODO: next feature (user: comments)-->
+              <!--              <small><a [routerLink]="'/confide/' + confide.confide_id">{{ confide.total_comment }} comments</a></small>-->
             </div>
             <div>
               <ng-container *ngFor="let hashtag of confide?.hashtags">

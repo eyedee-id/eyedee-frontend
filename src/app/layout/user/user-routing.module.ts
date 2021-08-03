@@ -14,11 +14,11 @@ const routes: Routes = [
         redirectTo: 'confides',
       },
       {
-        path: 'confides',
+        path: ':userId/confides',
         component: UserConfidesComponent,
       },
       {
-        path: 'mentions',
+        path: ':userId/mentions',
         component: UserMentionsComponent,
       },
     ]

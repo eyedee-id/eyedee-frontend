@@ -7,6 +7,7 @@ import * as dayjs from "dayjs";
 import {code} from "../../../../shared/libs/code";
 import {takeUntil} from "rxjs/operators";
 import * as relativeTime from 'dayjs/plugin/relativeTime';
+import {ActivatedRoute} from "@angular/router";
 
 dayjs.extend(relativeTime);
 
@@ -18,6 +19,7 @@ dayjs.extend(relativeTime);
 })
 export class UserConfidesComponent implements OnInit, OnDestroy {
 
+  userId = '';
   noMoreConfide = false;
   confides: Array<ConfideModel> = [];
 
@@ -32,6 +34,7 @@ export class UserConfidesComponent implements OnInit, OnDestroy {
   subscription: {
     [key: string]: null | Subscription,
   } = {
+    user_id: null,
     confides: null,
   };
 
@@ -39,6 +42,7 @@ export class UserConfidesComponent implements OnInit, OnDestroy {
   destroy$ = this.destroy.asObservable();
 
   constructor(
+    private route: ActivatedRoute,
     private ref: ChangeDetectorRef,
     public authService: AuthService,
     private confideService: ConfideService,
@@ -46,7 +50,10 @@ export class UserConfidesComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
-    this.getConfides(true);
+    this.subscription.user_id = this.route.params.subscribe(res => {
+      this.userId = res.userId;
+      this.getConfides(true);
+    })
   }
 
   public trackById(index: number, item: ConfideModel) {
@@ -54,6 +61,10 @@ export class UserConfidesComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy() {
+    if (this.subscription.user_id) {
+      this.subscription.user_id.unsubscribe();
+    }
+
     if (this.subscription.confide) {
       this.subscription.confide.unsubscribe();
     }
@@ -88,7 +99,8 @@ export class UserConfidesComponent implements OnInit, OnDestroy {
       this.subscription.confides.unsubscribe();
     }
 
-    let params = {};
+    let params: any = {};
+    params.user_id = this.userId;
     if (!init) {
       // check latest confides id
       const latestIdx = this.confides.length - 1;
@@ -102,8 +114,8 @@ export class UserConfidesComponent implements OnInit, OnDestroy {
     this.loading.confides = true;
     this.ref.markForCheck();
 
-    this.confideService
-      .confideExplore(params)
+    this.subscription.confides = this.confideService
+      .confideUser(params)
       .subscribe(res => {
         if (res.status) {
 
