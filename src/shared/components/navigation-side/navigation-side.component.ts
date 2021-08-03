@@ -1,9 +1,10 @@
-import { Component, OnInit } from '@angular/core';
+import {ChangeDetectionStrategy, Component, OnInit} from '@angular/core';
 
 @Component({
   selector: 'app-navigation-side',
   templateUrl: './navigation-side.component.html',
-  styleUrls: ['./navigation-side.component.scss']
+  styleUrls: ['./navigation-side.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class NavigationSideComponent implements OnInit {
 

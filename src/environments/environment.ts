@@ -5,7 +5,7 @@
 export const environment = {
   production: false,
   api: {
-    url: 'http://localhost:3000',
+    url: 'https://sxheprup75.execute-api.ap-southeast-1.amazonaws.com',
   },
 };
 

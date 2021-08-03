@@ -33,6 +33,11 @@ const routes: Routes = [
         canActivate: [AuthGuard],
       },
       {
+        path: 'confide/:confideId',
+        loadChildren: () => import('./layout/confide/confide.module').then(m => m.ConfideModule),
+        canActivate: [AuthGuard],
+      },
+      {
         path: 'hashtag/:hashtag',
         loadChildren: () => import('./layout/hashtag/hashtag.module').then(m => m.HashtagModule),
         canActivate: [AuthGuard],
@@ -40,6 +45,11 @@ const routes: Routes = [
       {
         path: 'new',
         loadChildren: () => import('./layout/new/new.module').then(m => m.NewModule),
+        canActivate: [AuthGuard],
+      },
+      {
+        path: 'setting',
+        loadChildren: () => import('./layout/setting/setting.module').then(m => m.SettingModule),
         canActivate: [AuthGuard],
       },
       {

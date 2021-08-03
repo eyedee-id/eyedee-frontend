@@ -1,0 +1,206 @@
+@import "../../../shared/styles/Color";
+
+
+.user-profile {
+
+  overflow: hidden;
+  position: relative;
+  margin: -2rem;
+
+  @media(min-width: 80rem) {
+    margin: 0;
+  }
+
+  .banner-container {
+    background-position: 50%;
+    background-size: cover;
+    height: 10rem;
+    overflow: hidden;
+    position: relative;
+
+    @media(min-width: 80rem) {
+      height: 20rem;
+    }
+
+    .banner {
+      background-position: center calc(50% + 0px);
+      background-color: #4c5e6d;
+      background-size: cover;
+      box-shadow: inset 0 0 5rem rgba(0, 0, 0, .5);
+      height: 100%;
+      will-change: background-position;
+
+      @media(min-width: 80rem) {
+        box-shadow: inset 0 0 10rem rgba(0, 0, 0, .5);
+      }
+    }
+
+    .fade {
+      display: none;
+
+      @media(min-width: 80rem) {
+        display: block;
+        background: linear-gradient(transparent, rgba(0, 0, 0, .7));
+        bottom: 0;
+        height: 10rem;
+        left: 0;
+        position: absolute;
+        width: 100%;
+      }
+    }
+
+    .user-header {
+      display: none;
+
+      @media (min-width: 80rem) {
+        display: block;
+        bottom: 0;
+        box-sizing: border-box;
+        color: #fff;
+        left: 0;
+        padding: 0 0 1rem 15rem;
+        position: absolute;
+        width: 100%;
+
+        .name {
+          display: block;
+          font-size: 1.8rem;
+          font-weight: 700;
+          line-height: 2rem;
+          margin: 0;
+          text-shadow: 0 0 1rem #000;
+        }
+      }
+    }
+  }
+
+  .avatar {
+    left: 0;
+    margin: auto;
+    right: 0;
+    top: 5rem;
+    width: 10rem;
+    height: 10rem;
+
+    box-shadow: 1px 1px 3px rgba(0, 0, 0, .2);
+    display: block;
+    position: absolute;
+    z-index: 2;
+    border-radius: 100%;
+    flex-shrink: 0;
+    line-height: 1rem;
+    vertical-align: bottom;
+
+    @media (min-width: 80rem) {
+      height: 12rem;
+      left: 1.5rem;
+      top: 13.5rem;
+      width: 12rem;
+      margin: 0;
+    }
+
+    img {
+      border-radius: 100%;
+      bottom: 0;
+      height: 100%;
+      left: 0;
+      object-fit: cover;
+      overflow: hidden;
+      position: absolute;
+      right: 0;
+      top: 0;
+      width: 100%;
+      z-index: 1;
+    }
+
+    .indicator {
+      bottom: 0;
+      height: 20%;
+      left: 0;
+      position: absolute;
+      width: 20%;
+      z-index: 1;
+      border-radius: 120%;
+      box-shadow: 0 0 0 3px $color-quinary;
+    }
+
+    .online {
+      background: #58d4c9;
+    }
+  }
+
+  > .user-header {
+    border-bottom: .5px solid $color-quinary;
+    display: block;
+    font-weight: bold;
+    padding: 6rem 1rem 1rem;
+    text-align: center;
+
+    .username {
+      font-weight: normal;
+    }
+
+    @media(min-width: 80rem) {
+      display: none;
+    }
+  }
+
+  .description {
+    font-size: .95em;
+    padding: 1rem;
+    text-align: center;
+
+
+    @media(min-width: 80rem) {
+      padding: 2rem 2rem 2rem 15rem;
+      text-align: left;
+    }
+
+    span {
+      white-space: pre-wrap;
+    }
+  }
+
+}
+
+.user-contents {
+  border-top: .5px solid $color-quinary;
+
+  margin: -2rem;
+  margin-top: 2rem;
+
+  @media(min-width: 80rem) {
+    margin: 0;
+  }
+
+  .nav-sticky {
+    top: 0;
+    position: sticky;
+    background-color: $color-initial;
+  }
+
+  .nav {
+    display: flex;
+
+
+    a {
+      flex: 1;
+      padding: 1rem;
+      text-align: center;
+
+      &.active {
+        color: $color-primary;
+        font-weight: bold;
+        border-bottom: 1px solid $color-primary;
+      }
+    }
+  }
+
+  & > div:last-child {
+    padding: 2rem;
+
+    @media(min-width: 80rem) {
+      padding: 2rem;
+    }
+  }
+}

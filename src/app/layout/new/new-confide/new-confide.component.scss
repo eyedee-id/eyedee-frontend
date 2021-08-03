@@ -35,7 +35,14 @@
     }
   }
 
+  .words-left {
+    display: flex;
+    justify-content: right;
+  }
+
   .options {
+    display: flex;
+    flex-direction: column;
     & > div {
       display: flex;
       justify-content: space-between;

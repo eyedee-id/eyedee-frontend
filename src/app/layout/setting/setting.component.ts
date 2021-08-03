@@ -1,12 +1,12 @@
 import {ChangeDetectionStrategy, Component, OnInit} from '@angular/core';
 
 @Component({
-  selector: 'app-trending',
-  templateUrl: './trending.component.html',
-  styleUrls: ['./trending.component.scss'],
+  selector: 'app-setting',
+  templateUrl: './setting.component.html',
+  styleUrls: ['./setting.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class TrendingComponent implements OnInit {
+export class SettingComponent implements OnInit {
 
   constructor() { }
 

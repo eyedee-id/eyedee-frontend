@@ -31,6 +31,7 @@ export class AuthService {
     return fromPromise(Auth.currentAuthenticatedUser())
       .pipe(
         map(result => {
+          console.log(result);
           this.user = {
             username: result?.username
           };

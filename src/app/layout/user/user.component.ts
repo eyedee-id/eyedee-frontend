@@ -1,6 +1,7 @@
 import {ChangeDetectionStrategy, ChangeDetectorRef, Component, OnDestroy, OnInit} from '@angular/core';
 import {ActivatedRoute, Router} from '@angular/router';
 import {Subscription} from "rxjs";
+import {AuthService} from "../../../shared/services/auth.service";
 
 @Component({
   selector: 'app-user',
@@ -11,6 +12,7 @@ import {Subscription} from "rxjs";
 export class UserComponent implements OnInit, OnDestroy {
 
   username = null;
+  user: any = null;
 
   subscription: {
     [key: string]: null | Subscription,
@@ -22,6 +24,7 @@ export class UserComponent implements OnInit, OnDestroy {
     private router: Router,
     private route: ActivatedRoute,
     private ref: ChangeDetectorRef,
+    private authService: AuthService,
   ) {
 
   }
@@ -29,6 +32,7 @@ export class UserComponent implements OnInit, OnDestroy {
   ngOnInit(): void {
     this.subscription.username = this.route.params.subscribe(res => {
       this.username = res.username;
+      this.getUser();
       this.ref.markForCheck();
     })
   }
@@ -39,4 +43,10 @@ export class UserComponent implements OnInit, OnDestroy {
     }
   }
 
+  getUser() {
+    this.user = {
+      username: 'gilbert',
+      photo_url: 'https://s3.arkjp.net/misskey/thumbnail-40729057-08ff-49c8-9366-609481a2de9e.png'
+    }
+  }
 }

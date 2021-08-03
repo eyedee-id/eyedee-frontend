@@ -1,29 +1,22 @@
-import {
-  ChangeDetectionStrategy,
-  ChangeDetectorRef,
-  Component,
-  OnDestroy,
-  OnInit
-} from '@angular/core';
-import {fromEvent, Subject, Subscription} from 'rxjs';
-import {AuthService} from '../../../shared/services/auth.service';
-import {takeUntil} from 'rxjs/operators';
-import {ConfideService} from '../../../shared/services/confide.service';
-import {code} from '../../../shared/libs/code';
-import {ConfideModel} from '../../../shared/models/confide.model';
-import * as dayjs from 'dayjs';
+import {ChangeDetectionStrategy, ChangeDetectorRef, Component, OnDestroy, OnInit} from '@angular/core';
+import {ConfideModel} from "../../../../shared/models/confide.model";
+import {fromEvent, Subject, Subscription} from "rxjs";
+import {AuthService} from "../../../../shared/services/auth.service";
+import {ConfideService} from "../../../../shared/services/confide.service";
+import * as dayjs from "dayjs";
+import {code} from "../../../../shared/libs/code";
+import {takeUntil} from "rxjs/operators";
 import * as relativeTime from 'dayjs/plugin/relativeTime';
 
 dayjs.extend(relativeTime);
 
-
 @Component({
-  selector: 'app-explore',
-  templateUrl: './explore.component.html',
-  styleUrls: ['./explore.component.scss'],
+  selector: 'app-user-confides',
+  templateUrl: './user-confides.component.html',
+  styleUrls: ['./user-confides.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class ExploreComponent implements OnInit, OnDestroy {
+export class UserConfidesComponent implements OnInit, OnDestroy {
 
   noMoreConfide = false;
   confides: Array<ConfideModel> = [];
@@ -50,11 +43,9 @@ export class ExploreComponent implements OnInit, OnDestroy {
     public authService: AuthService,
     private confideService: ConfideService,
   ) {
-
   }
 
   ngOnInit(): void {
-
     this.getConfides(true);
   }
 

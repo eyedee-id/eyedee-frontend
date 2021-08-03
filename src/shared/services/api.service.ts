@@ -11,11 +11,12 @@ import {Observable} from 'rxjs';
 })
 export class ApiService {
 
-  apiUrl = environment.api.url;
+ apiUrl;
 
   constructor(
     private http: HttpClient,
   ) {
+    this.apiUrl = environment.api.url;
   }
 
   generateApiUrl(service: string, url: string) {

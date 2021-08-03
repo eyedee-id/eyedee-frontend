@@ -1,7 +1,3 @@
-<ng-container *ngIf="!loading.confides || confides.length > 0">
-  <h3>curhatan seluruh dunia</h3>
-</ng-container>
-
 <div class="confides">
   <ng-container *ngFor="let confide of confides; trackBy : trackById">
     <div class="confide">
@@ -45,34 +41,14 @@
       </div>
     </div>
   </ng-container>
-
 </div>
 
-<ng-container *ngIf="!noMoreConfide; else templateNoMoreConfide">
-  <ng-container *ngIf="!(authService.loggedIn | async)">
-    <div class="footer-login-text">
-      <a class="button button-clear button-large" routerLink="/auth/login">
-        masuk untuk melihat lebih lanjut!
-      </a>
-    </div>
-  </ng-container>
-
+<ng-container *ngIf="loading.confides">
   <div class="text-center margin-top-3">
-    <ng-container *ngIf="!loading.confides; else templateLoading">
-      <a class="button button-clear button-large" (click)="getConfides()">
-        lihat lainnya
-      </a>
-    </ng-container>
+    <ng-container [ngTemplateOutlet]="templateLoading"></ng-container>
   </div>
 </ng-container>
 
-<ng-template #templateNoMoreConfide>
-  <div class="text-center margin-top-3">
-    <a class="button button-clear button-large">
-      udah mentok, ga ada yang baru lagi!
-    </a>
-  </div>
-</ng-template>
 
 <ng-template #templateLoading>
   <div class="lds-ellipsis">
@@ -86,3 +62,4 @@
 <ng-template #templateUserAnonim>
   <a><i>anonim</i></a>
 </ng-template>
+
