@@ -1,0 +1,41 @@
+<h3>edit profil saya</h3>
+
+<div class="banner-container">
+  <div class="banner" #userBanner
+       style="background-image: url('https://nos3.arkjp.net/?url=https%3A%2F%2Fstorage.googleapis.com%2Fyysk.icu%2Faccounts%2Fheaders%2F000%2F000%2F001%2Foriginal%2Fdc4961291058cb6f.jpg'); background-position: center calc(50%);">
+    <a class="avatar" title="keong"
+       style="color: rgb(241, 242, 242);">
+      <ng-container *ngIf="user?.avatar_url; else templateNoAvatar">
+        <img class="inner"
+             src="https://s3.arkjp.net/misskey/thumbnail-c7d03bf9-515d-4c6e-87ff-4942ec2a2e27.jpg"
+             decoding="async" data-v-7ca87538="">
+      </ng-container>
+
+      <ng-template #templateNoAvatar>
+        <div class="no-avatar">{{ (user && user.username) ? user.username[0] : 'p' }}</div>
+      </ng-template>
+    </a>
+  </div>
+</div>
+<div class="banner-links">
+  <a href="">ganti foto profil</a>
+  <a href="#">ganti foto banner</a>
+</div>
+
+<form class="margin-top-3" [formGroup]="form">
+
+  <label for="name">
+    nama
+  </label>
+  <input type="text" placeholder="" id="name" name="name" formArrayName="name">
+
+
+  <label for="bio">
+    bio
+  </label>
+  <textarea name="bio" id="bio" formArrayName="bio"></textarea>
+
+  <div class="text-center margin-top-3">
+    <button class="button" [disabled]="form.invalid">simpan perubahan</button>
+  </div>
+</form>

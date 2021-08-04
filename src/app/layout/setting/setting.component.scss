@@ -1,0 +1,76 @@
+@import "../../../shared/styles/Color";
+
+
+.settings {
+  .setting-part {
+
+    .sticky {
+      top: 0;
+      position: sticky;
+      font-size: 1.5rem;
+      padding: 1rem 0;
+      background-color: $color-initial;
+    }
+
+    .setting-nav {
+
+
+      display: flex;
+      flex-direction: column;
+
+      a {
+        cursor: pointer;
+        border: 1px solid $color-quinary;
+        padding: 0.75rem 1rem;
+        display: inline-flex;
+        align-items: center;
+
+        div {
+          margin-right: 1rem;
+          display: flex;
+
+          svg:first-child {
+            display: block;
+          }
+          svg:last-child {
+            display: none;
+          }
+        }
+
+        &:nth-child(even) {
+          border-top: none;
+          border-bottom: none;
+        }
+        &:first-child {
+          border-top-left-radius: 0.5rem;
+          border-top-right-radius: 0.5rem;
+        }
+        &:last-child {
+          border-bottom: 1px solid $color-quinary;
+          border-bottom-left-radius: 0.5rem;
+          border-botm-right-radius: 0.5rem;
+        }
+
+        &:hover {
+          background-color: $color-tertiary;
+
+          div {
+            svg:first-child {
+              display: none;
+            }
+            svg:last-child {
+              display: block;
+            }
+          }
+        }
+        &:active, &:focus {
+          background-color: $color-quaternary;
+        }
+
+        &.logout {
+          color: $color-danger !important;
+        }
+      }
+    }
+  }
+}

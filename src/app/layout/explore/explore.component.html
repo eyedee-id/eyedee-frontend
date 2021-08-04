@@ -10,16 +10,16 @@
         <ng-container *ngIf="confide.username; else templateUserAnonim">
           <div class="user">
             <div class="line-height-0">
-              <ng-container *ngIf="confide.photo_url; else templateNoPhoto">
-                <img [src]="confide.photo_url" alt="">
+              <ng-container *ngIf="confide.avatar_url; else templateNoAvatar">
+                <img [src]="confide.avatar_url" alt="" decoding="async">
               </ng-container>
             </div>
-            <ng-template #templateNoPhoto>
-              <div class="img">{{ confide.username[0]  }}</div>
+            <ng-template #templateNoAvatar>
+              <div class="no-avatar">{{ confide.username[0]  }}</div>
             </ng-template>
-            <!--                  <div class="user-name">-->
-            <!--                    {{ confide.name }}-->
-            <!--                  </div>-->
+            <div class="user-name">
+              {{ confide.name || confide.username }}
+            </div>
             <small class="user-username">
               <a [routerLink]="'/' + confide.username">@{{ confide.username }}</a>
             </small>

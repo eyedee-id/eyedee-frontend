@@ -2,40 +2,59 @@
   <ng-container *ngIf="user">
     <div class="user-profile">
       <div class="banner-container">
-        <div class="banner"></div>
+        <div class="banner" #userBanner></div>
         <div class="fade"></div>
         <div class="user-header">
-          <div class="name">@{{ user?.username }}</div>
-          <!--        <div class="username">@gilbert</div>-->
+          <div class="name">{{ user.name || user.username }}</div>
+          <div class="username">@{{ user.username }}</div>
+        </div>
+        <div class="actions">
+          <ng-container *ngIf="userCanEdit">
+            <a routerLink="/setting/profile" class="menu">
+              <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24"
+                   stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                      d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"/>
+              </svg>
+              <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+                <path d="M17.414 2.586a2 2 0 00-2.828 0L7 10.172V13h2.828l7.586-7.586a2 2 0 000-2.828z"/>
+                <path fill-rule="evenodd"
+                      d="M2 6a2 2 0 012-2h4a1 1 0 010 2H4v10h10v-4a1 1 0 112 0v4a2 2 0 01-2 2H4a2 2 0 01-2-2V6z"
+                      clip-rule="evenodd"/>
+              </svg>
+            </a>
+          </ng-container>
         </div>
       </div>
       <a class="avatar">
-        <ng-container *ngIf="user?.photo_url; else templateNoPhoto">
-          <img class="inner" src="https://files.eyedee.id/images/logo.png" decoding="async">
+        <ng-container *ngIf="user.avatar_url; else templateNoAvatar">
+          <img class="inner" [src]="user.avatar_url" decoding="async">
         </ng-container>
-        <ng-template #templateNoPhoto>
-          <div class="img">{{ user?.username[0]  }}</div>
+        <ng-template #templateNoAvatar>
+          <div class="no-avatar">{{ user && user.username ? user.username[0] : 'p' }}</div>
         </ng-template>
 
         <!--  @TODO: next feature (user: online status)-->
         <!--    <div class="indicator online"></div>-->
       </a>
       <div class="user-header">
-        <div class="name">@{{ user?.username }}</div>
-        <!--      <div class="username">@gilbert</div>-->
+        <div class="name">{{ user.name || user.username }}</div>
+        <div class="username">@{{ user.username }}</div>
       </div>
 
-      <div class="description">
-        <!--  @TODO: next feature (user: bio)-->
-        <!--    <span>-->
-        <!--      このアカウントはホームTLを見て、美味しそうなものを記憶します。-->
-        <!--      <a href="/@kabo" class="ldlomzub" data-v-2745c071="">&lt;!&ndash;&ndash;&gt;<span class="main" data-v-2745c071=""><span-->
-        <!--        class="username" data-v-2745c071="">@kabo</span>&lt;!&ndash;&ndash;&gt;</span></a>-->
-        <!--      <br>お知らせまとめ <a-->
-        <!--      href="/clips/8hknysdjeu" class="ieqqeuvs _link" rel="nofollow noopener" data-v-0f634c2d="">&lt;!&ndash;&ndash;&gt;&lt;!&ndash;&ndash;&gt;<span-->
-        <!--      class="pathname" data-v-0f634c2d="">clips/8hknysdjeu</span><span class="query" data-v-0f634c2d=""></span><span-->
-        <!--      class="hash" data-v-0f634c2d=""></span>&lt;!&ndash;&ndash;&gt;</a><br><br>編集:2021/02/08-->
-        <!--    </span>-->
+      <div class="bio">
+        <!--          @TODO: next feature (user: bio)-->
+        <!--        <p [innerHTML]="user.bio">-->
+        <!--        </p>-->
+        <p>
+          このアカウントはホームTLを見て、美味しそうなものを記憶します。
+          <a href="/@kabo" class="ldlomzub" data-v-2745c071=""><!----><span class="main" data-v-2745c071=""><span
+            class="username" data-v-2745c071="">@kabo</span><!----></span></a>
+          <br>お知らせまとめ <a
+          href="/clips/8hknysdjeu" class="ieqqeuvs _link" rel="nofollow noopener" data-v-0f634c2d=""><!----><!----><span
+          class="pathname" data-v-0f634c2d="">clips/8hknysdjeu</span><span class="query" data-v-0f634c2d=""></span><span
+          class="hash" data-v-0f634c2d=""></span><!----></a><br><br>編集:2021/02/08
+        </p>
       </div>
 
     </div>
@@ -44,7 +63,7 @@
       <div class="nav-sticky">
         <div>
           <div class="nav">
-            <a  [routerLink]="user.user_id + '/confides'" routerLinkActive="active">curhatan</a>
+            <a [routerLink]="user.user_id + '/confides'" routerLinkActive="active">curhatan</a>
             <!--  @TODO: next feature (user: mentions)-->
             <!--        <a routerLink="mentions" routerLinkActive="active">mention</a>-->
           </div>

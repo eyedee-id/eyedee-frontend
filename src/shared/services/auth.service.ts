@@ -5,11 +5,8 @@ import {catchError, map, switchMap, tap} from 'rxjs/operators';
 import {Router} from '@angular/router';
 import {Auth} from '@aws-amplify/auth';
 import {ApiService} from './api.service';
+import {UserModel} from "../models/user.model";
 
-interface UserModel {
-  user_id?: string;
-  username: string;
-}
 
 @Injectable({
   providedIn: 'root'

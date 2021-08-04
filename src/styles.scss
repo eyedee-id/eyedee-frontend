@@ -232,7 +232,7 @@ body {
   flex-basis: 300px;
   align-self: start;
   position: sticky;
-  top: 0;
+  top: 1rem;
   margin-top: 2rem;
   max-width: 20% !important;
 
@@ -300,13 +300,13 @@ body {
 
 .confides {
   .confide:first-child {
-    border-top-right-radius: 0.4rem;
-    border-top-left-radius: 0.4rem;
+    border-top-right-radius: 0.5rem;
+    border-top-left-radius: 0.5rem;
   }
 
   .confide:last-child {
-    border-bottom-right-radius: 0.4rem;
-    border-bottom-left-radius: 0.4rem;
+    border-bottom-right-radius: 0.5rem;
+    border-bottom-left-radius: 0.5rem;
   }
 
   .confide:nth-child(even) {
@@ -338,7 +338,7 @@ body {
   padding: 1rem;
   display: flex;
 
-  img, .img {
+  img, .no-avatar {
     border-radius: 50%;
     width: 3rem;
     min-width: 3rem;
@@ -352,7 +352,7 @@ body {
     }
   }
 
-  .img {
+  .no-avatar {
     border: 1px solid $color-quinary;
     display: flex;
     align-items: center;
@@ -371,7 +371,11 @@ body {
   margin-bottom: 1rem;
 
   .user-name {
-    display: none;
+    //display: none;
+  }
+
+  .user-username {
+    margin-left: 0.5rem;
   }
 }
 

@@ -16,6 +16,8 @@
     height: 10rem;
     overflow: hidden;
     position: relative;
+    border-top-left-radius: 0.5rem;
+    border-top-right-radius: 0.5rem;
 
     @media(min-width: 80rem) {
       height: 20rem;
@@ -63,11 +65,44 @@
 
         .name {
           display: block;
-          font-size: 1.8rem;
+          font-size: 2.5rem;
           font-weight: 700;
           line-height: 2rem;
           margin: 0;
           text-shadow: 0 0 1rem #000;
+        }
+      }
+    }
+
+    .actions {
+      background: rgba(0, 0, 0, .2);
+      border-radius: 24px;
+      padding: 8px;
+      position: absolute;
+      right: 12px;
+      top: 12px;
+
+      .menu {
+        display: block;
+        cursor: pointer;
+        color: #fff;
+        font-size: 16px;
+        height: 31px;
+        text-shadow: 0 0 8px #000;
+        vertical-align: bottom;
+        width: 31px;
+
+        svg:last-child {
+          display: none;
+        }
+      }
+
+      a:hover {
+        svg:first-child {
+          display: none !important;
+        }
+        svg:last-child {
+          display: block !important;
         }
       }
     }
@@ -112,7 +147,7 @@
       z-index: 1;
     }
 
-    .img {
+    .no-avatar {
       background: $color-initial;
       border-radius: 50%;
       display: flex;
@@ -157,7 +192,7 @@
     }
   }
 
-  .description {
+  .bio {
     font-size: .95em;
     padding: 1rem;
     text-align: center;
@@ -170,7 +205,7 @@
       text-align: left;
     }
 
-    span {
+    p {
       white-space: pre-wrap;
     }
   }

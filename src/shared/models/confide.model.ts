@@ -5,7 +5,7 @@ export interface ConfideModel {
 
   name?: string;
   username?: string;
-  photo_url?: string;
+  avatar_url?: string;
   total_comment?: number;
   text: string;
   hashtags?: Array<string>;

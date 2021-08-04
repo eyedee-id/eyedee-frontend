@@ -1,0 +1,133 @@
+@import "../../../../shared/styles/Color";
+
+.banner-container {
+  background-position: 50%;
+  background-size: cover;
+  height: 10rem;
+  overflow: hidden;
+  position: relative;
+  border-top-left-radius: 0.5rem;
+  border-top-right-radius: 0.5rem;
+
+  @media(min-width: 80rem) {
+    height: 20rem;
+  }
+
+  .banner {
+    background-position: center calc(50% + 0);
+    background-color: #7fc5ff;
+    background-size: cover;
+    box-shadow: inset 0 0 5rem rgba(0, 0, 0, .5);
+    height: 100%;
+    will-change: background-position;
+
+    //&:hover {
+    //  cursor: pointer;
+    //  background-blend-mode: saturation;
+    //}
+
+    @media(min-width: 80rem) {
+      box-shadow: inset 0 0 10rem rgba(0, 0, 0, .5);
+    }
+
+    .avatar {
+      //cursor: pointer;
+      bottom: 0;
+      box-shadow: 0 0 0 6px rgba(0, 0, 0, .5);
+      display: block;
+      height: 5rem;
+      width: 5rem;
+      left: 0;
+      margin: auto;
+      position: absolute;
+      right: 0;
+      top: 0;
+      border-radius: 100%;
+
+      @media(min-width: 80rem) {
+        height: 10rem;
+        width: 10rem;
+      }
+
+      //&:hover {
+      // img {
+      //   filter: brightness(70%);
+      // }
+      //}
+      //
+      //&:active {
+      //  img {
+      //    filter: brightness(50%);
+      //  }
+      //}
+
+      img {
+        border-radius: 100%;
+        bottom: 0;
+        height: 100%;
+        left: 0;
+        object-fit: cover;
+        overflow: hidden;
+        position: absolute;
+        right: 0;
+        top: 0;
+        width: 100%;
+        z-index: 1;
+      }
+
+      .no-avatar {
+        position: absolute;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 2rem;
+        font-weight: bold;
+        height: 100%;
+        width: 100%;
+        z-index: 1;
+        background: $color-initial;
+        border-radius: 100%;
+        color: $color-primary;
+      }
+    }
+  }
+}
+
+.banner-links {
+  display: flex;
+  flex-direction: column;
+
+  a {
+    cursor: pointer;
+    border: 1px solid $color-quinary;
+    padding: 0.75rem 1rem;
+    display: inline-flex;
+    justify-content: center;
+    align-items: center;
+
+    &:nth-child(even) {
+      border-top: none;
+      border-bottom: none;
+    }
+
+    &:last-child {
+      border-bottom: 1px solid $color-quinary;
+    }
+
+    &:hover {
+      background-color: $color-tertiary;
+
+      div {
+        svg:first-child {
+          display: none;
+        }
+        svg:last-child {
+          display: block;
+        }
+      }
+    }
+    &:active, &:focus {
+      background-color: $color-quaternary;
+    }
+  }
+}
