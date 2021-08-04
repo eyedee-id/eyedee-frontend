@@ -23,7 +23,7 @@ export class NewConfideComponent implements OnInit, OnDestroy, AfterContentCheck
   @Input()
   independent = true;
 
-  confideMaxLength = 300;
+  confideMaxLength = 3000;
 
   formConfide = new FormGroup({
     is_anonim: new FormControl(false),

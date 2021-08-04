@@ -4,12 +4,14 @@ import {fromEvent, Subject, Subscription} from "rxjs";
 import {AuthService} from "../../../../shared/services/auth.service";
 import {ConfideService} from "../../../../shared/services/confide.service";
 import * as dayjs from "dayjs";
+import 'dayjs/locale/id' // import locale
 import {code} from "../../../../shared/libs/code";
 import {takeUntil} from "rxjs/operators";
 import * as relativeTime from 'dayjs/plugin/relativeTime';
 import {ActivatedRoute} from "@angular/router";
 
 dayjs.extend(relativeTime);
+dayjs.locale('id');
 
 @Component({
   selector: 'app-user-confides',

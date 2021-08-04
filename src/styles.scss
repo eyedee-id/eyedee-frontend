@@ -241,13 +241,13 @@ body {
   }
 
   &.sidebar-right {
-    top: -40rem;
+    top: -10rem;
     text-align: right;
   }
 
   .component {
-    height: 40rem;
-    max-height: 40rem;
+    height: 10rem;
+    max-height: 10rem;
   }
 }
 
@@ -270,6 +270,8 @@ body {
 }
 
 .form-confide {
+
+  white-space: pre-wrap;
 
   textarea {
     max-width: 100%;
@@ -314,6 +316,20 @@ body {
 
   .confide:last-child:nth-child(even) {
     border-bottom: 1px solid $color-quinary;
+  }
+}
+
+.confide-detail {
+  .confide {
+    font-size: 1.1em;
+
+    .footer {
+      font-size: 1em;
+    }
+  }
+
+  .comments {
+    font-size: 1em;
   }
 }
 
@@ -364,6 +380,10 @@ body {
   flex-direction: column;
   justify-content: space-between;
   width: 100%;
+
+  p {
+    white-space: pre-wrap;
+  }
 }
 
 

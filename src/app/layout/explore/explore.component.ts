@@ -12,9 +12,11 @@ import {ConfideService} from '../../../shared/services/confide.service';
 import {code} from '../../../shared/libs/code';
 import {ConfideModel} from '../../../shared/models/confide.model';
 import * as dayjs from 'dayjs';
+import 'dayjs/locale/id' // import locale
 import * as relativeTime from 'dayjs/plugin/relativeTime';
 
 dayjs.extend(relativeTime);
+dayjs.locale('id');
 
 
 @Component({

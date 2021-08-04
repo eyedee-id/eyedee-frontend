@@ -29,7 +29,7 @@ export class AuthService {
   }
 
   public isAuthenticated(): Observable<boolean> {
-    return fromPromise(Auth.currentUserInfo())
+    return fromPromise(Auth.currentAuthenticatedUser())
       .pipe(
         map(result => {
           this.user = {

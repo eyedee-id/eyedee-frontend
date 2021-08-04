@@ -20,6 +20,10 @@ export class ConfideService {
     return this.apiService.put(this.serviceV1, '', data);
   }
 
+  confideDetail(confideId: string): Observable<ApiModel<ConfideModel>> {
+    return this.apiService.get(this.serviceV1, `/${confideId}`);
+  }
+
   confideExplore(params: any): Observable<ApiModel<Array<ConfideModel>>> {
     return this.apiService.get(this.serviceV1, '/explore', params);
   }

@@ -24,11 +24,11 @@
 
         <div class="user-content">
           <div>
-            <div>{{ confide.text }}</div>
+            <div><p [innerHTML]="confide.text"></p></div>
           </div>
           <div class="footer">
             <div>
-              <small>{{ confide.at_created_string }}</small>
+              <small><a [routerLink]="'/confide/' + confide.confide_id">{{ confide.at_created_string }}</a></small>
               <!--  @TODO: next feature (user: comments)-->
               <!--              <small><a [routerLink]="'/confide/' + confide.confide_id">{{ confide.total_comment }} comments</a></small>-->
             </div>

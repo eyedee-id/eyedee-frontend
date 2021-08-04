@@ -33,7 +33,7 @@ const routes: Routes = [
         canActivate: [AuthGuard],
       },
       {
-        path: 'confide/:confideId',
+        path: 'confide/:confide_id',
         loadChildren: () => import('./layout/confide/confide.module').then(m => m.ConfideModule),
         canActivate: [AuthGuard],
       },
