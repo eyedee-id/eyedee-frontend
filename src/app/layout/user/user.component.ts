@@ -1,5 +1,5 @@
 import {ChangeDetectionStrategy, ChangeDetectorRef, Component, OnDestroy, OnInit} from '@angular/core';
-import {ActivatedRoute, Router} from '@angular/router';
+import {ActivatedRoute, Router, RouterEvent} from '@angular/router';
 import {Subscription} from "rxjs";
 import {AuthService} from "../../../shared/services/auth.service";
 import {UserService} from "../../../shared/services/user.service";
@@ -29,6 +29,7 @@ export class UserComponent implements OnInit, OnDestroy {
   subscription: {
     [key: string]: null | Subscription,
   } = {
+    router_events: null,
     username: null,
     user: null,
   };
@@ -43,6 +44,15 @@ export class UserComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
+    this.subscription.router_events = this.router.events
+      .subscribe(res => {
+        if (res.constructor.name === 'NavigationStart') {
+          if ((res as RouterEvent).url.split('/')[1] === this.username) {
+            this.getUser();
+          }
+        }
+      })
+
     this.subscription.username = this.route.params.subscribe(res => {
       this.username = res.username;
       this.getUser();
@@ -51,6 +61,10 @@ export class UserComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy() {
+    if (this.subscription.router_events) {
+      this.subscription.router_events.unsubscribe();
+    }
+
     if (this.subscription.username) {
       this.subscription.username.unsubscribe();
     }

@@ -10,10 +10,6 @@ const routes: Routes = [
     component: UserComponent,
     children: [
       {
-        path: '',
-        redirectTo: 'confides',
-      },
-      {
         path: ':userId/confides',
         component: UserConfidesComponent,
       },
