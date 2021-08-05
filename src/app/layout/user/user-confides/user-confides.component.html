@@ -3,23 +3,8 @@
     <div class="confide">
       <div class="width-100">
 
-        <ng-container *ngIf="confide.username; else templateUserAnonim">
-          <div class="user">
-            <div class="line-height-0">
-              <ng-container *ngIf="confide.avatar_url; else templateNoAvatar">
-                <img [src]="confide.avatar_url" alt="" decoding="async">
-              </ng-container>
-            </div>
-            <ng-template #templateNoAvatar>
-              <div class="no-avatar">{{ confide.username[0]  }}</div>
-            </ng-template>
-            <div class="user-name">
-              {{ confide.name_ || confide.username }}
-            </div>
-            <small class="user-username">
-              <a [routerLink]="'/' + confide.username">@{{ confide.username }}</a>
-            </small>
-          </div>
+        <ng-container *ngIf="confide.is_anonim">
+          <a><i>anonim</i></a>
         </ng-container>
 
         <div class="user-content">
@@ -60,7 +45,4 @@
   </div>
 </ng-template>
 
-<ng-template #templateUserAnonim>
-  <a><i>anonim</i></a>
-</ng-template>
 

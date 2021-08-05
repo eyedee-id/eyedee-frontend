@@ -10,4 +10,6 @@ export interface ConfideModel {
   text: string;
   hashtags?: Array<string>;
   at_created_string: string;
+
+  is_anonim?: boolean;
 }

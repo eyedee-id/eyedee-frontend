@@ -5,7 +5,7 @@
       <div class="confide">
         <div class="width-100">
 
-          <ng-container *ngIf="confide.username; else templateUserAnonim">
+          <ng-container *ngIf="confide.is_anonim !== true; else templateUserAnonim">
             <div class="user">
               <div class="line-height-0">
                 <ng-container *ngIf="confide.avatar_url; else templateNoAvatar">
@@ -13,7 +13,7 @@
                 </ng-container>
               </div>
               <ng-template #templateNoAvatar>
-                <div class="no-avatar">{{ confide.username[0]  }}</div>
+                <div class="no-avatar">{{ confide.username ? confide.username[0] : null }}</div>
               </ng-template>
               <div class="user-name">
                 {{ confide.name_ || confide.username }}
