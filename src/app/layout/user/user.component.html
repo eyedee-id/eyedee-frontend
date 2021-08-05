@@ -5,7 +5,7 @@
         <div class="banner" #userBanner></div>
         <div class="fade"></div>
         <div class="user-header">
-          <div class="name">{{ user.name || user.username }}</div>
+          <div class="name">{{ user.name_ || user.username }}</div>
           <div class="username">@{{ user.username }}</div>
         </div>
         <div class="actions">
@@ -38,22 +38,12 @@
         <!--    <div class="indicator online"></div>-->
       </a>
       <div class="user-header">
-        <div class="name">{{ user.name || user.username }}</div>
+        <div class="name">{{ user.name_ || user.username }}</div>
         <div class="username">@{{ user.username }}</div>
       </div>
 
       <div class="bio">
-        <!--          @TODO: next feature (user: bio)-->
-        <!--        <p [innerHTML]="user.bio">-->
-        <!--        </p>-->
-        <p>
-          このアカウントはホームTLを見て、美味しそうなものを記憶します。
-          <a href="/@kabo" class="ldlomzub" data-v-2745c071=""><!----><span class="main" data-v-2745c071=""><span
-            class="username" data-v-2745c071="">@kabo</span><!----></span></a>
-          <br>お知らせまとめ <a
-          href="/clips/8hknysdjeu" class="ieqqeuvs _link" rel="nofollow noopener" data-v-0f634c2d=""><!----><!----><span
-          class="pathname" data-v-0f634c2d="">clips/8hknysdjeu</span><span class="query" data-v-0f634c2d=""></span><span
-          class="hash" data-v-0f634c2d=""></span><!----></a><br><br>編集:2021/02/08
+        <p [innerHTML]="user.bio">
         </p>
       </div>
 

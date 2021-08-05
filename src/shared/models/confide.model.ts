@@ -3,7 +3,7 @@ export interface ConfideModel {
   at_created: number;
   confide_id: string;
 
-  name?: string;
+  name_?: string;
   username?: string;
   avatar_url?: string;
   total_comment?: number;

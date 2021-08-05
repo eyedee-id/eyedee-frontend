@@ -19,4 +19,11 @@ export class UserService {
   userGet(username: string) {
     return this.apiService.get(this.serviceV1, `/${username}`);
   }
+
+  userUpdateProfile(property: string, params: any) {
+    if (property === 'name_') {
+      property = 'name';
+    }
+    return this.apiService.post(this.serviceV1, `/${property}`, params);
+  }
 }

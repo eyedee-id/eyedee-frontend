@@ -121,13 +121,44 @@
         svg:first-child {
           display: none;
         }
+
         svg:last-child {
           display: block;
         }
       }
     }
+
     &:active, &:focus {
       background-color: $color-quaternary;
+    }
+  }
+}
+
+.setting-form {
+  margin-top: 2rem;
+
+  label {
+    font-size: 1.5rem;
+  }
+
+  input, textarea {
+    margin-bottom: 0;
+    border-bottom-left-radius: 0;
+    border-bottom-right-radius: 0;
+  }
+
+  textarea {
+    white-space: pre-wrap;
+  }
+
+  button {
+    border-top: none;
+    width: 100%;
+    border-top-left-radius: 0;
+    border-top-right-radius: 0;
+
+    &:hover, &:active, &:focus {
+      font-weight: bold;
     }
   }
 }
