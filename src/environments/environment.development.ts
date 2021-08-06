@@ -5,7 +5,7 @@
 export const environment = {
   production: false,
   api: {
-    url: 'https://83t9aer1md.execute-api.ap-southeast-1.amazonaws.com',
+    url: 'https://ozpjhmn1mb.execute-api.ap-southeast-1.amazonaws.com',
   },
 };
 

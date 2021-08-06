@@ -36,12 +36,13 @@ export class SettingProfileComponent implements OnInit, OnDestroy, AfterContentC
     }),
   })
 
-  error = {
+  error: any = {
     user: null,
     save: {
       name_: null,
       bio: null,
-    }
+    },
+    upload_photo_pre: null,
   };
 
   loading = {
@@ -49,7 +50,8 @@ export class SettingProfileComponent implements OnInit, OnDestroy, AfterContentC
     save: {
       name_: false,
       bio: false,
-    }
+    },
+    upload_photo_pre: false,
   };
 
   subscription: any = {
@@ -57,7 +59,8 @@ export class SettingProfileComponent implements OnInit, OnDestroy, AfterContentC
     save: {
       name: null,
       bio: null,
-    }
+    },
+    upload_photo_pre: null,
   }
 
   constructor(
@@ -114,8 +117,8 @@ export class SettingProfileComponent implements OnInit, OnDestroy, AfterContentC
     this.subscription.user = this.userService.userGet(username)
       .subscribe(res => {
         if (res.status) {
-          // res.data.avatar_url = 'https://nos3.arkjp.net/?url=https%3A%2F%2Fimg.pawoo.net%2Faccounts%2Favatars%2F000%2F748%2F032%2Foriginal%2F0c1478df964637b8.jpeg&thumbnail=1';
-          res.data.banner_url = 'https://nos3.arkjp.net/?url=https%3A%2F%2Fstorage.googleapis.com%2Fyysk.icu%2Faccounts%2Fheaders%2F000%2F000%2F001%2Foriginal%2Fdc4961291058cb6f.jpg';
+          res.data.avatar_url = 'https://eyedee-dev-bucket.s3.ap-southeast-1.amazonaws.com/users/images/profile/848af471-7a79-4059-9e5a-366adcd87bf4.png';
+          // res.data.banner_url = 'https://nos3.arkjp.net/?url=https%3A%2F%2Fstorage.googleapis.com%2Fyysk.icu%2Faccounts%2Fheaders%2F000%2F000%2F001%2Foriginal%2Fdc4961291058cb6f.jpg';
           this.user = res.data as UserModel;
 
           this.form.controls['name_'].patchValue(this.user.name_);
@@ -173,4 +176,80 @@ export class SettingProfileComponent implements OnInit, OnDestroy, AfterContentC
       });
   }
 
+  uploadPhotoProfile(event: Event) {
+    const element = event.target as HTMLInputElement;
+    let files: FileList | null = element.files;
+    if (files?.length !== 1) {
+      return;
+    }
+
+    const file = files[0];
+    const fileExtension = file.type.replace(/(.*)\//g, '').toLowerCase();
+    if (!['jpg', 'jpeg', 'png'].includes(fileExtension)) {
+      this.error.upload_photo_pre = 'file gambar aja yang boleh upload! (jpg/jpeg/png)';
+      return;
+    }
+
+    if (this.loading.upload_photo_pre) {
+      return;
+    }
+
+    if (this.subscription.upload_photo_pre && !this.subscription.upload_photo_pre.closed) {
+      this.subscription.upload_photo_pre.unsubscribe();
+    }
+
+    this.loading.upload_photo_pre = true;
+    this.error.upload_photo_pre = null;
+    this.ref.markForCheck();
+
+    let data: any = {
+      type: file.type,
+      extension: fileExtension,
+    };
+
+    this.userService
+      .userUploadPhotoProfile(data)
+      .subscribe(async res => {
+        if (!res.status) {
+          this.error.upload_photo_pre = res.message ?? code.error.internal_server_error;
+          this.loading.upload_photo_pre = false;
+          this.ref.markForCheck();
+          return;
+        }
+
+        try {
+          console.log(res.data, file);
+          await this.uploadFileToS3(res.data, file);
+          console.log("File was successfully uploaded!");
+        } catch (e) {
+          this.error.upload_photo_pre = e;
+          console.log(e);
+        }
+
+        this.loading.upload_photo_pre = false;
+        this.ref.detectChanges();
+
+      }, err => {
+        this.error.upload_photo_pre = err.message ?? code.error.internal_server_error;
+        this.loading.upload_photo_pre = false;
+        this.ref.detectChanges();
+      });
+  }
+
+  uploadFileToS3(preSignedPostData: any, file: File) {
+    return new Promise((resolve, reject) => {
+      const formData = new FormData();
+      Object.keys(preSignedPostData.field).forEach(key => {
+        formData.append(key, preSignedPostData.field[key]);
+      });
+      // Actual file has to be appended last.
+      formData.append("file", file);
+      const xhr = new XMLHttpRequest();
+      xhr.open("POST", preSignedPostData.url, true);
+      xhr.send(formData);
+      xhr.onload = function () {
+        this.status === 204 ? resolve(true) : reject(this.responseText);
+      };
+    });
+  };
 }

@@ -26,4 +26,8 @@ export class UserService {
     }
     return this.apiService.post(this.serviceV1, `/${property}`, params);
   }
+
+  userUploadPhotoProfile(data: any) {
+    return this.apiService.post(this.serviceV1, `/photo/profile`, data);
+  }
 }
