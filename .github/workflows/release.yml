@@ -24,7 +24,7 @@ jobs:
           npm install -g @ng/cli > /dev/null
       - name: Build
         run: |
-          ng build --prod
+          npx ng build --prod
           zip --junk-paths eyedee-web dist/eyedee-web/*
       - name: Create Release
         id: create_release

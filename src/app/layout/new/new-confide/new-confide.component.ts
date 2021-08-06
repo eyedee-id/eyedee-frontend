@@ -3,8 +3,7 @@ import {
   ChangeDetectionStrategy,
   ChangeDetectorRef,
   Component, ElementRef, Input,
-  OnDestroy,
-  OnInit
+  OnDestroy
 } from '@angular/core';
 import {FormControl, FormGroup, Validators} from '@angular/forms';
 import {Subscription} from 'rxjs';
@@ -18,7 +17,7 @@ import {code} from '../../../../shared/libs/code';
   styleUrls: ['./new-confide.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class NewConfideComponent implements OnInit, OnDestroy, AfterContentChecked {
+export class NewConfideComponent implements  OnDestroy, AfterContentChecked {
 
   @Input()
   independent = true;
@@ -58,9 +57,6 @@ export class NewConfideComponent implements OnInit, OnDestroy, AfterContentCheck
     private router: Router,
     private confideService: ConfideService,
   ) {
-  }
-
-  ngOnInit(): void {
   }
 
   ngAfterContentChecked() {

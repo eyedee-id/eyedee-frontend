@@ -1,4 +1,4 @@
-import {ChangeDetectionStrategy, Component, OnInit} from '@angular/core';
+import {ChangeDetectionStrategy, Component} from '@angular/core';
 
 @Component({
   selector: 'app-trending',
@@ -6,11 +6,8 @@ import {ChangeDetectionStrategy, Component, OnInit} from '@angular/core';
   styleUrls: ['./trending.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class TrendingComponent implements OnInit {
+export class TrendingComponent {
 
   constructor() { }
-
-  ngOnInit(): void {
-  }
 
 }

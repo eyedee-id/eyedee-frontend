@@ -50,7 +50,7 @@
 </div>
 
 <ng-container *ngIf="!noMoreConfide; else templateNoMoreConfide">
-  <ng-container *ngIf="!(authService.loggedIn | async)">
+  <ng-container *ngIf="(authService.loggedIn | async) !== true">
     <div class="footer-login-text">
       <a class="button button-clear button-large" routerLink="/auth/login">
         masuk untuk melihat lebih lanjut!

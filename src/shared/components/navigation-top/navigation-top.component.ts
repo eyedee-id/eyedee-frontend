@@ -1,4 +1,4 @@
-import {ChangeDetectionStrategy, Component, OnInit} from '@angular/core';
+import {ChangeDetectionStrategy, Component} from '@angular/core';
 import {AuthService} from '../../services/auth.service';
 
 @Component({
@@ -7,13 +7,10 @@ import {AuthService} from '../../services/auth.service';
   styleUrls: ['./navigation-top.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class NavigationTopComponent implements OnInit {
+export class NavigationTopComponent {
 
   constructor(
     public authService: AuthService,
   ) { }
-
-  ngOnInit(): void {
-  }
 
 }

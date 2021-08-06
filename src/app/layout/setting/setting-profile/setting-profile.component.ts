@@ -6,13 +6,9 @@ import {
   ElementRef,
   OnDestroy,
   OnInit,
-  ViewChild
 } from '@angular/core';
 import {UserModel} from "../../../../shared/models/user.model";
 import {FormControl, FormGroup, Validators} from "@angular/forms";
-import {FilePondComponent} from "ngx-filepond/filepond.component";
-import {FilePondOptions} from "filepond";
-import {Subscription} from "rxjs";
 import {UserService} from "../../../../shared/services/user.service";
 import {code} from "../../../../shared/libs/code";
 import {AuthService} from "../../../../shared/services/auth.service";
@@ -77,6 +73,17 @@ export class SettingProfileComponent implements OnInit, OnDestroy, AfterContentC
   }
 
   ngOnDestroy() {
+    if (this.subscription.user) {
+      this.subscription.user.unsubscribe();
+    }
+
+    if (this.subscription.save.name) {
+      this.subscription.save.name.unsubscribe();
+    }
+
+    if (this.subscription.save.bio) {
+      this.subscription.save.bio.unsubscribe();
+    }
   }
 
   ngAfterContentChecked() {

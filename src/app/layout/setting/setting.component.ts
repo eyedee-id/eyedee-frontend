@@ -1,4 +1,4 @@
-import {ChangeDetectionStrategy, Component, OnInit} from '@angular/core';
+import {ChangeDetectionStrategy, Component} from '@angular/core';
 import {AuthService} from "../../../shared/services/auth.service";
 
 @Component({
@@ -7,14 +7,11 @@ import {AuthService} from "../../../shared/services/auth.service";
   styleUrls: ['./setting.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class SettingComponent implements OnInit {
+export class SettingComponent {
 
   constructor(
     public authService: AuthService,
   ) {
-  }
-
-  ngOnInit(): void {
   }
 
 }

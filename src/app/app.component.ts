@@ -3,12 +3,10 @@ import {
   ChangeDetectionStrategy,
   ChangeDetectorRef,
   Component,
-  OnDestroy,
   OnInit,
   Renderer2
 } from '@angular/core';
 import {AuthService} from '../shared/services/auth.service';
-import {Auth} from '@aws-amplify/auth';
 
 @Component({
   selector: 'app-root',
@@ -16,7 +14,7 @@ import {Auth} from '@aws-amplify/auth';
   styleUrls: ['./app.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class AppComponent implements OnInit, OnDestroy, AfterViewInit {
+export class AppComponent implements OnInit, AfterViewInit {
   title = 'eyedee-web';
 
   constructor(
@@ -41,8 +39,5 @@ export class AppComponent implements OnInit, OnDestroy, AfterViewInit {
   ngAfterViewInit() {
     let loader = this.renderer.selectRootElement('#global-spinner');
     this.renderer.setStyle(loader, 'display', 'none');
-  }
-
-  ngOnDestroy() {
   }
 }

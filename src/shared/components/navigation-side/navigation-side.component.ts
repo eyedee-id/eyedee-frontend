@@ -1,4 +1,4 @@
-import {ChangeDetectionStrategy, Component, OnInit} from '@angular/core';
+import {ChangeDetectionStrategy, Component} from '@angular/core';
 
 @Component({
   selector: 'app-navigation-side',
@@ -6,11 +6,8 @@ import {ChangeDetectionStrategy, Component, OnInit} from '@angular/core';
   styleUrls: ['./navigation-side.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class NavigationSideComponent implements OnInit {
+export class NavigationSideComponent {
 
   constructor() { }
-
-  ngOnInit(): void {
-  }
 
 }

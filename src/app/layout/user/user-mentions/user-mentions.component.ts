@@ -1,4 +1,4 @@
-import {ChangeDetectionStrategy, Component, OnInit} from '@angular/core';
+import {ChangeDetectionStrategy, Component} from '@angular/core';
 
 @Component({
   selector: 'app-user-mentions',
@@ -6,12 +6,9 @@ import {ChangeDetectionStrategy, Component, OnInit} from '@angular/core';
   styleUrls: ['./user-mentions.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class UserMentionsComponent implements OnInit {
+export class UserMentionsComponent {
 
   constructor() {
-  }
-
-  ngOnInit(): void {
   }
 
 }
