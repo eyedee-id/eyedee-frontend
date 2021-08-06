@@ -5,7 +5,7 @@ import {
   Component,
   ElementRef,
   OnDestroy,
-  OnInit,
+  OnInit, ViewChild,
 } from '@angular/core';
 import {UserModel} from "../../../../shared/models/user.model";
 import {FormControl, FormGroup, Validators} from "@angular/forms";
@@ -20,6 +20,9 @@ import {AuthService} from "../../../../shared/services/auth.service";
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class SettingProfileComponent implements OnInit, OnDestroy, AfterContentChecked {
+
+  @ViewChild('userBanner', {static: false}) userBanner: ElementRef<any> | undefined;
+
 
   user: UserModel | undefined;
 
@@ -117,8 +120,6 @@ export class SettingProfileComponent implements OnInit, OnDestroy, AfterContentC
     this.subscription.user = this.userService.userGet(username)
       .subscribe(res => {
         if (res.status) {
-          res.data.avatar_url = 'https://eyedee-dev-bucket.s3.ap-southeast-1.amazonaws.com/users/images/profile/848af471-7a79-4059-9e5a-366adcd87bf4.png';
-          // res.data.banner_url = 'https://nos3.arkjp.net/?url=https%3A%2F%2Fstorage.googleapis.com%2Fyysk.icu%2Faccounts%2Fheaders%2F000%2F000%2F001%2Foriginal%2Fdc4961291058cb6f.jpg';
           this.user = res.data as UserModel;
 
           this.form.controls['name_'].patchValue(this.user.name_);
@@ -129,6 +130,13 @@ export class SettingProfileComponent implements OnInit, OnDestroy, AfterContentC
 
         this.loading.user = false;
         this.ref.detectChanges();
+
+        if (this.user && this.user.banner_url) {
+          const banner = this.userBanner?.nativeElement;
+          if (banner) {
+            banner.setAttribute('style', `background-image: url("${this.user.banner_url}"); background-position: center calc(50%);`);
+          }
+        }
 
         this.textAreaAutoExpand();
       }, err => {
@@ -176,7 +184,7 @@ export class SettingProfileComponent implements OnInit, OnDestroy, AfterContentC
       });
   }
 
-  uploadPhotoProfile(event: Event) {
+  uploadPhoto(photoType: 'profile' | 'banner', event: Event) {
     const element = event.target as HTMLInputElement;
     let files: FileList | null = element.files;
     if (files?.length !== 1) {
@@ -203,6 +211,7 @@ export class SettingProfileComponent implements OnInit, OnDestroy, AfterContentC
     this.ref.markForCheck();
 
     let data: any = {
+      photo_type: photoType,
       type: file.type,
       extension: fileExtension,
     };
@@ -221,6 +230,25 @@ export class SettingProfileComponent implements OnInit, OnDestroy, AfterContentC
           console.log(res.data, file);
           await this.uploadFileToS3(res.data, file);
           console.log("File was successfully uploaded!");
+
+          // refresh cache image
+          const timeStamp = (new Date()).getTime();
+          if (this.user) {
+            if (photoType === 'banner') {
+              if (this.user.banner_url) {
+                const banner = this.userBanner?.nativeElement;
+                if (banner) {
+                  banner.setAttribute('style', `background-image: url("${this.user.banner_url}?${timeStamp}"); background-position: center calc(50%);`);
+                }
+              }
+            } else {
+              if (this.user.avatar_url) {
+                // remove url params
+                const avatarUrl = this.user.avatar_url.split("?")[0];
+                this.user.avatar_url = `${avatarUrl}?${timeStamp}`;
+              }
+            }
+          }
         } catch (e) {
           this.error.upload_photo_pre = e;
           console.log(e);

@@ -1,9 +1,8 @@
 <h3>edit profil saya</h3>
 
 <div class="banner-container">
-  <div class="banner" #userBanner
-       style="background-image: url('https://nos3.arkjp.net/?url=https%3A%2F%2Fstorage.googleapis.com%2Fyysk.icu%2Faccounts%2Fheaders%2F000%2F000%2F001%2Foriginal%2Fdc4961291058cb6f.jpg'); background-position: center calc(50%);">
-    <a class="avatar" title="keong"
+  <div class="banner" #userBanner>
+    <a class="avatar"
        style="color: rgb(241, 242, 242);">
       <ng-container *ngIf="user?.avatar_url; else templateNoAvatar">
         <img class="inner"
@@ -18,15 +17,30 @@
   </div>
 </div>
 <div class="banner-links">
-  <a>
-    <label for="file-photo-profile">ganti foto profil</label>
-    <input type="file"
-           id="file-photo-profile"
-           accept="image/png, image/jpeg"
-           [multiple]="false"
-           (change)="uploadPhotoProfile($event)">
-  </a>
-  <a href="#">ganti foto banner</a>
+  <ng-container *ngIf="loading.upload_photo_pre">
+    <a>
+      <ng-container [ngTemplateOutlet]="templateLoading"></ng-container>
+    </a>
+  </ng-container>
+  <ng-container *ngIf="!loading.upload_photo_pre">
+    <a>
+
+      <label for="file-photo-profile">ganti foto profil</label>
+      <input type="file"
+             id="file-photo-profile"
+             accept="image/png, image/jpeg"
+             [multiple]="false"
+             (change)="uploadPhoto('profile', $event)">
+    </a>
+    <a>
+      <label for="file-photo-banner">ganti foto banner</label>
+      <input type="file"
+             id="file-photo-banner"
+             accept="image/png, image/jpeg"
+             [multiple]="false"
+             (change)="uploadPhoto('banner', $event)">
+    </a>
+  </ng-container>
 </div>
 
 <form class="setting-form" [formGroup]="form" autocomplete="false">

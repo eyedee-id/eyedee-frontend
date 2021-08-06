@@ -98,8 +98,6 @@ export class UserComponent implements OnInit, OnDestroy {
     this.subscription.user = this.userService.userGet(this.username)
       .subscribe(res => {
         if (res.status) {
-          // res.data.avatar_url = 'https://nos3.arkjp.net/?url=https%3A%2F%2Fimg.pawoo.net%2Faccounts%2Favatars%2F000%2F748%2F032%2Foriginal%2F0c1478df964637b8.jpeg&thumbnail=1';
-          res.data.banner_url = 'https://nos3.arkjp.net/?url=https%3A%2F%2Fstorage.googleapis.com%2Fyysk.icu%2Faccounts%2Fheaders%2F000%2F000%2F001%2Foriginal%2Fdc4961291058cb6f.jpg';
           this.user = res.data as UserModel;
 
           this.userCanEdit = this.authService.user?.user_id === this.user.user_id;

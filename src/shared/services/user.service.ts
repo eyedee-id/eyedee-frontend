@@ -1,8 +1,5 @@
 import {Injectable} from '@angular/core';
 import {ApiService} from './api.service';
-import {Observable} from 'rxjs';
-import {ConfideModel} from '../models/confide.model';
-import {ApiModel} from '../models/api.model';
 
 @Injectable({
   providedIn: 'root'
@@ -28,6 +25,6 @@ export class UserService {
   }
 
   userUploadPhotoProfile(data: any) {
-    return this.apiService.post(this.serviceV1, `/photo/profile`, data);
+    return this.apiService.post(this.serviceV1, `/photo`, data);
   }
 }
