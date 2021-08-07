@@ -32,8 +32,8 @@ jobs:
 #        run: nx affected:test
 #      - name: E2E
 #        run: nx affected:e2e
-      - name: Coveralls
-        uses: coverallsapp/github-action@master
-        with:
-          github-token: ${{ secrets.GITHUB_TOKEN }}
-          path-to-lcov: "./coverage/eyedee-web/lcov.info"
+#      - name: Coveralls
+#        uses: coverallsapp/github-action@master
+#        with:
+#          github-token: ${{ secrets.GITHUB_TOKEN }}
+#          path-to-lcov: "./coverage/eyedee-web/lcov.info"
