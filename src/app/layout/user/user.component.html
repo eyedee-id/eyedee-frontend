@@ -1,5 +1,5 @@
 <ng-container *ngIf="!loading.user; else templateLoading">
-  <ng-container *ngIf="user">
+  <ng-container *ngIf="user; else templateUserNotFound">
     <div class="user-profile">
       <div class="banner-container">
         <div class="banner" #userBanner></div>
@@ -28,7 +28,7 @@
       </div>
       <a class="avatar">
         <ng-container *ngIf="user.avatar_url; else templateNoAvatar">
-          <img class="inner" [src]="user.avatar_url" decoding="async">
+          <img class="inner" [src]="user.avatar_url" decoding="async" alt="photo profile">
         </ng-container>
         <ng-template #templateNoAvatar>
           <div class="no-avatar">{{ user && user.username ? user.username[0] : 'p' }}</div>
@@ -76,5 +76,13 @@
       <div></div>
       <div></div>
     </div>
+  </div>
+</ng-template>
+
+<ng-template #templateUserNotFound>
+  <div class="user-not-found">
+    <h1 class="text-danger">404</h1>
+    <h3>lo mau cari apa?</h3>
+    <h5>disini ga ada apa apa</h5>
   </div>
 </ng-template>

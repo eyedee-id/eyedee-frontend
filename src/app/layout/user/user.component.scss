@@ -101,6 +101,7 @@
         svg:first-child {
           display: none !important;
         }
+
         svg:last-child {
           display: block !important;
         }
@@ -251,5 +252,17 @@
     //@media(min-width: 80rem) {
     //  padding: 2rem 0;
     //}
+  }
+}
+
+
+.user-not-found {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+
+  * {
+    margin: 0 !important;
   }
 }

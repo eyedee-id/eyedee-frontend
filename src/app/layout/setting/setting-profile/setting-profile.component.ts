@@ -231,24 +231,7 @@ export class SettingProfileComponent implements OnInit, OnDestroy, AfterContentC
           await this.uploadFileToS3(res.data, file);
           console.log("File was successfully uploaded!");
 
-          // refresh cache image
-          const timeStamp = (new Date()).getTime();
-          if (this.user) {
-            if (photoType === 'banner') {
-              if (this.user.banner_url) {
-                const banner = this.userBanner?.nativeElement;
-                if (banner) {
-                  banner.setAttribute('style', `background-image: url("${this.user.banner_url}?${timeStamp}"); background-position: center calc(50%);`);
-                }
-              }
-            } else {
-              if (this.user.avatar_url) {
-                // remove url params
-                const avatarUrl = this.user.avatar_url.split("?")[0];
-                this.user.avatar_url = `${avatarUrl}?${timeStamp}`;
-              }
-            }
-          }
+          this.getUser();
         } catch (e) {
           this.error.upload_photo_pre = e;
           console.log(e);
