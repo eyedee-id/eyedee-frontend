@@ -106,7 +106,6 @@ export class UserComponent implements OnInit, OnDestroy {
           this.error.user = res.message ?? code.error.internal_server_error;
         }
 
-        console.log(this.error.user);
         this.loading.user = false;
         this.ref.detectChanges();
 

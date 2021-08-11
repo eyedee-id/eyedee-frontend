@@ -28,7 +28,7 @@
 
         <div class="user-content">
           <div>
-            <div><p [innerHTML]="confide.text"></p></div>
+            <div><p (click)="onClickUserText($event)" [innerHTML]="confide.text"></p></div>
           </div>
           <div class="footer">
             <div>
@@ -81,5 +81,5 @@
 </ng-template>
 
 <ng-template #templateUserAnonim>
-  <a><i>anonim</i></a>
+  <span><i>anonim</i></span>
 </ng-template>

@@ -4,12 +4,12 @@
       <div class="width-100">
 
         <ng-container *ngIf="confide.is_anonim">
-          <a><i>anonim</i></a>
+          <span><i>anonim</i></span>
         </ng-container>
 
         <div class="user-content">
           <div>
-            <div><p [innerHTML]="confide.text"></p></div>
+            <div><p (click)="onClickUserText($event)" [innerHTML]="confide.text"></p></div>
           </div>
           <div class="footer">
             <div>

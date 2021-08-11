@@ -8,7 +8,7 @@ import 'dayjs/locale/id' // import locale
 import {code} from "../../../../shared/libs/code";
 import {takeUntil} from "rxjs/operators";
 import * as relativeTime from 'dayjs/plugin/relativeTime';
-import {ActivatedRoute} from "@angular/router";
+import {ActivatedRoute, Router} from "@angular/router";
 import {findAndReplaceHashTag} from "../../../../shared/libs/hashtag";
 
 dayjs.extend(relativeTime);
@@ -45,6 +45,7 @@ export class UserConfidesComponent implements OnInit, OnDestroy {
   destroy$ = this.destroy.asObservable();
 
   constructor(
+    private router: Router,
     private route: ActivatedRoute,
     private ref: ChangeDetectorRef,
     public authService: AuthService,
@@ -167,5 +168,12 @@ export class UserConfidesComponent implements OnInit, OnDestroy {
         this.loading.confides = false;
         this.ref.detectChanges();
       })
+  }
+
+  onClickUserText(event: any) {
+    let hashtagRoute = event.target.attributes.value?.value;
+    if (hashtagRoute) {
+      this.router.navigate([hashtagRoute]);
+    }
   }
 }

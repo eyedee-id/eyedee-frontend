@@ -28,6 +28,10 @@ export class ConfideService {
     return this.apiService.get(this.serviceV1, '/explore', params);
   }
 
+  confideHashtag(hashtag: string | null, params: any): Observable<ApiModel<Array<ConfideModel>>> {
+    return this.apiService.get(this.serviceV1, `/hashtag/${hashtag}`, params);
+  }
+
   confideUser(params: any): Observable<ApiModel<Array<ConfideModel>>> {
     return this.apiService.get(this.serviceV1, '/user', params);
   }

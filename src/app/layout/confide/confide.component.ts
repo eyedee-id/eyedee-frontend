@@ -21,8 +21,6 @@ export class ConfideComponent implements OnInit, OnDestroy {
   confideId = '';
   confide: ConfideModel | null = null;
 
-  comments = [1, 1, 1, 1, 1, 1, 1, 1];
-
   loading = {
     confide: false,
   };
@@ -92,6 +90,13 @@ export class ConfideComponent implements OnInit, OnDestroy {
         this.loading.confide = false;
         this.ref.detectChanges();
       });
+  }
+
+  onClickUserText(event: any) {
+    let hashtagRoute = event.target.attributes.value?.value;
+    if (hashtagRoute) {
+      this.router.navigate([hashtagRoute]);
+    }
   }
 
 }

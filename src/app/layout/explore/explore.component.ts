@@ -167,4 +167,11 @@ export class ExploreComponent implements OnInit, OnDestroy {
         this.ref.detectChanges();
       })
   }
+
+  onClickUserText(event: any) {
+    let hashtagRoute = event.target.attributes.value?.value;
+    if (hashtagRoute) {
+      this.router.navigate([hashtagRoute]);
+    }
+  }
 }
