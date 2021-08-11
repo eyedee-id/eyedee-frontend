@@ -1,37 +1,36 @@
-import {
-  ChangeDetectionStrategy,
-  ChangeDetectorRef,
-  Component,
-  OnDestroy,
-  OnInit
-} from '@angular/core';
-import {fromEvent, Subject, Subscription} from 'rxjs';
-import {AuthService} from '../../../shared/services/auth.service';
-import {takeUntil} from 'rxjs/operators';
-import {ConfideService} from '../../../shared/services/confide.service';
-import {code} from '../../../shared/libs/code';
-import {ConfideModel} from '../../../shared/models/confide.model';
+import {ChangeDetectionStrategy, ChangeDetectorRef, Component, Input, OnInit} from '@angular/core';
+
+
 import * as dayjs from 'dayjs';
 import 'dayjs/locale/id' // import locale
 import * as relativeTime from 'dayjs/plugin/relativeTime';
+import {ConfideModel} from "../../../../shared/models/confide.model";
+import {fromEvent, Subject, Subscription} from "rxjs";
+import {AuthService} from "../../../../shared/services/auth.service";
+import {ConfideService} from "../../../../shared/services/confide.service";
+import {takeUntil} from "rxjs/operators";
+import {code} from "../../../../shared/libs/code";
 
 dayjs.extend(relativeTime);
 dayjs.locale('id');
 
 
 @Component({
-  selector: 'app-explore',
-  templateUrl: './explore.component.html',
-  styleUrls: ['./explore.component.scss'],
+  selector: 'app-comment-list',
+  templateUrl: './comment-list.component.html',
+  styleUrls: ['./comment-list.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class ExploreComponent implements OnInit, OnDestroy {
+export class CommentListComponent implements OnInit {
 
-  noMoreConfide = false;
-  confides: Array<ConfideModel> = [];
+  @Input()
+  confideId = '';
+
+  noMoreComment = false;
+  comments: Array<ConfideModel> = [];
 
   loading = {
-    confides: false,
+    comments: false,
   };
 
   error: {
@@ -41,7 +40,7 @@ export class ExploreComponent implements OnInit, OnDestroy {
   subscription: {
     [key: string]: null | Subscription,
   } = {
-    confides: null,
+    comments: null,
   };
 
   destroy = new Subject();
@@ -52,21 +51,19 @@ export class ExploreComponent implements OnInit, OnDestroy {
     public authService: AuthService,
     private confideService: ConfideService,
   ) {
-
   }
 
   ngOnInit(): void {
-
-    this.getConfides(true);
+    this.getComments(true);
   }
 
   public trackById(index: number, item: ConfideModel) {
-    return item.confide_id;
+    return item.comment_id;
   }
 
   ngOnDestroy() {
-    if (this.subscription.confides) {
-      this.subscription.confides.unsubscribe();
+    if (this.subscription.comments) {
+      this.subscription.comments.unsubscribe();
     }
 
     this.destroy.next();
@@ -80,46 +77,48 @@ export class ExploreComponent implements OnInit, OnDestroy {
         .pipe(takeUntil(this.destroy$))
         .subscribe((e: Event) => {
           if ((e.target as Element).scrollTop >= ((e.target as Element).scrollHeight - (e.target as Element).clientHeight)) {
-            this.getConfides();
+            this.getComments();
             return;
           }
         });
     }
   }
 
-  getConfides(init = false) {
+  getComments(init = false) {
     if (
-      this.noMoreConfide
-      || this.loading.confides
+      this.noMoreComment
+      || this.loading.comments
     ) {
       return;
     }
 
-    if (this.subscription.confides && !this.subscription.confides.closed) {
-      this.subscription.confides.unsubscribe();
+    if (this.subscription.comments && !this.subscription.comments.closed) {
+      this.subscription.comments.unsubscribe();
     }
 
     let params = {};
     if (!init) {
       // check latest confides id
-      const latestIdx = this.confides.length - 1;
+      const latestIdx = this.comments.length - 1;
       params = {
-        at_created: this.confides[latestIdx].at_created,
-        confide_id: this.confides[latestIdx].confide_id,
+        at_created: this.comments[latestIdx].at_created,
+        comment_id: this.comments[latestIdx].comment_id,
       }
     }
 
-    this.error.confides = null;
-    this.loading.confides = true;
+    this.error.comments = null;
+    this.loading.comments = true;
     this.ref.markForCheck();
 
-    this.subscription.confides = this.confideService
-      .confideExplore(params)
+    console.log('a');
+
+    this.subscription.comments = this.confideService
+      .confideComments(this.confideId, params)
       .subscribe(res => {
         if (res.status) {
 
           if (res.data.length === 0) {
-            this.noMoreConfide = true;
+            this.noMoreComment = true;
             this.destroy.next();
           } else {
 
@@ -130,36 +129,37 @@ export class ExploreComponent implements OnInit, OnDestroy {
                 item.at_created_string = dayjs(item.at_created).fromNow();
               }
 
-              this.confides = res.data;
+              this.comments = res.data;
             } else {
 
               // Pre allocate size
-              const arr1Length = this.confides.length;
+              const arr1Length = this.comments.length;
               const arr2Length = res.data.length;
 
-              this.confides.length = arr1Length + arr2Length;
+              this.comments.length = arr1Length + arr2Length;
               for (let i = 0; i < arr2Length; i++) {
                 res.data[i].at_created_string = dayjs(res.data[i].at_created).fromNow();
-                this.confides[arr1Length + i] = res.data[i]
+                this.comments[arr1Length + i] = res.data[i]
               }
             }
           }
 
           this.ref.reattach();
         } else {
-          this.error.confides = res.message ?? code.error.internal_server_error;
+          this.error.comments = res.message ?? code.error.internal_server_error;
         }
 
-        this.loading.confides = false;
+        this.loading.comments = false;
         this.ref.detectChanges();
 
         if (init) {
           this.initAutoScroll();
         }
       }, err => {
-        this.error.confides = err.message ?? code.error.internal_server_error;
-        this.loading.confides = false;
+        this.error.comments = err.message ?? code.error.internal_server_error;
+        this.loading.comments = false;
         this.ref.detectChanges();
       })
   }
+
 }

@@ -6,6 +6,9 @@ import {Router} from '@angular/router';
 import {Auth} from '@aws-amplify/auth';
 import {ApiService} from './api.service';
 import {UserModel} from "../models/user.model";
+import {aesDecryptData, aesEncryptData} from "../libs/aes";
+import {decodeUTF8, encodeBase64} from "tweetnacl-util";
+import {box, hash} from "tweetnacl";
 
 
 @Injectable({
@@ -29,6 +32,7 @@ export class AuthService {
     return fromPromise(Auth.currentAuthenticatedUser())
       .pipe(
         map(result => {
+
           this.user = {
             user_id: result?.attributes?.sub,
             username: result?.username
@@ -58,12 +62,13 @@ export class AuthService {
   }
 
   /** signup */
-  public signUp(data: { username: string, password: string, email: string }): Observable<any> {
+  public signUp(data: { username: string, password: string, email: string, attributes: {} }): Observable<any> {
     return fromPromise(Auth.signUp({
       username: data.username,
       password: data.password,
       attributes: {
         email: data.email,
+        ...data.attributes,
       }
     }));
   }
@@ -82,7 +87,49 @@ export class AuthService {
   public signIn(email: string, password: string): Observable<any> {
     return fromPromise(Auth.signIn(email, password))
       .pipe(
-        tap(() => this.loggedIn.next(true))
+        tap(res => {
+
+          if (
+            res.attributes['custom:public_key']
+            && res.attributes['custom:secret_key']
+          ) {
+
+            const aesDecrypted = aesDecryptData(
+              res.attributes['custom:secret_key'],
+              encodeBase64(hash(decodeUTF8(password))), // convert hashed password user ke base64
+            );
+
+            // @TODO: ini sementara, nanti akan di ganti pakai indexedDB / web crypto api
+            localStorage.setItem('user.public_key', res.attributes['custom:public_key']);
+            localStorage.setItem('user.secret_key', aesDecrypted);
+
+            return this.loggedIn.next(true);
+          }
+
+          // create new encryption key bagi yang belom punya
+
+          const userKeyPair = box.keyPair();
+
+          const aesEncrypted = aesEncryptData(
+            encodeBase64(userKeyPair.secretKey), // convert secret ke base64
+            encodeBase64(hash(decodeUTF8(password))), // convert hashed password user ke base64
+          );
+
+          Auth
+            .updateUserAttributes(res, {
+              'custom:public_key': encodeBase64(userKeyPair.publicKey),
+              'custom:secret_key': aesEncrypted,
+            })
+            .then(res2 => {
+              localStorage.setItem('user.public_key', encodeBase64(userKeyPair.publicKey));
+              localStorage.setItem('user.secret_key', encodeBase64(userKeyPair.secretKey));
+
+              return this.loggedIn.next(true);
+            }, err2 => {
+              return this.loggedIn.next(false);
+            })
+
+        })
       );
   }
 

@@ -3,6 +3,8 @@ export interface ConfideModel {
   at_created: number;
   confide_id: string;
 
+  comment_id?: string;
+
   name_?: string;
   username?: string;
   avatar_url?: string;

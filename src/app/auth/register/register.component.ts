@@ -4,6 +4,9 @@ import {Subscription} from 'rxjs';
 import {AuthService} from '../../../shared/services/auth.service';
 import {code} from '../../../shared/libs/code';
 import {Router} from '@angular/router';
+import {box, hash} from "tweetnacl";
+import {decodeUTF8, encodeBase64} from "tweetnacl-util";
+import {aesDecryptData, aesEncryptData} from "../../../shared/libs/aes";
 
 @Component({
   selector: 'app-register',
@@ -86,10 +89,32 @@ export class RegisterComponent implements OnInit, OnDestroy {
       this.form.markAllAsTouched();
       return;
     }
+
+    // ketika register, user akan generate keyPair, menggunakan tweetnacl-js.
+    // kemudian secretKey akan di encrypt menggunakan password user (AES)
+    // publicKey & encrypted secretKey akan di upload ke cognito:customAttribute & dynamodb
+    const userKeyPair = box.keyPair();
+
+
+    const aesEncrypted = aesEncryptData(
+      encodeBase64(userKeyPair.secretKey), // convert secret ke base64
+      encodeBase64(hash(decodeUTF8(this.form.controls['password'].value))), // convert hashed password user ke base64
+    );
+
+    const attributes = {
+      'custom:public_key': encodeBase64(userKeyPair.publicKey), // base64
+      'custom:secret_key': aesEncrypted, // base64
+    };
+
+    // note: decrypt secretKey nanti ketika login
+
     this.loading.register = true;
     this.ref.detectChanges();
 
-    this.authService.signUp(this.form.value)
+    this.authService.signUp({
+      ...this.form.value,
+      attributes,
+    })
       .subscribe(res => {
         this.router.navigate(['/auth/login']);
       }, err => {

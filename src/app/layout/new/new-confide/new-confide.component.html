@@ -1,38 +1,40 @@
 <h3 *ngIf="independent">mau curhat?</h3>
 
 <form class="form-confide" [formGroup]="formConfide" (ngSubmit)="confideSubmit()">
+  <fieldset [disabled]="loading.confide">
     <textarea [maxLength]="confideMaxLength"
               placeholder="tulis curhatan lo disini!" formControlName="text">
     </textarea>
-  <ng-container *ngIf="!loading.confide; else templateLoading">
-    <ng-container *ngIf="formConfide.controls['text'].value">
-      <div>
+    <ng-container *ngIf="!loading.confide; else templateLoading">
+      <ng-container *ngIf="formConfide.controls['text'].value">
         <div>
           <div>
-            <button class="button" [disabled]="formConfide.invalid">curhat sekarang!</button>
-            <ng-container *ngIf="error.confide">
-              <small class="text-danger margin-0 margin-left-1">
-                * {{ error.confide }}
-              </small>
-            </ng-container>
-          </div>
-          <div class="options">
-            <small>opsi</small>
-            <hr>
             <div>
-              <label class="label-inline" for="is-anonim">curhat sebagai anonim</label>
-              <input type="checkbox" id="is-anonim" formControlName="is_anonim" [disabled]="loading.confide">
+              <ng-container *ngIf="error.confide">
+                <small class="text-danger margin-0 margin-left-1">
+                  * {{ error.confide }}
+                </small>
+              </ng-container>
+              <button class="button" [disabled]="formConfide.invalid">curhat sekarang!</button>
+            </div>
+            <div class="options">
+              <small>opsi</small>
+              <hr>
+              <div>
+                <label class="label-inline" for="is-anonim">curhat sebagai anonim</label>
+                <input type="checkbox" id="is-anonim" formControlName="is_anonim">
+              </div>
             </div>
           </div>
+          <div class="words-left">
+            <p>
+              <small>{{ formConfide.controls['text'].value?.length }} / {{ confideMaxLength }}</small>
+            </p>
+          </div>
         </div>
-        <div class="words-left">
-          <p>
-            <small>{{ formConfide.controls['text'].value?.length }} / {{ confideMaxLength }}</small>
-          </p>
-        </div>
-      </div>
+      </ng-container>
     </ng-container>
-  </ng-container>
+  </fieldset>
 </form>
 
 <ng-template #templateLoading>

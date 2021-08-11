@@ -14,8 +14,9 @@
           <div class="footer">
             <div>
               <small><a [routerLink]="'/confide/' + confide.confide_id">{{ confide.at_created_string }}</a></small>
-              <!--  @TODO: next feature (user: comments)-->
-              <!--              <small><a [routerLink]="'/confide/' + confide.confide_id">{{ confide.total_comment }} comments</a></small>-->
+              <ng-container *ngIf="!confide.is_anonim">
+                <small><a [routerLink]="'/confide/' + confide.confide_id">{{ confide.total_comment }} comments</a></small>
+              </ng-container>
             </div>
             <div>
               <ng-container *ngFor="let hashtag of confide?.hashtags">

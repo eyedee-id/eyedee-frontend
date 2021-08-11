@@ -6,7 +6,7 @@ import {code} from "../../../shared/libs/code";
 import {ConfideModel} from "../../../shared/models/confide.model";
 import * as dayjs from "dayjs";
 
-import 'dayjs/locale/id'; // import locale
+import 'dayjs/locale/id';
 dayjs.locale('id');
 
 @Component({
@@ -19,6 +19,8 @@ export class ConfideComponent implements OnInit, OnDestroy {
 
   confideId = '';
   confide: ConfideModel | null = null;
+
+  comments = [1, 1, 1, 1, 1, 1, 1, 1];
 
   loading = {
     confide: false,
@@ -68,6 +70,7 @@ export class ConfideComponent implements OnInit, OnDestroy {
       this.subscription.confide.unsubscribe();
     }
 
+    this.confide = null;
     this.loading.confide = true;
     this.ref.markForCheck();
 
@@ -75,7 +78,7 @@ export class ConfideComponent implements OnInit, OnDestroy {
       .subscribe(res => {
         if (res.status) {
           this.confide = res.data;
-          this.confide.at_created_string = dayjs(this.confide.at_created).format('dddd, D MMMM YYYY - h:mm A');
+          this.confide.at_created_string = dayjs(this.confide.at_created).format('D MMMM YYYY - h:mm A');
         } else {
           this.error.confide = res.message ?? code.error.internal_server_error;
         }

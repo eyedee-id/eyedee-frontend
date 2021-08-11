@@ -81,6 +81,7 @@
       position: absolute;
       right: 12px;
       top: 12px;
+      display: flex;
 
       .menu {
         display: block;
@@ -91,6 +92,7 @@
         text-shadow: 0 0 8px #000;
         vertical-align: bottom;
         width: 31px;
+        margin: 0 1rem;
 
         svg:last-child {
           display: none;

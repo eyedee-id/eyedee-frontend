@@ -31,8 +31,8 @@
             <div class="footer">
               <div>
                 <small><a [routerLink]="'/confide/' + confide.confide_id">{{ confide.at_created_string }}</a></small>
-                <!--  @TODO: next feature (user: comments)-->
-                <!--              <small><a [routerLink]="'/confide/' + confide.confide_id">{{ confide.total_comment }} comments</a></small>-->
+                <small><a [routerLink]="'/confide/' + confide.confide_id">{{ confide.total_comment }}
+                  komentar</a></small>
               </div>
               <div>
                 <ng-container *ngFor="let hashtag of confide?.hashtags">
@@ -43,6 +43,15 @@
           </div>
         </div>
       </div>
+
+      <div class="comments-header">
+        <h4>
+          komentar netizen
+        </h4>
+        <app-comment-new [confideId]="confide.confide_id" (commentCreated)="getConfide()"></app-comment-new>
+      </div>
+
+      <app-comment-list [confideId]="confide.confide_id"></app-comment-list>
     </ng-container>
   </div>
 </ng-container>

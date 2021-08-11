@@ -31,4 +31,12 @@ export class ConfideService {
   confideUser(params: any): Observable<ApiModel<Array<ConfideModel>>> {
     return this.apiService.get(this.serviceV1, '/user', params);
   }
+
+  confideComments(confideId: string, params: any) {
+    return this.apiService.get(this.serviceV1, `/${confideId}/comment`, params);
+  }
+
+  confideCommentNew(confideId: string, data: any) {
+    return this.apiService.put(this.serviceV1, `/${confideId}/comment`, data);
+  }
 }

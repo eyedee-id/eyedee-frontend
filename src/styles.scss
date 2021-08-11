@@ -215,6 +215,19 @@ body {
   display: none !important;
 }
 
+.display-md-none {
+  @media(min-width: 80rem) {
+    display: none !important;
+  }
+}
+
+.display-md-block {
+  @media(min-width: 80rem) {
+    display: block !important;
+  }
+}
+
+
 .display-block {
   display: block !important;
 }
@@ -286,13 +299,39 @@ body {
     outline: 0;
   }
 
-  div {
+
+  fieldset > div {
     display: flex;
-    justify-content: space-between;
+    flex-direction: column-reverse;
 
     p {
       margin: 0;
       text-align: right;
+    }
+
+    & > div:first-child {
+      display: flex;
+      flex-direction: column-reverse;
+
+      button {
+        margin: 1rem 0 3rem;
+        width: 100%;
+      }
+    }
+  }
+
+  .words-left {
+    display: flex;
+    justify-content: space-between;
+  }
+
+  .options {
+    display: flex;
+    flex-direction: column;
+    & > div {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
     }
   }
 }
@@ -319,19 +358,6 @@ body {
   }
 }
 
-.confide-detail {
-  .confide {
-    font-size: 1.1em;
-
-    .footer {
-      font-size: 1em;
-    }
-  }
-
-  .comments {
-    font-size: 1em;
-  }
-}
 
 .confide {
   border: 1px solid $color-quinary;

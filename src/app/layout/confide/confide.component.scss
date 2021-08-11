@@ -1,0 +1,31 @@
+@import "src/shared/styles/Color";
+
+.confide-detail {
+
+  margin-bottom: 5.2rem; // buat comment baru (hape)
+  @media(min-width: 80rem) {
+    margin-bottom: 0;
+  }
+
+  > .confide {
+    font-size: 1.2em;
+
+    .footer {
+      font-size: 1em;
+    }
+  }
+}
+
+
+.comments-header {
+  display: flex;
+  flex-direction: column;
+  //justify-content: space-between;
+  //align-items: center;
+  width: 100%;
+  margin: 2rem 0;
+
+  h4 {
+    margin-bottom: 1rem !important;
+  }
+}

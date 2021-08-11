@@ -1,0 +1,83 @@
+<div class="comments">
+  <ng-container *ngFor="let comment of comments; trackBy : trackById">
+    <div class="confide">
+      <div class="width-100">
+
+        <ng-container *ngIf="comment.is_anonim !== true; else templateUserAnonim">
+          <div class="user">
+            <div class="line-height-0">
+              <ng-container *ngIf="comment.avatar_url; else templateNoAvatar">
+                <img [src]="comment.avatar_url" alt="" decoding="async">
+              </ng-container>
+            </div>
+            <ng-template #templateNoAvatar>
+              <div class="no-avatar">{{ comment.username ? comment.username[0] : null  }}</div>
+            </ng-template>
+            <div class="user-name">
+              {{ comment.name_ || comment.username }}
+            </div>
+            <small class="user-username">
+              <a [routerLink]="'/' + comment.username">@{{ comment.username }}</a>
+            </small>
+          </div>
+        </ng-container>
+
+        <div class="user-content">
+          <div>
+            <div><p [innerHTML]="comment.text"></p></div>
+          </div>
+          <div class="footer">
+            <div>
+              <small><a>{{ comment.at_created_string }}</a></small>
+            </div>
+            <div>
+              <ng-container *ngFor="let hashtag of comment?.hashtags">
+                <small><a [routerLink]="'/hashtag/' + hashtag">#{{ hashtag }}</a></small>
+              </ng-container>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </ng-container>
+</div>
+
+<ng-container *ngIf="!noMoreComment; else templateNoMoreComment">
+  <div class="text-center margin-top-3">
+    <ng-container *ngIf="!loading.comments; else templateLoading">
+      <a class="button button-clear button-large" (click)="getComments()">
+        lihat lainnya
+      </a>
+    </ng-container>
+  </div>
+</ng-container>
+
+
+<ng-template #templateNoMoreComment>
+  <div class="text-center margin-top-3">
+    <a class="button button-clear button-large">
+      <ng-container *ngIf="comments.length === 0">
+        ga ada komentar!
+      </ng-container>
+      <ng-container *ngIf="comments.length > 0">
+        udah mentok, ga ada yang baru lagi!
+      </ng-container>
+    </a>
+  </div>
+</ng-template>
+
+<ng-template #templateLoading>
+  <div class="lds-ellipsis">
+    <div></div>
+    <div></div>
+    <div></div>
+    <div></div>
+  </div>
+</ng-template>
+
+
+<ng-template #templateUserAnonim>
+  <a><i>anonim</i></a>
+</ng-template>
+

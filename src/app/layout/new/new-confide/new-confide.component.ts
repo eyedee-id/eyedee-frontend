@@ -10,6 +10,8 @@ import {Subscription} from 'rxjs';
 import {Router} from '@angular/router';
 import {ConfideService} from '../../../../shared/services/confide.service';
 import {code} from '../../../../shared/libs/code';
+import {box, randomBytes, secretbox} from "tweetnacl";
+import {decodeBase64, decodeUTF8, encodeBase64, encodeUTF8} from "tweetnacl-util";
 
 @Component({
   selector: 'app-new-confide',
@@ -17,7 +19,7 @@ import {code} from '../../../../shared/libs/code';
   styleUrls: ['./new-confide.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class NewConfideComponent implements  OnDestroy, AfterContentChecked {
+export class NewConfideComponent implements OnDestroy, AfterContentChecked {
 
   @Input()
   independent = true;
@@ -83,20 +85,57 @@ export class NewConfideComponent implements  OnDestroy, AfterContentChecked {
     this.formConfide.controls['text'].disable();
     this.ref.detectChanges();
 
-    this.confideService.confideNew(value)
+    let nonce = null;
+    let messageEncrypted = null;
+    if (this.formConfide.controls['is_anonim']) {
+
+      // @TODO: ini sementara, nanti akan di ganti pakai indexedDB / web crypto api
+      const secretKey = localStorage.getItem('user.secret_key');
+      if (secretKey) {
+        const message = {
+          text: this.formConfide.controls['text'].value,
+        }
+
+        nonce = encodeBase64(randomBytes(box.nonceLength));
+        const cipherText = secretbox(
+          decodeUTF8(JSON.stringify(message)),
+          decodeBase64(nonce),
+          decodeBase64(secretKey),
+        );
+
+        messageEncrypted = encodeBase64(cipherText);
+        // console.log(messageEncrypted);
+
+        // // INI buat nanti decrypt nya
+        // const cipherTextDecrypted = secretbox.open(
+        //   decodeBase64(messageEncrypted),
+        //   decodeBase64(onTimeCode),
+        //   decodeBase64(secretKey)
+        // );
+        //
+        // if (cipherTextDecrypted) {
+        //   const messageDecrypted = encodeUTF8(cipherTextDecrypted);
+        //   console.log(messageDecrypted);
+        // }
+      }
+    }
+
+    this.confideService.confideNew({
+      is_anonim: this.formConfide.controls['is_anonim'].value,
+      text: this.formConfide.controls['text'].value,
+      text_encrypted: messageEncrypted,
+      nonce: nonce
+    })
       .subscribe(res => {
         console.log(res);
         if (res.status) {
           this.router.navigate(['/explore']);
         } else {
-          console.log(res.message);
           this.error.confide = res.message ?? code.error.internal_server_error;
-          console.log(res.message);
+          this.formConfide.controls['text'].enable();
+          this.loading.confide = false;
+          this.ref.markForCheck();
         }
-
-        this.formConfide.controls['text'].enable();
-        this.loading.confide = false;
-        this.ref.markForCheck();
       }, err => {
         this.formConfide.controls['text'].enable();
         this.loading.confide = false;
