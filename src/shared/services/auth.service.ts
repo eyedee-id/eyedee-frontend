@@ -54,6 +54,7 @@ export class AuthService {
     fromPromise(Auth.signOut())
       .subscribe(
         result => {
+          localStorage.clear();
           this.loggedIn.next(false);
           this.router.navigate(['/']);
         },

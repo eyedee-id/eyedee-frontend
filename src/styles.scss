@@ -1,5 +1,6 @@
 /* You can add global styles to this file, and also import other style files */
 
+@import './themes';
 @import '~normalize.css';
 @import "src/shared/styles/milligram";
 
@@ -413,6 +414,10 @@ body {
 
   p {
     white-space: pre-wrap;
+
+    a {
+      cursor: pointer;
+    }
   }
 }
 
@@ -421,6 +426,14 @@ body {
   display: flex;
   flex-direction: column-reverse;
   justify-content: space-between;
+
+  .hashtags {
+    margin-bottom: 0.5rem;
+
+    a {
+      cursor: pointer;
+    }
+  }
 
   & > div:first-child {
     display: flex;
@@ -433,7 +446,7 @@ body {
 
   div {
     small {
-      margin: 0 1rem;
+      margin: 0 0.5rem;
     }
 
     small:first-child {

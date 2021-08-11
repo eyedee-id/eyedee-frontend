@@ -30,11 +30,11 @@
             <div>
               <small><a>{{ comment.at_created_string }}</a></small>
             </div>
-            <div>
-              <ng-container *ngFor="let hashtag of comment?.hashtags">
-                <small><a [routerLink]="'/hashtag/' + hashtag">#{{ hashtag }}</a></small>
-              </ng-container>
-            </div>
+<!--            <div class="hashtags">-->
+<!--              <ng-container *ngFor="let hashtag of comment?.hashtags">-->
+<!--                <small><a [routerLink]="'/hashtag/' + hashtag">#{{ hashtag }}</a></small>-->
+<!--              </ng-container>-->
+<!--            </div>-->
           </div>
         </div>
 

@@ -14,6 +14,8 @@ import {ConfideModel} from '../../../shared/models/confide.model';
 import * as dayjs from 'dayjs';
 import 'dayjs/locale/id' // import locale
 import * as relativeTime from 'dayjs/plugin/relativeTime';
+import {Router} from "@angular/router";
+import {findAndReplaceHashTag} from "../../../shared/libs/hashtag";
 
 dayjs.extend(relativeTime);
 dayjs.locale('id');
@@ -49,6 +51,7 @@ export class ExploreComponent implements OnInit, OnDestroy {
 
   constructor(
     private ref: ChangeDetectorRef,
+    private router: Router,
     public authService: AuthService,
     private confideService: ConfideService,
   ) {
@@ -127,6 +130,7 @@ export class ExploreComponent implements OnInit, OnDestroy {
 
             if (init) {
               for (const item of res.data) {
+                item.text = findAndReplaceHashTag(item.text);
                 item.at_created_string = dayjs(item.at_created).fromNow();
               }
 
@@ -139,6 +143,7 @@ export class ExploreComponent implements OnInit, OnDestroy {
 
               this.confides.length = arr1Length + arr2Length;
               for (let i = 0; i < arr2Length; i++) {
+                res.data[i].text = findAndReplaceHashTag(res.data[i].text);
                 res.data[i].at_created_string = dayjs(res.data[i].at_created).fromNow();
                 this.confides[arr1Length + i] = res.data[i]
               }

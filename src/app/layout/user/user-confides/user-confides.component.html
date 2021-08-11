@@ -15,14 +15,14 @@
             <div>
               <small><a [routerLink]="'/confide/' + confide.confide_id">{{ confide.at_created_string }}</a></small>
               <ng-container *ngIf="!confide.is_anonim">
-                <small><a [routerLink]="'/confide/' + confide.confide_id">{{ confide.total_comment }} comments</a></small>
+                <small><a [routerLink]="'/confide/' + confide.confide_id">{{ confide.total_comment }} komentar</a></small>
               </ng-container>
             </div>
-            <div>
-              <ng-container *ngFor="let hashtag of confide?.hashtags">
-                <small><a [routerLink]="'/hashtag/' + hashtag">#{{ hashtag }}</a></small>
-              </ng-container>
-            </div>
+<!--            <div class="hashtags">-->
+<!--              <ng-container *ngFor="let hashtag of confide?.hashtags">-->
+<!--                <small><a [routerLink]="'/hashtag/' + hashtag">#{{ hashtag }}</a></small>-->
+<!--              </ng-container>-->
+<!--            </div>-->
           </div>
         </div>
       </div>

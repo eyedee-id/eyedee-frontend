@@ -10,6 +10,7 @@ import {AuthService} from "../../../../shared/services/auth.service";
 import {ConfideService} from "../../../../shared/services/confide.service";
 import {takeUntil} from "rxjs/operators";
 import {code} from "../../../../shared/libs/code";
+import {findAndReplaceHashTag} from "../../../../shared/libs/hashtag";
 
 dayjs.extend(relativeTime);
 dayjs.locale('id');
@@ -124,8 +125,10 @@ export class CommentListComponent implements OnInit {
 
             this.ref.detach();
 
+
             if (init) {
               for (const item of res.data) {
+                item.text = findAndReplaceHashTag(item.text);
                 item.at_created_string = dayjs(item.at_created).fromNow();
               }
 
@@ -138,6 +141,7 @@ export class CommentListComponent implements OnInit {
 
               this.comments.length = arr1Length + arr2Length;
               for (let i = 0; i < arr2Length; i++) {
+                res.data[i].text = findAndReplaceHashTag(res.data[i].text);
                 res.data[i].at_created_string = dayjs(res.data[i].at_created).fromNow();
                 this.comments[arr1Length + i] = res.data[i]
               }

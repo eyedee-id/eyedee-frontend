@@ -7,6 +7,7 @@ import {ConfideModel} from "../../../shared/models/confide.model";
 import * as dayjs from "dayjs";
 
 import 'dayjs/locale/id';
+import {findAndReplaceHashTag} from "../../../shared/libs/hashtag";
 dayjs.locale('id');
 
 @Component({
@@ -77,6 +78,7 @@ export class ConfideComponent implements OnInit, OnDestroy {
     this.subscription.user = this.confideService.confideDetail(this.confideId)
       .subscribe(res => {
         if (res.status) {
+          res.data.text = findAndReplaceHashTag(res.data.text)
           this.confide = res.data;
           this.confide.at_created_string = dayjs(this.confide.at_created).format('D MMMM YYYY - h:mm A');
         } else {

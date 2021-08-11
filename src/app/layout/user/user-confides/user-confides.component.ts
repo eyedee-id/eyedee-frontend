@@ -9,6 +9,7 @@ import {code} from "../../../../shared/libs/code";
 import {takeUntil} from "rxjs/operators";
 import * as relativeTime from 'dayjs/plugin/relativeTime';
 import {ActivatedRoute} from "@angular/router";
+import {findAndReplaceHashTag} from "../../../../shared/libs/hashtag";
 
 dayjs.extend(relativeTime);
 dayjs.locale('id');
@@ -130,6 +131,7 @@ export class UserConfidesComponent implements OnInit, OnDestroy {
 
             if (init) {
               for (const item of res.data) {
+                item.text = findAndReplaceHashTag(item.text);
                 item.at_created_string = dayjs(item.at_created).fromNow();
               }
 
@@ -142,6 +144,7 @@ export class UserConfidesComponent implements OnInit, OnDestroy {
 
               this.confides.length = arr1Length + arr2Length;
               for (let i = 0; i < arr2Length; i++) {
+                res.data[i].text = findAndReplaceHashTag(res.data[i].text)
                 res.data[i].at_created_string = dayjs(res.data[i].at_created).fromNow();
                 this.confides[arr1Length + i] = res.data[i]
               }

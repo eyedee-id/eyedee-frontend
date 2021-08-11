@@ -1,0 +1,37 @@
+$themes: (
+  "light": (
+    "colors": (
+      "color-initial": #fff,
+      "color-primary": #9b4dca,
+      "color-secondary": #606c76,
+      "color-tertiary": #f4f5f6,
+      "color-quaternary": #dddddd,
+      "color-quinary": #e1e1e1,
+      "color-danger": #ca4d4d,
+    ),
+  ),
+  "dark": (
+    "colors": (
+      "color-initial": #000000,
+      "color-primary": #c26fff,
+      "color-secondary": #d7d7d7,
+      "color-tertiary": #000000,
+      "color-quaternary": #9b4dca,
+      "color-quinary": #604c7b,
+      "color-danger": #ca4d4d,
+    ),
+  ),
+);
+
+@each $theme-name, $theme-vars in $themes {
+  $colors: map-get($theme-vars, "colors");
+
+  body.#{$theme-name} {
+    // define a css variable for each color
+    @each $name, $color in $colors {
+      --#{$name}: #{$color};
+      --#{$name}-dark: #{darken($color, 10%)};
+      --#{$name}-darker: #{darken($color, 20%)};
+    }
+  }
+}
