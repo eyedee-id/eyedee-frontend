@@ -1,4 +1,4 @@
-import {ChangeDetectionStrategy, ChangeDetectorRef, Component, OnDestroy, OnInit} from '@angular/core';
+import {ChangeDetectionStrategy, ChangeDetectorRef, Component, Input, OnDestroy, OnInit} from '@angular/core';
 import {ConfideModel} from "../../../../shared/models/confide.model";
 import {fromEvent, Subject, Subscription} from "rxjs";
 import {AuthService} from "../../../../shared/services/auth.service";
@@ -22,7 +22,8 @@ dayjs.locale('id');
 })
 export class UserConfidesComponent implements OnInit, OnDestroy {
 
-  userId = '';
+  @Input() userId: string | undefined = undefined;
+
   noMoreConfide = false;
   confides: Array<ConfideModel> = [];
 
@@ -54,10 +55,13 @@ export class UserConfidesComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
-    this.subscription.user_id = this.route.params.subscribe(res => {
-      this.userId = res.userId;
-      this.getConfides(true);
-    })
+    if (!this.userId) {
+      return;
+    }
+    // this.subscription.user_id = this.route.params.subscribe(res => {
+    //   this.userId = res.userId;
+    this.getConfides(true);
+    // })
   }
 
   public trackById(index: number, item: ConfideModel) {

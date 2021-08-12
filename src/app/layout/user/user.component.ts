@@ -27,6 +27,8 @@ export class UserComponent implements OnInit, OnDestroy {
   user: UserModel | null = null;
   userCanEdit = false;
 
+  tabActive: 'confides' | 'mentions' = 'confides';
+
   loading = {
     user: false,
   };
@@ -100,8 +102,6 @@ export class UserComponent implements OnInit, OnDestroy {
           this.user = res.data as UserModel;
 
           this.userCanEdit = this.authService.user?.user_id === this.user.user_id;
-
-          this.router.navigate([this.user.user_id, 'confides'], {relativeTo: this.route});
         } else {
           this.error.user = res.message ?? code.error.internal_server_error;
         }
@@ -120,5 +120,10 @@ export class UserComponent implements OnInit, OnDestroy {
         this.loading.user = false;
         this.ref.detectChanges();
       });
+  }
+
+  onChangeTab(tab: 'confides' | 'mentions') {
+    this.tabActive = tab;
+    this.ref.detectChanges();
   }
 }

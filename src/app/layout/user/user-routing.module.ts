@@ -8,16 +8,16 @@ const routes: Routes = [
   {
     path: '',
     component: UserComponent,
-    children: [
-      {
-        path: ':userId/confides',
-        component: UserConfidesComponent,
-      },
-      {
-        path: ':userId/mentions',
-        component: UserMentionsComponent,
-      },
-    ]
+    // children: [
+    //   {
+    //     path: ':userId/confides',
+    //     component: UserConfidesComponent,
+    //   },
+    //   {
+    //     path: ':userId/mentions',
+    //     component: UserMentionsComponent,
+    //   },
+    // ]
   }
 ];
 
