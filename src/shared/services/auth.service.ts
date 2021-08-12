@@ -58,7 +58,7 @@ export class AuthService {
           this.loggedIn.next(false);
           this.router.navigate(['/']);
         },
-        error => console.log(error)
+        error => console.error(error)
       );
   }
 

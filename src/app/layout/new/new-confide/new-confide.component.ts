@@ -127,7 +127,6 @@ export class NewConfideComponent implements OnDestroy, AfterContentChecked {
       nonce: nonce
     })
       .subscribe(res => {
-        console.log(res);
         if (res.status) {
           this.router.navigate(['/explore']);
         } else {

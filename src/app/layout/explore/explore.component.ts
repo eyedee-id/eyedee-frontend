@@ -121,12 +121,9 @@ export class ExploreComponent implements OnInit, OnDestroy {
       .subscribe(res => {
         if (res.status) {
 
-          if (res.data.length === 0) {
-            this.noMoreConfide = true;
-            this.destroy.next();
-          } else {
+          this.ref.detach();
 
-            this.ref.detach();
+          if (res.data.length > 0) {
 
             if (init) {
               for (const item of res.data) {
@@ -148,6 +145,11 @@ export class ExploreComponent implements OnInit, OnDestroy {
                 this.confides[arr1Length + i] = res.data[i]
               }
             }
+          }
+
+          if (res.meta && res.meta.limit && res.data.length < res.meta.limit) {
+            this.noMoreConfide = true;
+            this.destroy.next();
           }
 
           this.ref.reattach();

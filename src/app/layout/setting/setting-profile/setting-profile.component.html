@@ -1,47 +1,84 @@
 <h3>edit profil saya</h3>
 
-<div class="banner-container">
-  <div class="banner" #userBanner>
-    <a class="avatar"
-       style="color: rgb(241, 242, 242);">
-      <ng-container *ngIf="user?.avatar_url; else templateNoAvatar">
-        <img class="inner"
-             [src]="user?.avatar_url"
-             decoding="async">
-      </ng-container>
+<ng-container *ngIf="!modeImageEditing; else templateImageEditing">
+  <div class="banner-container">
+    <div class="banner" #userBanner>
+      <a class="avatar"
+         style="color: rgb(241, 242, 242);">
+        <ng-container *ngIf="user?.avatar_url; else templateNoAvatar">
+          <img class="inner"
+               [src]="user?.avatar_url"
+               decoding="async">
+        </ng-container>
 
-      <ng-template #templateNoAvatar>
-        <div class="no-avatar">{{ (user && user.username) ? user.username[0] : 'p' }}</div>
-      </ng-template>
-    </a>
+        <ng-template #templateNoAvatar>
+          <div class="no-avatar">{{ (user && user.username) ? user.username[0] : 'p' }}</div>
+        </ng-template>
+      </a>
+    </div>
   </div>
-</div>
-<div class="banner-links">
-  <ng-container *ngIf="loading.upload_photo_pre">
-    <a>
-      <ng-container [ngTemplateOutlet]="templateLoading"></ng-container>
-    </a>
-  </ng-container>
-  <ng-container *ngIf="!loading.upload_photo_pre">
-    <a>
+  <div class="banner-links">
+    <ng-container *ngIf="loading.upload_photo_pre">
+      <a>
+        <ng-container [ngTemplateOutlet]="templateLoading"></ng-container>
+      </a>
+    </ng-container>
+    <ng-container *ngIf="!loading.upload_photo_pre">
+      <a>
 
-      <label for="file-photo-profile">ganti foto profil</label>
-      <input type="file"
-             id="file-photo-profile"
-             accept="image/png, image/jpeg"
-             [multiple]="false"
-             (change)="uploadPhoto('profile', $event)">
-    </a>
-    <a>
-      <label for="file-photo-banner">ganti foto banner</label>
-      <input type="file"
-             id="file-photo-banner"
-             accept="image/png, image/jpeg"
-             [multiple]="false"
-             (change)="uploadPhoto('banner', $event)">
-    </a>
-  </ng-container>
-</div>
+        <label for="file-photo-profile">ganti foto profil</label>
+        <input type="file"
+               id="file-photo-profile"
+               accept="image/png, image/jpeg"
+               [multiple]="false"
+               (change)="uploadPhoto('profile', $event)">
+      </a>
+      <a>
+        <label for="file-photo-banner">ganti foto banner</label>
+        <input type="file"
+               id="file-photo-banner"
+               accept="image/png, image/jpeg"
+               [multiple]="false"
+               (change)="uploadPhoto('banner', $event)">
+      </a>
+    </ng-container>
+  </div>
+</ng-container>
+
+<ng-template #templateImageEditing>
+  <div class="banner-container-image-edit">
+    <image-cropper
+      [roundCropper]="modeImageEditing === 'profile'"
+      [imageChangedEvent]="imageChangedEvent"
+      [maintainAspectRatio]="true"
+      [aspectRatio]="modeImageEditing === 'profile' ? 1 : (970/250)"
+      [cropperMinWidth]="modeImageEditing === 'profile' ? 500 : 970"
+      [cropperMinHeight]="modeImageEditing === 'profile' ? 500 : 250"
+      [containWithinAspectRatio]="true"
+      (imageCropped)="imageCropped($event)"
+      (imageLoaded)="imageLoaded($event)"
+      (cropperReady)="cropperReady()"
+      (loadImageFailed)="loadImageFailed()"
+      format="png">
+    </image-cropper>
+  </div>
+  <div class="banner-links">
+    <ng-container *ngIf="loading.upload_photo_pre">
+      <a>
+        <ng-container [ngTemplateOutlet]="templateLoading"></ng-container>
+      </a>
+    </ng-container>
+    <ng-container *ngIf="!loading.upload_photo_pre">
+      <a (click)="onSubmitImageEditing()">
+        <label>upload</label>
+      </a>
+      <a (click)="onCancelImageEditing()">
+        <label class="text-danger">batal</label>
+      </a>
+    </ng-container>
+  </div>
+</ng-template>
+
 
 <form class="setting-form" [formGroup]="form" autocomplete="false">
   <fieldset [disabled]="loading.save.name_">

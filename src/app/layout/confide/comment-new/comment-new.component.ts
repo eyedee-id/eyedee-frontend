@@ -108,7 +108,6 @@ export class CommentNewComponent implements OnDestroy, AfterContentChecked {
 
     this.confideService.confideCommentNew(this.confideId, value)
       .subscribe(res => {
-        console.log(res);
         if (res.status) {
           this.commentCreated.emit(true);
         } else {

@@ -12,6 +12,7 @@ import {FormControl, FormGroup, Validators} from "@angular/forms";
 import {UserService} from "../../../../shared/services/user.service";
 import {code} from "../../../../shared/libs/code";
 import {AuthService} from "../../../../shared/services/auth.service";
+import {ImageCroppedEvent, LoadedImage} from "ngx-image-cropper";
 
 @Component({
   selector: 'app-setting-profile',
@@ -25,6 +26,10 @@ export class SettingProfileComponent implements OnInit, OnDestroy, AfterContentC
 
 
   user: UserModel | undefined;
+
+  modeImageEditing: 'profile' | 'banner' | null = null;
+  imageChangedEvent: any = '';
+  croppedImage: any = '';
 
   form = new FormGroup({
     name_: new FormControl(null, {
@@ -206,14 +211,48 @@ export class SettingProfileComponent implements OnInit, OnDestroy, AfterContentC
       this.subscription.upload_photo_pre.unsubscribe();
     }
 
+
+    this.imageChangedEvent = event;
+    this.modeImageEditing = photoType;
+  }
+
+  imageCropped(event: ImageCroppedEvent) {
+    this.croppedImage = event.base64;
+  }
+
+  imageLoaded(image: LoadedImage) {
+    // show cropper
+  }
+
+  cropperReady() {
+    // cropper ready
+  }
+
+  loadImageFailed() {
+    // show message
+  }
+
+  onCancelImageEditing() {
+    this.modeImageEditing = null;
+    this.croppedImage = '';
+    this.imageChangedEvent = '';
+
+    this.getUser();
+  }
+
+  onSubmitImageEditing() {
+    if (!this.modeImageEditing || !this.croppedImage) {
+      return;
+    }
+
     this.loading.upload_photo_pre = true;
     this.error.upload_photo_pre = null;
     this.ref.markForCheck();
 
     let data: any = {
-      photo_type: photoType,
-      type: file.type,
-      extension: fileExtension,
+      photo_type: this.modeImageEditing,
+      type: 'image/png',
+      extension: 'png',
     };
 
     this.userService
@@ -227,14 +266,13 @@ export class SettingProfileComponent implements OnInit, OnDestroy, AfterContentC
         }
 
         try {
-          console.log(res.data, file);
+          const file = await this.urlToFile(this.croppedImage, 'file', 'image/png');
           await this.uploadFileToS3(res.data, file);
-          console.log("File was successfully uploaded!");
 
-          this.getUser();
+          this.onCancelImageEditing();
         } catch (e) {
           this.error.upload_photo_pre = e;
-          console.log(e);
+          console.error(e);
         }
 
         this.loading.upload_photo_pre = false;
@@ -245,6 +283,13 @@ export class SettingProfileComponent implements OnInit, OnDestroy, AfterContentC
         this.loading.upload_photo_pre = false;
         this.ref.detectChanges();
       });
+  }
+
+  urlToFile(url: string, filename: string, mimeType: string): Promise<File> {
+    return (fetch(url)
+        .then(res => res.blob())
+        .then(blob => new File([blob], filename, {type: mimeType}))
+    );
   }
 
   uploadFileToS3(preSignedPostData: any, file: File) {

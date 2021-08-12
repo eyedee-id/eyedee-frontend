@@ -111,21 +111,14 @@ export class CommentListComponent implements OnInit {
     this.loading.comments = true;
     this.ref.markForCheck();
 
-    console.log('a');
-
     this.subscription.comments = this.confideService
       .confideComments(this.confideId, params)
       .subscribe(res => {
         if (res.status) {
 
-          if (res.data.length === 0) {
-            this.noMoreComment = true;
-            this.destroy.next();
-          } else {
+          this.ref.detach();
 
-            this.ref.detach();
-
-
+          if (res.data.length > 0) {
             if (init) {
               for (const item of res.data) {
                 // item.text = findAndReplaceHashTag(item.text);
@@ -146,6 +139,11 @@ export class CommentListComponent implements OnInit {
                 this.comments[arr1Length + i] = res.data[i]
               }
             }
+          }
+
+          if (res.meta && res.meta.limit && res.data.length < res.meta.limit) {
+            this.noMoreComment = true;
+            this.destroy.next();
           }
 
           this.ref.reattach();
