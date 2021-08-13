@@ -1,6 +1,6 @@
 <div class="confides">
   <ng-container *ngFor="let confide of confides; trackBy : trackById">
-    <div class="confide">
+    <div class="confide" @confideAnimation>
       <div class="width-100">
 
         <ng-container *ngIf="confide.is_anonim">

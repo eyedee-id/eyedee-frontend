@@ -2,9 +2,9 @@
   <h3>curhatan seluruh dunia</h3>
 </ng-container>
 
-<div class="confides">
+<div class="confides" data-direction="down">
   <ng-container *ngFor="let confide of confides; trackBy : trackById">
-    <div class="confide">
+    <div class="confide" @confideAnimation>
       <div class="width-100">
 
         <ng-container *ngIf="confide.is_anonim !== true; else templateUserAnonim">

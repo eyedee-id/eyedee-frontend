@@ -8,12 +8,16 @@ import * as dayjs from "dayjs";
 
 import 'dayjs/locale/id';
 import {findAndReplaceHashTag} from "../../../shared/libs/hashtag";
+import {confideAnimation} from "../../../shared/animations/confide.animation";
 dayjs.locale('id');
 
 @Component({
   selector: 'app-confide',
   templateUrl: './confide.component.html',
   styleUrls: ['./confide.component.scss'],
+  animations: [
+    confideAnimation,
+  ],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ConfideComponent implements OnInit, OnDestroy {

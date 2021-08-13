@@ -16,6 +16,7 @@ import 'dayjs/locale/id' // import locale
 import * as relativeTime from 'dayjs/plugin/relativeTime';
 import {ActivatedRoute, Router, RouterEvent} from "@angular/router";
 import {findAndReplaceHashTag} from "../../../shared/libs/hashtag";
+import {confideAnimation} from "../../../shared/animations/confide.animation";
 
 dayjs.extend(relativeTime);
 dayjs.locale('id');
@@ -25,6 +26,9 @@ dayjs.locale('id');
   selector: 'app-hashtag',
   templateUrl: './hashtag.component.html',
   styleUrls: ['./hashtag.component.scss'],
+  animations: [
+    confideAnimation,
+  ],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class HashtagComponent implements OnInit, OnDestroy {

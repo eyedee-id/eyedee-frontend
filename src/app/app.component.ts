@@ -15,8 +15,6 @@ import {AuthService} from '../shared/services/auth.service';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class AppComponent implements OnInit, AfterViewInit {
-  title = 'eyedee-web';
-
   constructor(
     private ref: ChangeDetectorRef,
     private renderer: Renderer2,
@@ -28,12 +26,6 @@ export class AppComponent implements OnInit, AfterViewInit {
     this.authService.isAuthenticated()
       .subscribe(async () => {
       });
-
-    // this.authService.me()
-    //   .subscribe(res => {
-    //     console.log(res);
-    //   })
-
   }
 
   ngAfterViewInit() {

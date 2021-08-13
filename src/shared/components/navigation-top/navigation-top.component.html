@@ -12,21 +12,21 @@
     </a>
 
     <ul class="navigation-list float-right">
-      <ng-container *ngIf="(authService.loggedIn | async) !== true; else templateNavigationLoggedIn">
-        <li class="navigation-item">
-          <a class="navigation-link" routerLink="/auth/login">
-            Masuk
-          </a>
-        </li>
-      </ng-container>
+<!--      <ng-container *ngIf="(authService.loggedIn | async) !== true; else templateNavigationLoggedIn">-->
+<!--        <li class="navigation-item">-->
+<!--          <a class="navigation-link" routerLink="/auth/login">-->
+<!--            Masuk-->
+<!--          </a>-->
+<!--        </li>-->
+<!--      </ng-container>-->
 
-      <ng-template #templateNavigationLoggedIn>
-        <li class="navigation-item">
-          <a class="navigation-link" [routerLink]="'/' +  authService.user?.username">
-            @{{ authService.user?.username }}
-          </a>
-        </li>
-      </ng-template>
+<!--      <ng-template #templateNavigationLoggedIn>-->
+<!--        <li class="navigation-item">-->
+<!--          <a class="navigation-link" [routerLink]="'/' +  authService.user?.username">-->
+<!--            @{{ authService.user?.username }}-->
+<!--          </a>-->
+<!--        </li>-->
+<!--      </ng-template>-->
     </ul>
 
     <a href="https://github.com/eyedee-id/eyedee-web" rel="noopener" target="_blank" title="eyedee on Github">

@@ -16,6 +16,9 @@ import 'dayjs/locale/id' // import locale
 import * as relativeTime from 'dayjs/plugin/relativeTime';
 import {Router} from "@angular/router";
 import {findAndReplaceHashTag} from "../../../shared/libs/hashtag";
+import {PubSubService} from "../../../shared/services/pub-sub.service";
+import {Howl} from 'howler';
+import {confideAnimation} from "../../../shared/animations/confide.animation";
 
 dayjs.extend(relativeTime);
 dayjs.locale('id');
@@ -25,9 +28,17 @@ dayjs.locale('id');
   selector: 'app-explore',
   templateUrl: './explore.component.html',
   styleUrls: ['./explore.component.scss'],
+  animations: [
+    confideAnimation,
+  ],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ExploreComponent implements OnInit, OnDestroy {
+
+  notificationSound = new Howl({
+    src: ['/assets/notification.mp3'],
+    html5: true,
+  });
 
   noMoreConfide = false;
   confides: Array<ConfideModel> = [];
@@ -44,6 +55,7 @@ export class ExploreComponent implements OnInit, OnDestroy {
     [key: string]: null | Subscription,
   } = {
     confides: null,
+    confides_sub: null,
   };
 
   destroy = new Subject();
@@ -54,6 +66,7 @@ export class ExploreComponent implements OnInit, OnDestroy {
     private router: Router,
     public authService: AuthService,
     private confideService: ConfideService,
+    private pubSubService: PubSubService,
   ) {
 
   }
@@ -72,7 +85,43 @@ export class ExploreComponent implements OnInit, OnDestroy {
       this.subscription.confides.unsubscribe();
     }
 
+    if (this.subscription.confides_pub) {
+      this.subscription.confides_pub.unsubscribe();
+    }
+
     this.destroy.next();
+  }
+
+  confidesPubSub() {
+    if (this.subscription.confides_pub) {
+      this.subscription.confides_pub.unsubscribe();
+    }
+
+    this.subscription.confides_pub = this.pubSubService.getConfides()
+      .subscribe(res => {
+        if (!res) {
+          return;
+        }
+
+        this.ref.detach();
+
+        for (const item of res) {
+          item.text = findAndReplaceHashTag(item.text);
+          item.at_created_string = dayjs(item.at_created).fromNow();
+        }
+
+        this.confides.unshift(...res)
+
+        if (!this.notificationSound.playing()) {
+          this.notificationSound.play();
+        }
+
+        this.ref.reattach();
+        this.ref.detectChanges();
+
+      }, err => {
+        console.log(err);
+      });
   }
 
   initAutoScroll() {
@@ -162,6 +211,8 @@ export class ExploreComponent implements OnInit, OnDestroy {
 
         if (init) {
           this.initAutoScroll();
+
+          this.confidesPubSub();
         }
       }, err => {
         this.error.confides = err.message ?? code.error.internal_server_error;

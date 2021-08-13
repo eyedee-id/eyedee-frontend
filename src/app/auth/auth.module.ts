@@ -6,6 +6,7 @@ import {RegisterConfirmationComponent} from './register-confirmation/register-co
 import {ReactiveFormsModule} from '@angular/forms';
 import {AuthRoutingModule} from './auth-routing.module';
 import {NavigationBottomModule} from '../../shared/components/navigation-bottom/navigation-bottom.module';
+import {AuthService} from "../../shared/services/auth.service";
 
 
 @NgModule({
@@ -19,7 +20,10 @@ import {NavigationBottomModule} from '../../shared/components/navigation-bottom/
     ReactiveFormsModule,
     AuthRoutingModule,
     NavigationBottomModule,
-  ]
+  ],
+  providers: [
+    AuthService,
+  ],
 })
 export class AuthModule {
 }

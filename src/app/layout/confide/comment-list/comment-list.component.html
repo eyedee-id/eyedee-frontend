@@ -1,6 +1,6 @@
 <div class="comments">
   <ng-container *ngFor="let comment of comments; trackBy : trackById">
-    <div class="confide">
+    <div class="confide" @confideAnimation>
       <div class="width-100">
 
         <ng-container *ngIf="comment.is_anonim !== true; else templateUserAnonim">

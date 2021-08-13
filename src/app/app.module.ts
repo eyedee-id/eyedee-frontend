@@ -8,20 +8,18 @@ import {HttpClientModule} from '@angular/common/http';
 import {ServiceWorkerModule} from '@angular/service-worker';
 import {environment} from '../environments/environment';
 import {NavigationTopModule} from '../shared/components/navigation-top/navigation-top.module';
-import { LayoutComponent } from './layout/layout.component';
-import {NavigationSideModule} from "../shared/components/navigation-side/navigation-side.module";
-import {TopTenUsersModule} from "../shared/components/top-ten-users/top-ten-users.module";
-import {TopTenHashtagsModule} from "../shared/components/top-ten-hashtags/top-ten-hashtags.module";
-import {NavigationBottomModule} from "../shared/components/navigation-bottom/navigation-bottom.module";
+import {BrowserAnimationsModule} from "@angular/platform-browser/animations";
+import {PubSubModule} from "../shared/modules/pub-sub.module";
+
 
 @NgModule({
   declarations: [
     AppComponent,
     HomeComponent,
-    LayoutComponent,
   ],
   imports: [
     BrowserModule,
+    BrowserAnimationsModule,
     AppRoutingModule,
     HttpClientModule,
     ServiceWorkerModule.register('ngsw-worker.js', {
@@ -30,11 +28,8 @@ import {NavigationBottomModule} from "../shared/components/navigation-bottom/nav
       // or after 30 seconds (whichever comes first).
       registrationStrategy: 'registerWhenStable:30000'
     }),
+    PubSubModule.forRoot(),
     NavigationTopModule,
-    NavigationSideModule,
-    TopTenUsersModule,
-    TopTenHashtagsModule,
-    NavigationBottomModule,
   ],
   providers: [],
   bootstrap: [AppComponent]

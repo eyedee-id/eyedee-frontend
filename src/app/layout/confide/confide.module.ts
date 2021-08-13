@@ -6,6 +6,7 @@ import { ConfideComponent } from './confide.component';
 import {ReactiveFormsModule} from "@angular/forms";
 import { CommentNewComponent } from './comment-new/comment-new.component';
 import { CommentListComponent } from './comment-list/comment-list.component';
+import {ConfideService} from "../../../shared/services/confide.service";
 
 
 @NgModule({
@@ -18,6 +19,9 @@ import { CommentListComponent } from './comment-list/comment-list.component';
     CommonModule,
     ConfideRoutingModule,
     ReactiveFormsModule
-  ]
+  ],
+  providers: [
+    ConfideService,
+  ],
 })
 export class ConfideModule { }

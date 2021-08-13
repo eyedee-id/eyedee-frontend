@@ -8,21 +8,27 @@ import {TopTenUsersModule} from '../../../shared/components/top-ten-users/top-te
 import {NavigationBottomModule} from '../../../shared/components/navigation-bottom/navigation-bottom.module';
 import {NewModule} from '../new/new.module';
 import {NavigationSideModule} from "../../../shared/components/navigation-side/navigation-side.module";
+import {ConfideService} from "../../../shared/services/confide.service";
+import {PubSubModule} from "../../../shared/modules/pub-sub.module";
 
 @NgModule({
   declarations: [
     ExploreComponent,
   ],
-    imports: [
-        CommonModule,
-        ExploreRoutingModule,
-        ReactiveFormsModule,
-        TopTenHashtagsModule,
-        TopTenUsersModule,
-        NavigationBottomModule,
-        NewModule,
-        NavigationSideModule,
-    ]
+  imports: [
+    CommonModule,
+    ExploreRoutingModule,
+    ReactiveFormsModule,
+    TopTenHashtagsModule,
+    TopTenUsersModule,
+    NavigationBottomModule,
+    NewModule,
+    NavigationSideModule,
+    PubSubModule,
+  ],
+  providers: [
+    ConfideService,
+  ],
 })
 export class ExploreModule {
 }

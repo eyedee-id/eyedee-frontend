@@ -8,6 +8,7 @@ import {ReactiveFormsModule} from "@angular/forms";
 import {ImageCropperModule} from "ngx-image-cropper";
 import * as Hammer from "hammerjs";
 import {HAMMER_GESTURE_CONFIG, HammerGestureConfig} from "@angular/platform-browser";
+import {UserService} from "../../../../shared/services/user.service";
 
 @Injectable()
 export class HammerConfig extends HammerGestureConfig {
@@ -27,6 +28,7 @@ export class HammerConfig extends HammerGestureConfig {
     ImageCropperModule,
   ],
   providers: [
+    UserService,
     {
       provide: HAMMER_GESTURE_CONFIG,
       useClass: HammerConfig,

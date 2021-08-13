@@ -6,6 +6,7 @@ import {NewConfideComponent} from './new-confide/new-confide.component';
 import {NavigationBottomModule} from '../../../shared/components/navigation-bottom/navigation-bottom.module';
 import {ReactiveFormsModule} from '@angular/forms';
 import {NewComponent} from './new.component';
+import {ConfideService} from "../../../shared/services/confide.service";
 
 
 @NgModule({
@@ -21,7 +22,10 @@ import {NewComponent} from './new.component';
   ],
   exports: [
     NewConfideComponent,
-  ]
+  ],
+  providers: [
+    ConfideService,
+  ],
 })
 export class NewModule {
 }

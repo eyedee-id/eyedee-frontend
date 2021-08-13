@@ -13,14 +13,16 @@
   .banner-container {
     background-position: 50%;
     background-size: cover;
-    height: 10rem;
+    width: 100%;
+    aspect-ratio: 970/250;
     overflow: hidden;
     position: relative;
     border-top-left-radius: 0.5rem;
     border-top-right-radius: 0.5rem;
 
     @media(min-width: 80rem) {
-      height: 20rem;
+      width: 100%;
+      aspect-ratio: 970/250;
     }
 
     .banner {

@@ -1,9 +1,7 @@
 import {Injectable} from '@angular/core';
 import {ApiService} from './api.service';
 
-@Injectable({
-  providedIn: 'root'
-})
+@Injectable()
 export class UserService {
 
   private serviceV1 = 'v1/user';

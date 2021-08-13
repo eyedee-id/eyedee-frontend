@@ -21,9 +21,12 @@
       "dom"
     ],
     "allowJs": true,
-    "paths":{
-      "crypto":["node_modules/crypto-js"]
-    },
+//    "paths": {
+//      "crypto": [
+//        "node_modules/crypto-js"
+//      ]
+//    },
+    "allowSyntheticDefaultImports": true
   },
   "angularCompilerOptions": {
     "enableI18nLegacyMessageIdFormat": false,

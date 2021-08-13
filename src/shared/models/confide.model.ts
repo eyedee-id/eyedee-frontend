@@ -1,5 +1,5 @@
 export interface ConfideModel {
-  user_id: string;
+  user_id?: string;
   at_created: number;
   confide_id: string;
 
@@ -14,4 +14,6 @@ export interface ConfideModel {
   at_created_string: string;
 
   is_anonim?: boolean;
+
+  push?: any;
 }

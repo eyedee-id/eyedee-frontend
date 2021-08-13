@@ -1,4 +1,4 @@
-import {ChangeDetectionStrategy, ChangeDetectorRef, Component, Input, OnInit} from '@angular/core';
+import {ChangeDetectionStrategy, ChangeDetectorRef, Component, Input, OnDestroy, OnInit} from '@angular/core';
 
 
 import * as dayjs from 'dayjs';
@@ -10,7 +10,7 @@ import {AuthService} from "../../../../shared/services/auth.service";
 import {ConfideService} from "../../../../shared/services/confide.service";
 import {takeUntil} from "rxjs/operators";
 import {code} from "../../../../shared/libs/code";
-import {findAndReplaceHashTag} from "../../../../shared/libs/hashtag";
+import {confideAnimation} from "../../../../shared/animations/confide.animation";
 
 dayjs.extend(relativeTime);
 dayjs.locale('id');
@@ -20,9 +20,12 @@ dayjs.locale('id');
   selector: 'app-comment-list',
   templateUrl: './comment-list.component.html',
   styleUrls: ['./comment-list.component.scss'],
+  animations: [
+    confideAnimation,
+  ],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class CommentListComponent implements OnInit {
+export class CommentListComponent implements OnInit, OnDestroy {
 
   @Input()
   confideId = '';

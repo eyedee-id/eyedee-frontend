@@ -4,9 +4,7 @@ import {Observable} from 'rxjs';
 import {ConfideModel} from '../models/confide.model';
 import {ApiModel} from '../models/api.model';
 
-@Injectable({
-  providedIn: 'root'
-})
+@Injectable()
 export class ConfideService {
 
   private serviceV1 = 'v1/confide';

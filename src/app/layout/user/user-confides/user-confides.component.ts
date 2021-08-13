@@ -10,6 +10,7 @@ import {takeUntil} from "rxjs/operators";
 import * as relativeTime from 'dayjs/plugin/relativeTime';
 import {ActivatedRoute, Router} from "@angular/router";
 import {findAndReplaceHashTag} from "../../../../shared/libs/hashtag";
+import {confideAnimation} from "../../../../shared/animations/confide.animation";
 
 dayjs.extend(relativeTime);
 dayjs.locale('id');
@@ -18,6 +19,9 @@ dayjs.locale('id');
   selector: 'app-user-confides',
   templateUrl: './user-confides.component.html',
   styleUrls: ['./user-confides.component.scss'],
+  animations: [
+    confideAnimation,
+  ],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class UserConfidesComponent implements OnInit, OnDestroy {
