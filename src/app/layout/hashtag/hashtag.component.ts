@@ -152,31 +152,19 @@ export class HashtagComponent implements OnInit, OnDestroy {
 
           this.ref.detach();
 
-          if (res.data.length > 0) {
-
-            if (init) {
-              for (const item of res.data) {
-                item.text = findAndReplaceHashTag(item.text, this.hashtag);
-                item.at_created_string = dayjs(item.at_created).fromNow();
-              }
-
-              this.confides = res.data;
-            } else {
-
-              // Pre allocate size
-              const arr1Length = this.confides.length;
-              const arr2Length = res.data.length;
-
-              this.confides.length = arr1Length + arr2Length;
-              for (let i = 0; i < arr2Length; i++) {
-                res.data[i].text = findAndReplaceHashTag(res.data[i].text);
-                res.data[i].at_created_string = dayjs(res.data[i].at_created).fromNow();
-                this.confides[arr1Length + i] = res.data[i]
-              }
+          const arr2Length = res.data.length;
+          if (arr2Length > 0) {
+            // Pre allocate size
+            const arr1Length = this.confides.length;
+            this.confides.length = arr1Length + arr2Length;
+            for (let i = 0; i < arr2Length; i++) {
+              res.data[i].text = findAndReplaceHashTag(res.data[i].text, this.hashtag);
+              res.data[i].at_created_string = dayjs(res.data[i].at_created).fromNow();
+              this.confides[arr1Length + i] = res.data[i];
             }
           }
 
-          if (res.meta && res.meta.limit && res.data.length < res.meta.limit) {
+          if (res.meta && res.meta.limit && arr2Length < res.meta.limit) {
             this.noMoreConfide = true;
             this.destroy.next();
           }

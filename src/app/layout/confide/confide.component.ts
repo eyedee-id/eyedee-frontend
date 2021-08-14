@@ -9,6 +9,7 @@ import * as dayjs from "dayjs";
 import 'dayjs/locale/id';
 import {findAndReplaceHashTag} from "../../../shared/libs/hashtag";
 import {confideAnimation} from "../../../shared/animations/confide.animation";
+
 dayjs.locale('id');
 
 @Component({
@@ -81,8 +82,8 @@ export class ConfideComponent implements OnInit, OnDestroy {
       .subscribe(res => {
         if (res.status) {
           res.data.text = findAndReplaceHashTag(res.data.text)
+          res.data.at_created_string = dayjs(res.data.at_created).format('D MMMM YYYY - h:mm A');
           this.confide = res.data;
-          this.confide.at_created_string = dayjs(this.confide.at_created).format('D MMMM YYYY - h:mm A');
         } else {
           this.error.confide = res.message ?? code.error.internal_server_error;
         }

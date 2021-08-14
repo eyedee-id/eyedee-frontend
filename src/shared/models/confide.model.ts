@@ -14,6 +14,4 @@ export interface ConfideModel {
   at_created_string: string;
 
   is_anonim?: boolean;
-
-  push?: any;
 }

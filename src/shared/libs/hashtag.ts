@@ -1,4 +1,8 @@
 export function findAndReplaceHashTag(text: string, hashtag?: string | null) {
+  if (!text) {
+    return '';
+  }
+
   return text
     .replace(/#[\p{L}]+/ugi, i => {
       const h = i.replace('#', '').toLowerCase();

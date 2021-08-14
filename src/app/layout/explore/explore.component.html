@@ -2,9 +2,9 @@
   <h3>curhatan seluruh dunia</h3>
 </ng-container>
 
-<div class="confides" data-direction="down">
-  <ng-container *ngFor="let confide of confides; trackBy : trackById">
-    <div class="confide" @confideAnimation>
+<div class="confides" [@list]="confides.length">
+  <ng-container *ngFor="let confide of confides">
+    <div class="confide" [@confideAnimation]>
       <div class="width-100">
 
         <ng-container *ngIf="confide.is_anonim !== true; else templateUserAnonim">
@@ -35,11 +35,11 @@
               <small><a [routerLink]="'/confide/' + confide.confide_id">{{ confide.at_created_string }}</a></small>
               <small><a [routerLink]="'/confide/' + confide.confide_id">{{ confide.total_comment }} komentar</a></small>
             </div>
-<!--            <div class="hashtags">-->
-<!--              <ng-container *ngFor="let hashtag of confide?.hashtags">-->
-<!--                <small><a [routerLink]="'/hashtag/' + hashtag">{{ hashtag }}</a></small>-->
-<!--              </ng-container>-->
-<!--            </div>-->
+            <!--            <div class="hashtags">-->
+            <!--              <ng-container *ngFor="let hashtag of confide?.hashtags">-->
+            <!--                <small><a [routerLink]="'/hashtag/' + hashtag">{{ hashtag }}</a></small>-->
+            <!--              </ng-container>-->
+            <!--            </div>-->
           </div>
         </div>
       </div>

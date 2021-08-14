@@ -2,7 +2,7 @@
   <div class="confide-detail">
 
     <ng-container *ngIf="confide">
-      <div class="confide" @confideAnimation>
+      <div class="confide" [@confideAnimation]>
         <div class="width-100">
 
           <ng-container *ngIf="confide.is_anonim !== true; else templateUserAnonim">

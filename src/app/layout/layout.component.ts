@@ -1,6 +1,5 @@
-import {ApplicationRef, ChangeDetectionStrategy, Component, OnDestroy, OnInit} from '@angular/core';
+import {ApplicationRef, ChangeDetectionStrategy, Component, OnInit} from '@angular/core';
 import {PubSubService} from "../../shared/services/pub-sub.service";
-import {first} from "rxjs/operators";
 import {Subscription} from "rxjs";
 
 import dayjs from "dayjs";
@@ -9,7 +8,7 @@ const utc = require('dayjs/plugin/utc')
 dayjs.extend(utc)
 
 
-import { Auth } from '@aws-amplify/auth';
+import {Auth} from '@aws-amplify/auth';
 
 @Component({
   selector: 'app-layout',
@@ -17,7 +16,7 @@ import { Auth } from '@aws-amplify/auth';
   styleUrls: ['./layout.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class LayoutComponent implements OnInit, OnDestroy {
+export class LayoutComponent implements OnInit {
 
   subscription: {
     [key: string]: null | Subscription
@@ -37,21 +36,8 @@ export class LayoutComponent implements OnInit, OnDestroy {
         console.log(res.identityId);
       })
 
-    const appIsStable$ = this.appRef.isStable
-      .pipe(first(isStable => isStable));
-
-
-    this.subscription.app_is_stable = appIsStable$
-      .subscribe(async () => {
-
-        await this.pubSubService.startPubSub()
+    this.pubSubService.startPubSub()
+      .then(() => {
       });
   }
-
-  ngOnDestroy() {
-    if (this.subscription.app_is_stable) {
-      this.subscription.app_is_stable.unsubscribe();
-    }
-  }
-
 }
