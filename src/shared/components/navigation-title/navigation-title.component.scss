@@ -1,0 +1,27 @@
+h3 {
+  display: inline-flex;
+
+  a {
+    display: inline-flex;
+    align-items: center;
+    margin-right: 1rem;
+
+    svg:first-child {
+      display: block;
+    }
+
+    svg:nth-child(2) {
+      display: none;
+    }
+
+    &:hover {
+      svg:first-child {
+        display: none;
+      }
+
+      svg:nth-child(2) {
+        display: block;
+      }
+    }
+  }
+}

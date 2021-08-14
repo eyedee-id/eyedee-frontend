@@ -1,135 +1,154 @@
-<h3>edit profil saya</h3>
+<app-navigation-title routerLink="../" title="pengaturan profil saya"></app-navigation-title>
 
-<ng-container *ngIf="!modeImageEditing; else templateImageEditing">
-  <div class="banner-container">
-    <div class="banner" #userBanner>
-      <a class="avatar"
-         style="color: rgb(241, 242, 242);">
-        <ng-container *ngIf="user?.avatar_url; else templateNoAvatar">
-          <img class="inner"
-               [src]="user?.avatar_url"
-               decoding="async">
-        </ng-container>
+<ng-container *ngIf="!loading.user; else templateLoadingFull">
+  <ng-container *ngIf="!modeImageEditing; else templateImageEditing">
+    <div class="banner-container">
+      <div class="banner" #userBanner>
+        <a class="avatar"
+           style="color: rgb(241, 242, 242);">
+          <ng-container *ngIf="user?.avatar_url; else templateNoAvatar">
+            <img class="inner"
+                 [src]="user?.avatar_url"
+                 decoding="async">
+          </ng-container>
 
-        <ng-template #templateNoAvatar>
-          <div class="no-avatar">{{ (user && user.username) ? user.username[0] : 'p' }}</div>
-        </ng-template>
-      </a>
+          <ng-template #templateNoAvatar>
+            <div class="no-avatar">{{ (user && user.username) ? user.username[0] : 'p' }}</div>
+          </ng-template>
+        </a>
+      </div>
     </div>
-  </div>
-  <div class="banner-links">
-    <ng-container *ngIf="loading.upload_photo_pre">
-      <a>
-        <ng-container [ngTemplateOutlet]="templateLoading"></ng-container>
-      </a>
-    </ng-container>
-    <ng-container *ngIf="!loading.upload_photo_pre">
-      <a>
+    <div class="banner-links">
+      <ng-container *ngIf="loading.upload_photo_pre">
+        <a>
+          <ng-container [ngTemplateOutlet]="templateLoading"></ng-container>
+        </a>
+      </ng-container>
+      <ng-container *ngIf="!loading.upload_photo_pre">
+        <a>
 
-        <label for="file-photo-profile">ganti foto profil</label>
-        <input type="file"
-               id="file-photo-profile"
-               accept="image/png, image/jpeg"
-               [multiple]="false"
-               (change)="uploadPhoto('profile', $event)">
-      </a>
-      <a>
-        <label for="file-photo-banner">ganti foto banner</label>
-        <input type="file"
-               id="file-photo-banner"
-               accept="image/png, image/jpeg"
-               [multiple]="false"
-               (change)="uploadPhoto('banner', $event)">
-      </a>
-    </ng-container>
-  </div>
+          <label for="file-photo-profile">ganti foto profil</label>
+          <input type="file"
+                 id="file-photo-profile"
+                 accept="image/png, image/jpeg"
+                 [multiple]="false"
+                 (change)="uploadPhoto('profile', $event)">
+        </a>
+        <a>
+          <label for="file-photo-banner">ganti foto banner</label>
+          <input type="file"
+                 id="file-photo-banner"
+                 accept="image/png, image/jpeg"
+                 [multiple]="false"
+                 (change)="uploadPhoto('banner', $event)">
+        </a>
+      </ng-container>
+    </div>
+  </ng-container>
+
+  <ng-template #templateImageEditing>
+    <div class="banner-container-image-edit">
+      <image-cropper
+        [roundCropper]="modeImageEditing === 'profile'"
+        [imageChangedEvent]="imageChangedEvent"
+        [maintainAspectRatio]="true"
+        [aspectRatio]="modeImageEditing === 'profile' ? 1 : (970/250)"
+        [cropperMinWidth]="modeImageEditing === 'profile' ? 500 : 970"
+        [cropperMinHeight]="modeImageEditing === 'profile' ? 500 : 250"
+        [containWithinAspectRatio]="true"
+        (imageCropped)="imageCropped($event)"
+        format="png">
+      </image-cropper>
+    </div>
+    <div class="banner-links">
+      <ng-container *ngIf="loading.upload_photo_pre">
+        <a>
+          <ng-container [ngTemplateOutlet]="templateLoading"></ng-container>
+        </a>
+      </ng-container>
+      <ng-container *ngIf="!loading.upload_photo_pre">
+        <a (click)="onSubmitImageEditing()">
+          <label>upload</label>
+        </a>
+        <a (click)="onCancelImageEditing()">
+          <label class="text-danger">batal</label>
+        </a>
+      </ng-container>
+    </div>
+  </ng-template>
+
+  <form class="setting-form" [formGroup]="form">
+    <fieldset [disabled]="true">
+      <label for="username">
+        username (<i><small>tidak bisa berubah</small></i>)
+      </label>
+      <input type="text" placeholder="" id="username" name="username" formControlName="username">
+    </fieldset>
+  </form>
+
+  <form class="setting-form" [formGroup]="form" [autocomplete]="false">
+    <fieldset [disabled]="loading.save.name_">
+      <label for="name">
+        nama
+        <small class="text-danger">
+          <ng-container *ngIf="form.controls['name_']?.dirty && form.controls['name_'].invalid">
+            * panjang nama max 50 huruf!
+          </ng-container>
+          <ng-container *ngIf="error.save.name_">
+            * {{ error.save.name_ }}
+          </ng-container>
+        </small>
+      </label>
+      <input type="text" placeholder="" id="name" name="name" formControlName="name_" autocomplete="false">
+      <ng-container *ngIf="form.controls['name_'].dirty && form.controls['name_'].valid">
+        <button class="button button-outline" (click)="updateProfile('name_')" [disabled]="loading.save.name_">
+          <ng-container *ngIf="!loading.save.name_; else templateLoading">
+            simpan
+          </ng-container>
+        </button>
+      </ng-container>
+    </fieldset>
+  </form>
+
+  <form class="setting-form" [formGroup]="form" [autocomplete]="false">
+    <fieldset [disabled]="loading.save.bio">
+      <label for="bio">
+        bio
+        <small class="text-danger">
+          <ng-container *ngIf="form.controls['bio']?.dirty && form.controls['bio'].invalid">
+            * panjang nama max 300 huruf!
+          </ng-container>
+          <ng-container *ngIf="error.save.bio">
+            * {{ error.save.bio }}
+          </ng-container>
+        </small>
+      </label>
+      <div class="textarea- bio">
+        <textarea name="bio" id="bio" formControlName="bio"></textarea>
+      </div>
+      <ng-container *ngIf="form.controls['bio'].dirty && form.controls['bio'].valid">
+        <button class="button button-outline" (click)="updateProfile('bio')" [disabled]="loading.save.bio">
+          <ng-container *ngIf="!loading.save.bio; else templateLoading">
+            simpan
+          </ng-container>
+        </button>
+      </ng-container>
+    </fieldset>
+  </form>
+
+
 </ng-container>
 
-<ng-template #templateImageEditing>
-  <div class="banner-container-image-edit">
-    <image-cropper
-      [roundCropper]="modeImageEditing === 'profile'"
-      [imageChangedEvent]="imageChangedEvent"
-      [maintainAspectRatio]="true"
-      [aspectRatio]="modeImageEditing === 'profile' ? 1 : (970/250)"
-      [cropperMinWidth]="modeImageEditing === 'profile' ? 500 : 970"
-      [cropperMinHeight]="modeImageEditing === 'profile' ? 500 : 250"
-      [containWithinAspectRatio]="true"
-      (imageCropped)="imageCropped($event)"
-      (imageLoaded)="imageLoaded($event)"
-      (cropperReady)="cropperReady()"
-      (loadImageFailed)="loadImageFailed()"
-      format="png">
-    </image-cropper>
-  </div>
-  <div class="banner-links">
-    <ng-container *ngIf="loading.upload_photo_pre">
-      <a>
-        <ng-container [ngTemplateOutlet]="templateLoading"></ng-container>
-      </a>
-    </ng-container>
-    <ng-container *ngIf="!loading.upload_photo_pre">
-      <a (click)="onSubmitImageEditing()">
-        <label>upload</label>
-      </a>
-      <a (click)="onCancelImageEditing()">
-        <label class="text-danger">batal</label>
-      </a>
-    </ng-container>
+<ng-template #templateLoadingFull>
+  <div class="text-center">
+    <div class="lds-ellipsis">
+      <div></div>
+      <div></div>
+      <div></div>
+      <div></div>
+    </div>
   </div>
 </ng-template>
-
-
-<form class="setting-form" [formGroup]="form" autocomplete="false">
-  <fieldset [disabled]="loading.save.name_">
-    <label for="name">
-      nama
-      <small class="text-danger">
-        <ng-container *ngIf="form.controls['name_']?.dirty && form.controls['name_'].invalid">
-          * panjang nama max 50 huruf!
-        </ng-container>
-        <ng-container *ngIf="error.save.name_">
-          * {{ error.save.name_ }}
-        </ng-container>
-      </small>
-    </label>
-    <input type="text" placeholder="" id="name" name="name" formControlName="name_" autocomplete="false">
-    <ng-container *ngIf="form.controls['name_'].dirty && form.controls['name_'].valid">
-      <button class="button button-outline" (click)="updateProfile('name_')" [disabled]="loading.save.name_">
-        <ng-container *ngIf="!loading.save.name_; else templateLoading">
-          simpan
-        </ng-container>
-      </button>
-    </ng-container>
-  </fieldset>
-</form>
-
-<form class="setting-form" [formGroup]="form" autocomplete="false">
-  <fieldset [disabled]="loading.save.bio">
-    <label for="bio">
-      bio
-      <small class="text-danger">
-        <ng-container *ngIf="form.controls['bio']?.dirty && form.controls['bio'].invalid">
-          * panjang nama max 300 huruf!
-        </ng-container>
-        <ng-container *ngIf="error.save.bio">
-          * {{ error.save.bio }}
-        </ng-container>
-      </small>
-    </label>
-    <div class="textarea- bio">
-      <textarea name="bio" id="bio" formControlName="bio"></textarea>
-    </div>
-    <ng-container *ngIf="form.controls['bio'].dirty && form.controls['bio'].valid">
-      <button class="button button-outline" (click)="updateProfile('bio')" [disabled]="loading.save.bio">
-        <ng-container *ngIf="!loading.save.bio; else templateLoading">
-          simpan
-        </ng-container>
-      </button>
-    </ng-container>
-  </fieldset>
-</form>
-
 
 <ng-template #templateLoading>
   <div class="lds-ellipsis">

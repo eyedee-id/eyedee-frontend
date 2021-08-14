@@ -5,6 +5,7 @@ import { HashtagRoutingModule } from './hashtag-routing.module';
 import {HashtagComponent} from './hashtag.component';
 import {NavigationBottomModule} from '../../../shared/components/navigation-bottom/navigation-bottom.module';
 import {ConfideService} from "../../../shared/services/confide.service";
+import {NavigationTitleModule} from "../../../shared/components/navigation-title/navigation-title.module";
 
 
 @NgModule({
@@ -14,7 +15,8 @@ import {ConfideService} from "../../../shared/services/confide.service";
   imports: [
     CommonModule,
     HashtagRoutingModule,
-    NavigationBottomModule
+    NavigationBottomModule,
+    NavigationTitleModule
   ],
   providers: [
     ConfideService,

@@ -1,7 +1,7 @@
 import {Injectable} from '@angular/core';
 import {BehaviorSubject, Observable, of} from 'rxjs';
 import {fromPromise} from 'rxjs/internal-compatibility';
-import {catchError, map, switchMap, tap} from 'rxjs/operators';
+import {catchError, map, tap} from 'rxjs/operators';
 import {Router} from '@angular/router';
 import {Auth} from '@aws-amplify/auth';
 import {ApiService} from './api.service';
@@ -41,7 +41,7 @@ export class AuthService {
           this.loggedIn.next(true);
           return true;
         }),
-        catchError(error => {
+        catchError(() => {
           this.user = null;
           this.loggedIn.next(false);
           return of(false);
@@ -53,7 +53,7 @@ export class AuthService {
   public signOut() {
     fromPromise(Auth.signOut())
       .subscribe(
-        result => {
+        () => {
           localStorage.clear();
           this.loggedIn.next(false);
           this.router.navigate(['/']);
@@ -68,7 +68,7 @@ export class AuthService {
       username: data.username,
       password: data.password,
       attributes: {
-        email: data.email,
+        // email: data.email,
         ...data.attributes,
       }
     }));
@@ -85,8 +85,8 @@ export class AuthService {
   }
 
   /** signin */
-  public signIn(email: string, password: string): Observable<any> {
-    return fromPromise(Auth.signIn(email, password))
+  public signIn(username: string, password: string): Observable<any> {
+    return fromPromise(Auth.signIn(username, password))
       .pipe(
         tap(res => {
 
@@ -121,12 +121,12 @@ export class AuthService {
               'custom:public_key': encodeBase64(userKeyPair.publicKey),
               'custom:secret_key': aesEncrypted,
             })
-            .then(res2 => {
+            .then(() => {
               localStorage.setItem('user.public_key', encodeBase64(userKeyPair.publicKey));
               localStorage.setItem('user.secret_key', encodeBase64(userKeyPair.secretKey));
 
               return this.loggedIn.next(true);
-            }, err2 => {
+            }, () => {
               return this.loggedIn.next(false);
             })
 

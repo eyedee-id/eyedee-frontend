@@ -9,6 +9,7 @@ import {ImageCropperModule} from "ngx-image-cropper";
 import * as Hammer from "hammerjs";
 import {HAMMER_GESTURE_CONFIG, HammerGestureConfig} from "@angular/platform-browser";
 import {UserService} from "../../../../shared/services/user.service";
+import {NavigationTitleModule} from "../../../../shared/components/navigation-title/navigation-title.module";
 
 @Injectable()
 export class HammerConfig extends HammerGestureConfig {
@@ -26,6 +27,7 @@ export class HammerConfig extends HammerGestureConfig {
     ReactiveFormsModule,
     SettingProfileRoutingModule,
     ImageCropperModule,
+    NavigationTitleModule,
   ],
   providers: [
     UserService,

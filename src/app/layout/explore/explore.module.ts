@@ -10,6 +10,7 @@ import {NewModule} from '../new/new.module';
 import {NavigationSideModule} from "../../../shared/components/navigation-side/navigation-side.module";
 import {ConfideService} from "../../../shared/services/confide.service";
 import {PubSubModule} from "../../../shared/modules/pub-sub.module";
+import {NavigationTitleModule} from "../../../shared/components/navigation-title/navigation-title.module";
 
 @NgModule({
   declarations: [
@@ -25,6 +26,7 @@ import {PubSubModule} from "../../../shared/modules/pub-sub.module";
     NewModule,
     NavigationSideModule,
     PubSubModule,
+    NavigationTitleModule,
   ],
   providers: [
     ConfideService,

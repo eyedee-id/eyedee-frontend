@@ -12,7 +12,7 @@ import {FormControl, FormGroup, Validators} from "@angular/forms";
 import {UserService} from "../../../../shared/services/user.service";
 import {code} from "../../../../shared/libs/code";
 import {AuthService} from "../../../../shared/services/auth.service";
-import {ImageCroppedEvent, LoadedImage} from "ngx-image-cropper";
+import {ImageCroppedEvent} from "ngx-image-cropper";
 
 @Component({
   selector: 'app-setting-profile',
@@ -24,7 +24,6 @@ export class SettingProfileComponent implements OnInit, OnDestroy, AfterContentC
 
   @ViewChild('userBanner', {static: false}) userBanner: ElementRef<any> | undefined;
 
-
   user: UserModel | undefined;
 
   modeImageEditing: 'profile' | 'banner' | null = null;
@@ -32,6 +31,7 @@ export class SettingProfileComponent implements OnInit, OnDestroy, AfterContentC
   croppedImage: any = '';
 
   form = new FormGroup({
+    username: new FormControl(null),
     name_: new FormControl(null, {
       validators: [
         Validators.maxLength(50),
@@ -127,6 +127,9 @@ export class SettingProfileComponent implements OnInit, OnDestroy, AfterContentC
         if (res.status) {
           this.user = res.data as UserModel;
 
+          this.form.controls['username'].patchValue(this.user.username);
+          this.form.controls['username'].disable();
+
           this.form.controls['name_'].patchValue(this.user.name_);
           this.form.controls['bio'].patchValue(this.user.bio);
         } else {
@@ -218,18 +221,6 @@ export class SettingProfileComponent implements OnInit, OnDestroy, AfterContentC
 
   imageCropped(event: ImageCroppedEvent) {
     this.croppedImage = event.base64;
-  }
-
-  imageLoaded(image: LoadedImage) {
-    // show cropper
-  }
-
-  cropperReady() {
-    // cropper ready
-  }
-
-  loadImageFailed() {
-    // show message
   }
 
   onCancelImageEditing() {

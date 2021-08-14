@@ -1,4 +1,7 @@
-<h3 *ngIf="independent">mau curhat?</h3>
+<ng-container *ngIf="independent">
+  <app-navigation-title title="mau curhat?"></app-navigation-title>
+</ng-container>
+
 
 <form class="form-confide" [formGroup]="formConfide" (ngSubmit)="confideSubmit()">
   <fieldset [disabled]="loading.confide">

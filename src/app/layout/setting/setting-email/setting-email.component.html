@@ -1,0 +1,105 @@
+<app-navigation-title routerLink="../" title="pengaturan email"></app-navigation-title>
+
+
+<ng-container *ngIf="!loading.email; else templateLoadingFull">
+  <form class="setting-form" [formGroup]="form" [autocomplete]="false">
+    <fieldset [disabled]="loading.save">
+      <label for="email">
+        email
+        <ng-container
+          *ngIf="!emailVerified && !isOpenEmailVerificationForm && form.controls['email'].valid && form.controls['email'].value === email">
+          <small><a class="cursor-pointer" (click)="onSendEmailVerification()">(verifikasi email)</a></small>
+        </ng-container>
+        <small class="text-danger">
+          <ng-container
+            *ngIf="form.controls['email']?.touched && form.controls['email']?.dirty && form.controls['email'].errors?.required">
+            * email wajib diisi!
+          </ng-container>
+          <ng-container
+            *ngIf="form.controls['email']?.touched && form.controls['email']?.dirty && form.controls['email'].errors?.email">
+            * format email salah!
+          </ng-container>
+          <ng-container *ngIf="error.save.email">
+            * {{ error.save.email }}
+          </ng-container>
+        </small>
+      </label>
+      <input type="text" [placeholder]="!email ? 'not set' : ''" id="email" name="email" formControlName="email"
+             autocomplete="false">
+
+      <ng-container
+        *ngIf="form.controls['email'].dirty && form.controls['email'].valid && form.controls['email'].value !== email">
+        <label for="password">
+          password
+          <small class="text-danger">
+            <ng-container
+              *ngIf="form.controls['password']?.touched && form.controls['password']?.dirty && form.controls['password'].errors?.required">
+              * password wajib diisi!
+            </ng-container>
+          </small>
+        </label>
+        <input type="password" placeholder="input password lo dulu!" id="password" name="password"
+               formControlName="password" autocomplete="false">
+        <button class="button button-outline" (click)="updateEmail()" [disabled]="loading.save || form.invalid">
+          <ng-container *ngIf="!loading.save; else templateLoading">
+            ganti email
+          </ng-container>
+        </button>
+      </ng-container>
+    </fieldset>
+  </form>
+
+  <form class="setting-form" [formGroup]="formConfirmation" [autocomplete]="false">
+    <fieldset>
+      <ng-container *ngIf="!loading.verification_send; else templateLoadingFull">
+        <ng-container
+          *ngIf="isOpenEmailVerificationForm">
+          <label for="verification-code">
+            kode verifikasi
+            <small>&nbsp;(kode verifikasi berhasil terkirim ke email <i>{{ form.controls['email'].value }}</i>)</small>
+          </label>
+          <input type="text" placeholder="" id="verification-code" name="verification-code" autocomplete="false"
+                 formControlName="code">
+          <button class="button button-outline" (click)="onSubmitEmailVerification()"
+                  [disabled]="loading.verification_submit || formConfirmation.invalid">
+            <ng-container *ngIf="!loading.verification_submit; else templateLoading">
+              verifikasi email
+            </ng-container>
+          </button>
+        </ng-container>
+      </ng-container>
+
+      <ng-container *ngIf="error.verification_send">
+           <span class="text-danger">
+              *{{ error.verification_send }}
+           </span>
+      </ng-container>
+
+      <ng-container *ngIf="error.verification_submit">
+           <span class="text-danger">
+              *{{ error.verification_submit }}
+           </span>
+      </ng-container>
+    </fieldset>
+  </form>
+</ng-container>
+
+<ng-template #templateLoading>
+  <div class="lds-ellipsis">
+    <div></div>
+    <div></div>
+    <div></div>
+    <div></div>
+  </div>
+</ng-template>
+
+<ng-template #templateLoadingFull>
+  <div class="text-center">
+    <div class="lds-ellipsis">
+      <div></div>
+      <div></div>
+      <div></div>
+      <div></div>
+    </div>
+  </div>
+</ng-template>

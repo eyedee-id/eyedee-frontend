@@ -1,0 +1,72 @@
+<app-navigation-title routerLink="../" title="pengaturan keamanan"></app-navigation-title>
+
+<form class="setting-form" [formGroup]="form" [autocomplete]="false">
+  <fieldset [disabled]="loading.save">
+    <label for="password">
+      password
+      <small class="text-danger">
+        <ng-container
+          *ngIf="form.controls['password']?.touched && form.controls['password']?.dirty && form.controls['password'].errors?.required">
+          * password wajib diisi!
+        </ng-container>
+        <ng-container *ngIf="error.save.password">
+          * {{ error.save.password }}
+        </ng-container>
+      </small>
+    </label>
+    <input type="password" id="password" name="password"
+           formControlName="password" autocomplete="false">
+
+    <label for="password-new">
+      password baru
+      <small class="text-danger">
+        <ng-container
+          *ngIf="form.controls['password_new']?.touched && form.controls['password_new']?.errors?.required">
+          * password wajib diisi!
+        </ng-container>
+        <ng-container
+          *ngIf="form.controls['password_new']?.touched && form.controls['password_new']?.errors?.minlength">
+          * panjang password minimal 8 huruf woy!
+        </ng-container>
+      </small>
+    </label>
+    <input type="password" id="password-new" name="password-new"
+           formControlName="password_new" autocomplete="false">
+
+    <label for="password-new-confirmation">
+      konfirmasi password
+      <small class="text-danger">
+        <ng-container
+          *ngIf="form.controls['password_new_confirmation']?.touched && form.controls['password_new_confirmation']?.errors?.required">
+          * password wajib diisi!
+        </ng-container>
+        <ng-container
+          *ngIf="form.controls['password_new_confirmation']?.touched && form.controls['password_new_confirmation']?.errors?.isMatching === false">
+          * password nya ga sama!
+        </ng-container>
+      </small>
+    </label>
+    <input type="password" id="password-new-confirmation"
+           name="password-new-confirmation"
+           formControlName="password_new_confirmation" autocomplete="false">
+    <ng-container *ngIf="!loading.save; else templateLoading">
+      <button class="button button-outline" (click)="updatePassword()" [disabled]="loading.save || form.invalid">
+        ganti password
+      </button>
+      <ng-container *ngIf="error.save">
+        <small class="text-danger">
+          * {{ error.save }}
+        </small>
+      </ng-container>
+    </ng-container>
+  </fieldset>
+</form>
+
+<ng-template #templateLoading>
+  <div class="lds-ellipsis">
+    <div></div>
+    <div></div>
+    <div></div>
+    <div></div>
+  </div>
+</ng-template>

@@ -7,6 +7,7 @@ import {NavigationBottomModule} from '../../../shared/components/navigation-bott
 import {ReactiveFormsModule} from '@angular/forms';
 import {NewComponent} from './new.component';
 import {ConfideService} from "../../../shared/services/confide.service";
+import {NavigationTitleModule} from "../../../shared/components/navigation-title/navigation-title.module";
 
 
 @NgModule({
@@ -18,7 +19,8 @@ import {ConfideService} from "../../../shared/services/confide.service";
     CommonModule,
     NewRoutingModule,
     NavigationBottomModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    NavigationTitleModule
   ],
   exports: [
     NewConfideComponent,

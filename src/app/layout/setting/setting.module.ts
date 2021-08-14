@@ -3,6 +3,7 @@ import {CommonModule} from '@angular/common';
 
 import {SettingRoutingModule} from './setting-routing.module';
 import {SettingComponent} from './setting.component';
+import {NavigationTitleModule} from "../../../shared/components/navigation-title/navigation-title.module";
 
 
 @NgModule({
@@ -13,6 +14,7 @@ import {SettingComponent} from './setting.component';
   imports: [
     CommonModule,
     SettingRoutingModule,
+    NavigationTitleModule,
   ]
 })
 export class SettingModule {

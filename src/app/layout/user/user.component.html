@@ -57,7 +57,7 @@
       </div>
 
       <div class="bio">
-        <p [innerHTML]="user.bio">
+        <p [innerHTML]="user.bio" (click)="onClickUserBio($event)">
         </p>
       </div>
 

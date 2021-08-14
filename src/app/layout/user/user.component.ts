@@ -12,6 +12,7 @@ import {AuthService} from "../../../shared/services/auth.service";
 import {UserService} from "../../../shared/services/user.service";
 import {code} from "../../../shared/libs/code";
 import {UserModel} from "../../../shared/models/user.model";
+import {findAndReplaceHashTag} from "../../../shared/libs/hashtag";
 
 @Component({
   selector: 'app-user',
@@ -99,6 +100,8 @@ export class UserComponent implements OnInit, OnDestroy {
     this.subscription.user = this.userService.userGet(this.username)
       .subscribe(res => {
         if (res.status) {
+
+          res.data.bio = findAndReplaceHashTag(res.data.bio);
           this.user = res.data as UserModel;
 
           this.userCanEdit = this.authService.user?.user_id === this.user.user_id;
@@ -125,5 +128,12 @@ export class UserComponent implements OnInit, OnDestroy {
   onChangeTab(tab: 'confides' | 'mentions') {
     this.tabActive = tab;
     this.ref.detectChanges();
+  }
+
+  onClickUserBio(event: any) {
+    let hashtagRoute = event.target.attributes.value?.value;
+    if (hashtagRoute) {
+      this.router.navigate([hashtagRoute]);
+    }
   }
 }

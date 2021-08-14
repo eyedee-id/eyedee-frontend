@@ -6,7 +6,7 @@ import {code} from '../../../shared/libs/code';
 import {Router} from '@angular/router';
 import {box, hash} from "tweetnacl";
 import {decodeUTF8, encodeBase64} from "tweetnacl-util";
-import {aesDecryptData, aesEncryptData} from "../../../shared/libs/aes";
+import { aesEncryptData} from "../../../shared/libs/aes";
 
 @Component({
   selector: 'app-register',
@@ -17,12 +17,12 @@ import {aesDecryptData, aesEncryptData} from "../../../shared/libs/aes";
 export class RegisterComponent implements OnInit, OnDestroy {
   form = new FormGroup({
     username: new FormControl(null, Validators.required),
-    email: new FormControl(null, {
-      validators: [
-        Validators.required,
-        Validators.email,
-      ]
-    }),
+    // email: new FormControl(null, {
+    //   validators: [
+    //     Validators.required,
+    //     Validators.email,
+    //   ]
+    // }),
     password: new FormControl(null, {
       validators: [
         Validators.required,
@@ -44,7 +44,7 @@ export class RegisterComponent implements OnInit, OnDestroy {
   };
 
   error: {
-    [key: string]: null | string,
+    [key: string]: null | any,
   } = {
     register: null,
   };
@@ -116,7 +116,25 @@ export class RegisterComponent implements OnInit, OnDestroy {
       attributes,
     })
       .subscribe(res => {
-        this.router.navigate(['/auth/login']);
+        if (res.userConfirmed) {
+
+          // langsung login
+          this.authService.signIn(this.form.value.username, this.form.value.password)
+            .subscribe(() => {
+              this.router.navigate(['/explore']);
+            }, err => {
+              this.loading.register = false;
+              if (err?.message === 'User is not confirmed.') {
+                this.error.user_no_confirmed = true;
+              }
+              this.error.login = err.message ?? code.error.internal_server_error;
+              this.form.markAsPristine();
+              this.ref.detectChanges();
+            })
+
+        } else {
+          this.router.navigate(['/auth/login']);
+        }
       }, err => {
         this.loading.register = false;
         this.error.register = err.message ?? code.error.internal_server_error;
