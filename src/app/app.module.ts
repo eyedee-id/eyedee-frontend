@@ -32,7 +32,7 @@ import {PubSubModule} from "../shared/modules/pub-sub.module";
     NavigationTopModule,
   ],
   providers: [],
-  bootstrap: [AppComponent]
+  bootstrap: [AppComponent],
 })
 export class AppModule {
 }

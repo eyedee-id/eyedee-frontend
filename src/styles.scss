@@ -371,7 +371,7 @@ body {
   padding: 1rem;
   display: flex;
 
-  img, .no-avatar {
+  img {
     border-radius: 50%;
     width: 3rem;
     min-width: 3rem;
@@ -383,14 +383,6 @@ body {
       min-width: 5rem;
       height: 5rem;
     }
-  }
-
-  .no-avatar {
-    border: 1px solid $color-quinary;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: small;
   }
 }
 

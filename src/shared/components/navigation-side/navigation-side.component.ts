@@ -8,6 +8,9 @@ import {ChangeDetectionStrategy, Component} from '@angular/core';
 })
 export class NavigationSideComponent {
 
-  constructor() { }
+  notificationTotal = 10;
+
+  constructor() {
+  }
 
 }

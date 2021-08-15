@@ -7,6 +7,7 @@ import {ReactiveFormsModule} from "@angular/forms";
 import { CommentNewComponent } from './comment-new/comment-new.component';
 import { CommentListComponent } from './comment-list/comment-list.component';
 import {ConfideService} from "../../../shared/services/confide.service";
+import {FallbackImgModule} from "../../../shared/directives/fallback-img.module";
 
 
 @NgModule({
@@ -18,7 +19,8 @@ import {ConfideService} from "../../../shared/services/confide.service";
   imports: [
     CommonModule,
     ConfideRoutingModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    FallbackImgModule
   ],
   providers: [
     ConfideService,

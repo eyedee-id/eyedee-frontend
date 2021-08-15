@@ -13,20 +13,6 @@
     //padding-top: 7.5rem;
     position: relative;
     text-align: center;
-
-    .no-avatar {
-      height: 15rem;
-      margin-bottom: 2rem;
-
-      path {
-        animation: 7s a forwards;
-        fill: $color-primary;
-        stroke: $color-primary;
-        stroke-dasharray: 38321;
-        stroke-miterlimit: 10;
-        stroke-width: 15px;
-      }
-    }
   }
 }
 

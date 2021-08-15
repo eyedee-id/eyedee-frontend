@@ -8,13 +8,8 @@
           <ng-container *ngIf="confide.is_anonim !== true; else templateUserAnonim">
             <div class="user">
               <div class="line-height-0">
-                <ng-container *ngIf="confide.avatar_url; else templateNoAvatar">
-                  <img [src]="confide.avatar_url" alt="" decoding="async">
-                </ng-container>
+                <img [src]="confide.avatar_url" fallback="/assets/images/user.png" alt="" decoding="async">
               </div>
-              <ng-template #templateNoAvatar>
-                <div class="no-avatar">{{ confide.username ? confide.username[0] : null }}</div>
-              </ng-template>
               <div class="user-name">
                 {{ confide.name_ || confide.username }}
               </div>

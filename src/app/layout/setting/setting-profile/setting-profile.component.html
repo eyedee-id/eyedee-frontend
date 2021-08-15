@@ -6,15 +6,10 @@
       <div class="banner" #userBanner>
         <a class="avatar"
            style="color: rgb(241, 242, 242);">
-          <ng-container *ngIf="user?.avatar_url; else templateNoAvatar">
-            <img class="inner"
-                 [src]="user?.avatar_url"
-                 decoding="async">
-          </ng-container>
-
-          <ng-template #templateNoAvatar>
-            <div class="no-avatar">{{ (user && user.username) ? user.username[0] : 'p' }}</div>
-          </ng-template>
+          <img class="inner"
+               [src]="user?.avatar_url"
+               fallback="/assets/images/user.png"
+               decoding="async">
         </a>
       </div>
     </div>

@@ -1,18 +1,13 @@
-<div class="comments">
-  <ng-container *ngFor="let comment of comments; trackBy : trackById">
+<div class="comments" [@list]="comments.length">
+  <ng-container *ngFor="let comment of comments">
     <div class="confide" @confideAnimation>
       <div class="width-100">
 
         <ng-container *ngIf="comment.is_anonim !== true; else templateUserAnonim">
           <div class="user">
             <div class="line-height-0">
-              <ng-container *ngIf="comment.avatar_url; else templateNoAvatar">
-                <img [src]="comment.avatar_url" alt="" decoding="async">
-              </ng-container>
+              <img [src]="comment.avatar_url" fallback="/assets/images/user.png" alt="" decoding="async">
             </div>
-            <ng-template #templateNoAvatar>
-              <div class="no-avatar">{{ comment.username ? comment.username[0] : null  }}</div>
-            </ng-template>
             <div class="user-name">
               {{ comment.name_ || comment.username }}
             </div>
@@ -30,11 +25,11 @@
             <div>
               <small><a>{{ comment.at_created_string }}</a></small>
             </div>
-<!--            <div class="hashtags">-->
-<!--              <ng-container *ngFor="let hashtag of comment?.hashtags">-->
-<!--                <small><a [routerLink]="'/hashtag/' + hashtag">#{{ hashtag }}</a></small>-->
-<!--              </ng-container>-->
-<!--            </div>-->
+            <!--            <div class="hashtags">-->
+            <!--              <ng-container *ngFor="let hashtag of comment?.hashtags">-->
+            <!--                <small><a [routerLink]="'/hashtag/' + hashtag">#{{ hashtag }}</a></small>-->
+            <!--              </ng-container>-->
+            <!--            </div>-->
           </div>
         </div>
 

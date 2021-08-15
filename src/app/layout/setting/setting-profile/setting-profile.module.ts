@@ -10,6 +10,7 @@ import * as Hammer from "hammerjs";
 import {HAMMER_GESTURE_CONFIG, HammerGestureConfig} from "@angular/platform-browser";
 import {UserService} from "../../../../shared/services/user.service";
 import {NavigationTitleModule} from "../../../../shared/components/navigation-title/navigation-title.module";
+import {FallbackImgModule} from "../../../../shared/directives/fallback-img.module";
 
 @Injectable()
 export class HammerConfig extends HammerGestureConfig {
@@ -28,6 +29,7 @@ export class HammerConfig extends HammerGestureConfig {
     SettingProfileRoutingModule,
     ImageCropperModule,
     NavigationTitleModule,
+    FallbackImgModule,
   ],
   providers: [
     UserService,

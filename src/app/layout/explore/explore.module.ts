@@ -11,6 +11,7 @@ import {NavigationSideModule} from "../../../shared/components/navigation-side/n
 import {ConfideService} from "../../../shared/services/confide.service";
 import {PubSubModule} from "../../../shared/modules/pub-sub.module";
 import {NavigationTitleModule} from "../../../shared/components/navigation-title/navigation-title.module";
+import {FallbackImgModule} from "../../../shared/directives/fallback-img.module";
 
 @NgModule({
   declarations: [
@@ -27,6 +28,7 @@ import {NavigationTitleModule} from "../../../shared/components/navigation-title
     NavigationSideModule,
     PubSubModule,
     NavigationTitleModule,
+    FallbackImgModule,
   ],
   providers: [
     ConfideService,
