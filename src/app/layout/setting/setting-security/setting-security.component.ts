@@ -81,9 +81,7 @@ export class SettingSecurityComponent implements OnInit {
 
     Auth
       .changePassword(this.user, value.password, value.password_new)
-      .then(res => {
-        console.log(res);
-
+      .then(() => {
 
         // ganti secret Key User di Cognito berdasarkan password baru dia
         const secretKey = localStorage.getItem('user.secret_key');

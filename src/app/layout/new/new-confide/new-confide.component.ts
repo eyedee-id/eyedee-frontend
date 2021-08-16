@@ -11,7 +11,8 @@ import {Router} from '@angular/router';
 import {ConfideService} from '../../../../shared/services/confide.service';
 import {code} from '../../../../shared/libs/code';
 import {box, randomBytes, secretbox} from "tweetnacl";
-import {decodeBase64, decodeUTF8, encodeBase64, encodeUTF8} from "tweetnacl-util";
+import {decodeBase64, decodeUTF8, encodeBase64} from "tweetnacl-util";
+import {nanoid} from 'nanoid';
 
 @Component({
   selector: 'app-new-confide',
@@ -79,52 +80,54 @@ export class NewConfideComponent implements OnDestroy, AfterContentChecked {
       return;
     }
 
-    const value = this.formConfide.value;
     this.error.confide = null;
     this.loading.confide = true;
     this.formConfide.controls['text'].disable();
     this.ref.detectChanges();
 
+    let data = {};
+
     let nonce = null;
     let messageEncrypted = null;
-    if (this.formConfide.controls['is_anonim']) {
+    if (this.formConfide.controls['is_anonim'].value) {
 
       // @TODO: ini sementara, nanti akan di ganti pakai indexedDB / web crypto api
       const secretKey = localStorage.getItem('user.secret_key');
       if (secretKey) {
-        const message = {
+
+        // kalau anonim, generate id nya dari frontend, karna akan di enkripsi masuk backend
+        data = {
+          at_created: +(new Date()),
+          confide_id: nanoid(32),
+        };
+
+        const messageToEncrypt = {
+          ...data,
           text: this.formConfide.controls['text'].value,
         }
 
         nonce = encodeBase64(randomBytes(box.nonceLength));
         const cipherText = secretbox(
-          decodeUTF8(JSON.stringify(message)),
+          decodeUTF8(JSON.stringify(messageToEncrypt)),
           decodeBase64(nonce),
           decodeBase64(secretKey),
         );
 
         messageEncrypted = encodeBase64(cipherText);
-        // console.log(messageEncrypted);
-
-        // // INI buat nanti decrypt nya
-        // const cipherTextDecrypted = secretbox.open(
-        //   decodeBase64(messageEncrypted),
-        //   decodeBase64(onTimeCode),
-        //   decodeBase64(secretKey)
-        // );
-        //
-        // if (cipherTextDecrypted) {
-        //   const messageDecrypted = encodeUTF8(cipherTextDecrypted);
-        //   console.log(messageDecrypted);
-        // }
       }
     }
 
+
     this.confideService.confideNew({
-      is_anonim: this.formConfide.controls['is_anonim'].value,
-      text: this.formConfide.controls['text'].value,
-      text_encrypted: messageEncrypted,
-      nonce: nonce
+      public: {
+        ...data,
+        is_anonim: this.formConfide.controls['is_anonim'].value,
+        text: this.formConfide.controls['text'].value,
+      },
+      private: {
+        message: messageEncrypted,
+        nonce: nonce,
+      },
     })
       .subscribe(res => {
         if (res.status) {

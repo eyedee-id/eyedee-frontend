@@ -86,7 +86,6 @@ export class SettingEmailComponent implements OnInit {
   }
 
   updateEmail() {
-    console.log(this.form.invalid, this.loading.save, this.user);
     if (this.form.invalid || this.loading.save || !this.user) {
       return;
     }
@@ -99,7 +98,6 @@ export class SettingEmailComponent implements OnInit {
         'email': this.form.controls['email'].value,
       })
       .then(res => {
-        console.log(res);
         if (res === 'SUCCESS') {
           this.loading.save = false;
 

@@ -1,41 +1,34 @@
-import {
-  ChangeDetectionStrategy,
-  ChangeDetectorRef,
-  Component,
-  OnDestroy,
-  OnInit
-} from '@angular/core';
-import {fromEvent, Subject, Subscription} from 'rxjs';
-import {AuthService} from '../../../shared/services/auth.service';
-import {takeUntil} from 'rxjs/operators';
-import {ConfideService} from '../../../shared/services/confide.service';
-import {code} from '../../../shared/libs/code';
-import {ConfideModel} from '../../../shared/models/confide.model';
-import * as dayjs from 'dayjs';
+import {ChangeDetectionStrategy, ChangeDetectorRef, Component, Input, OnDestroy, OnInit} from '@angular/core';
+import {ConfideModel} from "../../../../shared/models/confide.model";
+import {fromEvent, Subject, Subscription} from "rxjs";
+import {AuthService} from "../../../../shared/services/auth.service";
+import {ConfideService} from "../../../../shared/services/confide.service";
+import * as dayjs from "dayjs";
 import 'dayjs/locale/id' // import locale
+import {code} from "../../../../shared/libs/code";
+import {takeUntil} from "rxjs/operators";
 import * as relativeTime from 'dayjs/plugin/relativeTime';
-import {Router} from "@angular/router";
-import {findAndReplaceHashTag} from "../../../shared/libs/hashtag";
-import {PubSubService} from "../../../shared/services/pub-sub.service";
-import {Howl} from 'howler';
-import {confideAnimation} from "../../../shared/animations/confide.animation";
+import {ActivatedRoute, Router} from "@angular/router";
+import {findAndReplaceHashTag} from "../../../../shared/libs/hashtag";
+import {confideAnimation} from "../../../../shared/animations/confide.animation";
+import {secretbox} from "tweetnacl";
+import {decodeBase64, encodeUTF8} from "tweetnacl-util";
 
 dayjs.extend(relativeTime);
 dayjs.locale('id');
 
-
 @Component({
-  selector: 'app-explore',
-  templateUrl: './explore.component.html',
-  styleUrls: ['./explore.component.scss'],
+  selector: 'app-user-private-confides',
+  templateUrl: './user-private-confides.component.html',
+  styleUrls: ['./user-private-confides.component.scss'],
   animations: [
     confideAnimation,
   ],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class ExploreComponent implements OnInit, OnDestroy {
+export class UserPrivateConfidesComponent implements OnInit, OnDestroy {
 
-  notificationSound: Howl | null = null;
+  @Input() userId: string | undefined = undefined;
 
   noMoreConfide = false;
   confides: Array<ConfideModel> = [];
@@ -51,31 +44,30 @@ export class ExploreComponent implements OnInit, OnDestroy {
   subscription: {
     [key: string]: null | Subscription,
   } = {
+    user_id: null,
     confides: null,
-    confides_sub: null,
   };
 
   destroy = new Subject();
   destroy$ = this.destroy.asObservable();
 
   constructor(
-    private ref: ChangeDetectorRef,
     private router: Router,
+    private route: ActivatedRoute,
+    private ref: ChangeDetectorRef,
     public authService: AuthService,
     private confideService: ConfideService,
-    private pubSubService: PubSubService,
   ) {
-
   }
 
   ngOnInit(): void {
-
-    this.notificationSound = new Howl({
-      src: ['/assets/notification.mp3'],
-      html5: true,
-    });
-
+    if (!this.userId) {
+      return;
+    }
+    // this.subscription.user_id = this.route.params.subscribe(res => {
+    //   this.userId = res.userId;
     this.getConfides(true);
+    // })
   }
 
   public trackById(index: number, item: ConfideModel) {
@@ -83,48 +75,15 @@ export class ExploreComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy() {
-    if (this.subscription.confides) {
-      this.subscription.confides.unsubscribe();
+    if (this.subscription.user_id) {
+      this.subscription.user_id.unsubscribe();
     }
 
-    if (this.subscription.confides_pub) {
-      this.subscription.confides_pub.unsubscribe();
+    if (this.subscription.confide) {
+      this.subscription.confide.unsubscribe();
     }
 
     this.destroy.next();
-  }
-
-  confidesPubSub() {
-    if (this.subscription.confides_pub) {
-      this.subscription.confides_pub.unsubscribe();
-    }
-
-    this.subscription.confides_pub = this.pubSubService.getConfides()
-      .subscribe(res => {
-        if (!res) {
-          return;
-        }
-
-        this.ref.detach();
-
-        for (const item of res) {
-          item.state = 'push';
-          item.text = findAndReplaceHashTag(item.text);
-          item.at_created_string = dayjs(item.at_created).fromNow();
-        }
-
-        this.confides.unshift(...res);
-
-        if (this.notificationSound && !this.notificationSound.playing()) {
-          this.notificationSound.play();
-        }
-
-        this.ref.reattach();
-        this.ref.detectChanges();
-
-      }, err => {
-        console.error(err);
-      });
   }
 
   initAutoScroll() {
@@ -154,13 +113,13 @@ export class ExploreComponent implements OnInit, OnDestroy {
       this.subscription.confides.unsubscribe();
     }
 
-    let params = {};
+    let params: any = {};
+    params.user_id = this.userId;
     if (!init) {
       // check latest confides id
       const latestIdx = this.confides.length - 1;
       params = {
-        at_created: this.confides[latestIdx].at_created,
-        confide_id: this.confides[latestIdx].confide_id,
+        order_id: this.confides[latestIdx].order_id,
       }
     }
 
@@ -169,7 +128,7 @@ export class ExploreComponent implements OnInit, OnDestroy {
     this.ref.markForCheck();
 
     this.subscription.confides = this.confideService
-      .confideExplore(params)
+      .confideUserPrivate(params)
       .subscribe(res => {
         if (res.status) {
 
@@ -177,13 +136,32 @@ export class ExploreComponent implements OnInit, OnDestroy {
 
           const arr2Length = res.data.length;
           if (arr2Length > 0) {
-            // Pre allocate size
-            const arr1Length = this.confides.length;
-            this.confides.length = arr1Length + arr2Length;
-            for (let i = 0; i < arr2Length; i++) {
-              res.data[i].text = findAndReplaceHashTag(res.data[i].text);
-              res.data[i].at_created_string = dayjs(res.data[i].at_created).fromNow();
-              this.confides[arr1Length + i] = res.data[i]
+
+            const secretKey = localStorage.getItem('user.secret_key');
+            if (secretKey) {
+
+              // Pre allocate size
+              const arr1Length = this.confides.length;
+              // this.confides.length = arr1Length + arr2Length;
+
+              for (let i = 0; i < arr2Length; i++) {
+
+                if (res.data[i] && res.data[i].message && res.data[i].nonce) {
+                  const cipherTextDecrypted = secretbox.open(
+                    decodeBase64(res.data[i].message as string),
+                    decodeBase64(res.data[i].nonce as string),
+                    decodeBase64(secretKey)
+                  );
+
+                  if (cipherTextDecrypted) {
+                    const messageDecrypted = JSON.parse(encodeUTF8(cipherTextDecrypted));
+
+                    messageDecrypted.text = findAndReplaceHashTag(messageDecrypted.text);
+                    messageDecrypted.at_created_string = dayjs(messageDecrypted.at_created).fromNow();
+                    this.confides[arr1Length + i] = messageDecrypted;
+                  }
+                }
+              }
             }
           }
 
@@ -202,8 +180,6 @@ export class ExploreComponent implements OnInit, OnDestroy {
 
         if (init) {
           this.initAutoScroll();
-
-          this.confidesPubSub();
         }
       }, err => {
         this.error.confides = err.message ?? code.error.internal_server_error;

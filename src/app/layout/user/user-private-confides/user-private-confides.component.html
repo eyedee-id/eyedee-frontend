@@ -2,6 +2,9 @@
   <ng-container *ngFor="let confide of confides">
     <div class="confide" [@confideAnimation]>
       <div class="width-100">
+
+        <span><i>anonim</i></span>
+
         <div class="user-content">
           <div>
             <div><p (click)="onClickUserText($event)" [innerHTML]="confide.text"></p></div>
@@ -9,10 +12,6 @@
           <div class="footer">
             <div>
               <small><a [routerLink]="'/confide/' + confide.confide_id">{{ confide.at_created_string }}</a></small>
-              <ng-container *ngIf="!confide.is_anonim">
-                <small><a [routerLink]="'/confide/' + confide.confide_id">{{ confide.total_comment }}
-                  komentar</a></small>
-              </ng-container>
             </div>
           </div>
         </div>

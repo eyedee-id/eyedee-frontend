@@ -63,7 +63,10 @@
       <div class="nav-sticky">
         <div>
           <div class="nav">
-            <a [ngClass]="{'active': tabActive === 'confides'}" (click)="onChangeTab('confides')">curhatan</a>
+            <a [ngClass]="{'active': tabActive === 'confides'}" (click)="onChangeTab('confides')">publik</a>
+            <ng-container *ngIf="userCanEdit">
+              <a [ngClass]="{'active': tabActive === 'private_confides'}" (click)="onChangeTab('private_confides')">anonim</a>
+            </ng-container>
             <!--  @TODO: next feature (user: mentions)-->
             <!--        <a routerLink="mentions" routerLinkActive="active">mention</a>-->
           </div>
@@ -73,6 +76,9 @@
       <div>
         <ng-container *ngIf="tabActive === 'confides'">
           <app-user-confides [userId]="user.user_id"></app-user-confides>
+        </ng-container>
+        <ng-container *ngIf="tabActive === 'private_confides' && userCanEdit">
+          <app-user-private-confides [userId]="user.user_id"></app-user-private-confides>
         </ng-container>
       </div>
     </div>

@@ -38,7 +38,7 @@ export class PubSubService {
   }
 
   async startPubSub() {
-    console.log('starting PubSub');
+    console.debug('starting PubSub');
 
     const currentCredentials = await Auth.currentCredentials();
     const currentUser = await Auth.currentAuthenticatedUser();
@@ -59,7 +59,7 @@ export class PubSubService {
       // keepAliveInterval: 60 * 60,
       cleanSession: false,
       onSuccess: () => {
-        console.log('konek');
+        console.debug('konek');
 
         client.subscribe('/confides');
         if (currentUser?.attributes?.sub) {
@@ -67,12 +67,12 @@ export class PubSubService {
         }
       },
       onFailure: (e: any) => {
-        console.log('diskonek', e);
+        console.debug('diskonek', e);
       }
     };
 
     client.onConnectionLost = () => {
-      console.log('diskonek');
+      console.debug('diskonek');
     };
 
     client.onMessageArrived = (message) => {

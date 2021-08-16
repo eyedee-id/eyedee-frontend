@@ -9,6 +9,7 @@ import {UserMentionsComponent} from './user-mentions/user-mentions.component';
 import {ConfideService} from "../../../shared/services/confide.service";
 import {UserService} from "../../../shared/services/user.service";
 import {FallbackImgModule} from "../../../shared/directives/fallback-img.module";
+import { UserPrivateConfidesComponent } from './user-private-confides/user-private-confides.component';
 
 
 @NgModule({
@@ -16,6 +17,7 @@ import {FallbackImgModule} from "../../../shared/directives/fallback-img.module"
     UserComponent,
     UserConfidesComponent,
     UserMentionsComponent,
+    UserPrivateConfidesComponent,
   ],
   imports: [
     CommonModule,

@@ -28,7 +28,7 @@ export class UserComponent implements OnInit, OnDestroy {
   user: UserModel | null = null;
   userCanEdit = false;
 
-  tabActive: 'confides' | 'mentions' = 'confides';
+  tabActive: 'confides' | 'private_confides' | 'mentions' = 'confides';
 
   loading = {
     user: false,
@@ -125,7 +125,7 @@ export class UserComponent implements OnInit, OnDestroy {
       });
   }
 
-  onChangeTab(tab: 'confides' | 'mentions') {
+  onChangeTab(tab: 'confides' | 'private_confides' | 'mentions') {
     this.tabActive = tab;
     this.ref.detectChanges();
   }

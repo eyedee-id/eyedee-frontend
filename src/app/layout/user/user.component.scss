@@ -230,6 +230,7 @@
       flex: 1;
       padding: 1rem;
       text-align: center;
+      cursor: pointer;
 
       &.active {
         color: $color-primary;

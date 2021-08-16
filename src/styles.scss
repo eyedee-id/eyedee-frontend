@@ -319,9 +319,13 @@ body {
       display: flex;
       flex-direction: column-reverse;
 
-      button {
-        margin: 1rem 0 3rem;
-        width: 100%;
+      & > div:first-child {
+        flex-direction: column;
+
+        button {
+          margin: 1rem 0 3rem;
+          width: 100%;
+        }
       }
     }
   }
