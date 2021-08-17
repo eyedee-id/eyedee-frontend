@@ -30,10 +30,10 @@ export class AppComponent implements OnInit, AfterViewInit {
     public authService: AuthService,
 
     // service workers
-    // private swCheckForUpdate: CheckForUpdateService,
-    // private swHandleUnrecoverable: HandleUnrecoverableStateService,
-    // private swLog: LogUpdateService,
-    // private swPrompt: PromptUpdateService,
+    private swCheckForUpdate: CheckForUpdateService,
+    private swHandleUnrecoverable: HandleUnrecoverableStateService,
+    private swLog: LogUpdateService,
+    private swPrompt: PromptUpdateService,
   ) {
 
     const theme = localStorage.getItem('client.theme');

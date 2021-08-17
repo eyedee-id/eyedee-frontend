@@ -118,13 +118,16 @@ export class PubSubService {
     );
 
     const connectOptions = {
-      useSSL: true,
+      // useSSL: true,
       timeout: 3,
       cleanSession: false,
       onSuccess: () => {
         console.debug("[ws] connected");
         this._clientStatus.next(true);
       },
+      onFailure: (e: any) => {
+        console.debug("[ws] failure", e);
+      }
     };
 
     const _client = new Client(endpoint, this.clientId);
