@@ -51,6 +51,7 @@ export class ExploreComponent implements OnInit, OnDestroy {
   subscription: {
     [key: string]: null | Subscription,
   } = {
+    pub_sub: null,
     confides: null,
     confides_sub: null,
   };
@@ -70,6 +71,14 @@ export class ExploreComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
 
+    this.subscription.pub_sub = this.pubSubService.clientStatus()
+      .subscribe(res => {
+        console.log(res);
+        if (res) {
+          this.pubSubService.subscribeTopics(['/confides']);
+        }
+      });
+
     this.notificationSound = new Howl({
       src: ['/assets/notification.mp3'],
       html5: true,
@@ -83,6 +92,10 @@ export class ExploreComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy() {
+    if (this.subscription.pub_sub) {
+      this.subscription.pub_sub.unsubscribe();
+    }
+
     if (this.subscription.confides) {
       this.subscription.confides.unsubscribe();
     }
@@ -90,6 +103,8 @@ export class ExploreComponent implements OnInit, OnDestroy {
     if (this.subscription.confides_pub) {
       this.subscription.confides_pub.unsubscribe();
     }
+
+    this.pubSubService.unsubscribeTopics(['/confides']);
 
     this.destroy.next();
   }

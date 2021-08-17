@@ -1,94 +1,93 @@
 import {Injectable} from '@angular/core';
-import {Observable, Subject} from 'rxjs';
+import {BehaviorSubject, Observable, Subject} from 'rxjs';
 
-import {Auth} from "@aws-amplify/auth";
-import {Client} from 'paho-mqtt';
-import * as CryptoJS from 'crypto-js';
+import {Client, Message} from 'paho-mqtt';
 
 import dayjs from "dayjs";
 import {ConfideModel} from "../models/confide.model";
+import {nanoid} from "nanoid";
+import {SigV4Utils} from '../libs/sig-v4';
+import {ApiService} from "./api.service";
 
 const utc = require('dayjs/plugin/utc')
 dayjs.extend(utc)
 
-
 @Injectable()
 export class PubSubService {
 
-  SigV4Utils = {
-    sign: (key: any, message: string) => {
-      const hash = CryptoJS.HmacSHA256(message, key);
-      return hash.toString(CryptoJS.enc.Hex);
-    },
-    sha256: (message: string) => {
-      const hash2 = CryptoJS.SHA256(message);
-      return hash2.toString(CryptoJS.enc.Hex);
-    },
-    getSignatureKey: (key: string, dateStamp: string, regionName: string, serviceName: string) => {
-      const kDate = CryptoJS.HmacSHA256(dateStamp, 'AWS4' + key);
-      const kRegion = CryptoJS.HmacSHA256(regionName, kDate);
-      const kService = CryptoJS.HmacSHA256(serviceName, kRegion);
-      return CryptoJS.HmacSHA256('aws4_request', kService);
-    }
-  }
+  private readonly endpoint = 'a6os1sj5oe0re-ats.iot.ap-southeast-1.amazonaws.com';
+  private readonly clientId: string;
+
+  private _clientStatus = new BehaviorSubject<boolean>(false);
+  private client: Client | null = null;
+  private credentials: { accessKeyId: string, secretAccessKey: string, sessionToken: string } = {
+    sessionToken: '',
+    secretAccessKey: '',
+    accessKeyId: ''
+  };
 
   private confides = new Subject<Array<ConfideModel> | null>();
 
-  constructor() {
+  constructor(
+    private apiService: ApiService,
+  ) {
+    this.clientId = nanoid(32);
   }
 
-  async startPubSub() {
-    console.debug('starting PubSub');
+  updateCredentials(credentials: { accessKeyId: string, secretAccessKey: string, sessionToken: string }) {
+    this.credentials = credentials;
+  }
 
-    const currentCredentials = await Auth.currentCredentials();
-    const currentUser = await Auth.currentAuthenticatedUser();
+  clientStatus() {
+    return this._clientStatus.asObservable();
+  }
 
-    const endpoint = await this.createEndpoint(
-      'ap-southeast-1',
-      'a6os1sj5oe0re-ats.iot.ap-southeast-1.amazonaws.com',
-      currentCredentials.accessKeyId,
-      currentCredentials.secretAccessKey,
-      currentCredentials.sessionToken,
-    );
+  start() {
+    if (this.client && this.client.isConnected()) {
+      return;
+    }
 
-    const clientId = Math.random().toString(36).substring(7);
-    const client = new Client(endpoint, clientId);
-    const connectOptions = {
-      useSSL: true,
-      // timeout: 60 * 60 * 24,
-      // keepAliveInterval: 60 * 60,
-      cleanSession: false,
-      onSuccess: () => {
-        console.debug('konek');
+    console.debug("[ws] start");
+    this.client = this.getClient(this.credentials);
 
-        client.subscribe('/confides');
-        if (currentUser?.attributes?.sub) {
-          client.subscribe(`/users/${currentUser?.attributes?.sub}`)
-        }
-      },
-      onFailure: (e: any) => {
-        console.debug('diskonek', e);
-      }
+    this.client.onConnectionLost = (e) => {
+      console.debug('[ws] disconnected', e);
+      this._clientStatus.next(false);
+
+      // coba buat reconnect
+      this.start();
     };
 
-    client.onConnectionLost = () => {
-      console.debug('diskonek');
-    };
-
-    client.onMessageArrived = (message) => {
-
+    this.client.onMessageArrived = (message: Message) => {
       const payload = JSON.parse(message.payloadString);
-
       if (message.destinationName === '/confides') {
         this.sendConfides(payload);
       }
     }
+  }
 
-    client.connect(connectOptions);
+  stop() {
+    if (!this.client) {
+      return;
+    }
+
+    console.debug("[ws] stop");
+    this.client.disconnect();
+  }
+
+  subscribeTopics(topics: Array<string>) {
+    for (let topic of topics) {
+      this.client?.subscribe(topic);
+    }
+  }
+
+  unsubscribeTopics(topics: Array<string>) {
+    for (let topic of topics) {
+      this.client?.unsubscribe(topic);
+    }
   }
 
   sendConfides(confides: any) {
-    // reroute topic
     this.confides.next(confides);
   }
 
@@ -96,7 +95,36 @@ export class PubSubService {
     return this.confides.asObservable();
   }
 
-  async createEndpoint(regionName: string, awsIotEndpoint: string, accessKey: string, secretKey: string, sessionToken: string) {
+  iotPolicyAttachConnect(data: { identity_id: string }) {
+    return this.apiService.post('v1/auth/iot/policy/', `/attach-connect`, data);
+  }
+
+  private getClient(credentials: { accessKeyId: string, secretAccessKey: string, sessionToken: string }): Client {
+    const endpoint = this.createEndpoint(
+      'ap-southeast-1',
+      this.endpoint,
+      credentials.accessKeyId,
+      credentials.secretAccessKey,
+      credentials.sessionToken,
+    );
+
+    const connectOptions = {
+      useSSL: true,
+      timeout: 3,
+      cleanSession: false,
+      onSuccess: () => {
+        console.debug("[ws] connected");
+        this._clientStatus.next(true);
+      },
+    };
+
+    const _client = new Client(endpoint, this.clientId);
+    _client.connect(connectOptions);
+
+    return _client;
+  }
+
+  private createEndpoint(regionName: string, awsIotEndpoint: string, accessKey: string, secretKey: string, sessionToken: string) {
     // @ts-ignore
     const time = dayjs().utc();
     const dateStamp = time.format('YYYYMMDD');
@@ -114,11 +142,11 @@ export class PubSubService {
     canonicalQuerystring += '&X-Amz-SignedHeaders=host';
 
     const canonicalHeaders = 'host:' + host + '\n';
-    const payloadHash = this.SigV4Utils.sha256('');
+    const payloadHash = SigV4Utils.sha256('');
     const canonicalRequest = method + '\n' + canonicalUri + '\n' + canonicalQuerystring + '\n' + canonicalHeaders + '\nhost\n' + payloadHash;
-    const stringToSign = algorithm + '\n' + amzdate + '\n' + credentialScope + '\n' + this.SigV4Utils.sha256(canonicalRequest);
-    const signingKey = this.SigV4Utils.getSignatureKey(secretKey, dateStamp, region, service);
-    const signature = this.SigV4Utils.sign(signingKey, stringToSign);
+    const stringToSign = algorithm + '\n' + amzdate + '\n' + credentialScope + '\n' + SigV4Utils.sha256(canonicalRequest);
+    const signingKey = SigV4Utils.getSignatureKey(secretKey, dateStamp, region, service);
+    const signature = SigV4Utils.sign(signingKey, stringToSign);
 
     canonicalQuerystring += '&X-Amz-Signature=' + signature;
     canonicalQuerystring += '&X-Amz-Security-Token=' + encodeURIComponent(sessionToken);

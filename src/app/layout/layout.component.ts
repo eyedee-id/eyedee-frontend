@@ -1,4 +1,4 @@
-import {ApplicationRef, ChangeDetectionStrategy, Component, OnInit} from '@angular/core';
+import {ApplicationRef, ChangeDetectionStrategy, Component, OnDestroy, OnInit} from '@angular/core';
 import {PubSubService} from "../../shared/services/pub-sub.service";
 import {Subscription} from "rxjs";
 
@@ -6,7 +6,6 @@ import dayjs from "dayjs";
 
 const utc = require('dayjs/plugin/utc')
 dayjs.extend(utc)
-
 
 import {Auth} from '@aws-amplify/auth';
 
@@ -16,13 +15,7 @@ import {Auth} from '@aws-amplify/auth';
   styleUrls: ['./layout.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class LayoutComponent implements OnInit {
-
-  subscription: {
-    [key: string]: null | Subscription
-  } = {
-    app_is_stable: null,
-  };
+export class LayoutComponent implements OnInit, OnDestroy {
 
   constructor(
     private appRef: ApplicationRef,
@@ -32,14 +25,27 @@ export class LayoutComponent implements OnInit {
 
   ngOnInit() {
     Auth.currentCredentials()
-      .then(res => {
+      .then(async res => {
         if (!res.identityId) {
           return;
         }
 
-        this.pubSubService.startPubSub()
-          .then(() => {
-          });
+        try {
+          await this.pubSubService
+            .iotPolicyAttachConnect({
+              identity_id: res.identityId,
+            })
+            .toPromise();
+
+          this.pubSubService.updateCredentials(res);
+          this.pubSubService.start();
+        } catch (e) {
+          console.error(e);
+        }
       })
+  }
+
+  ngOnDestroy() {
+    this.pubSubService.stop();
   }
 }
