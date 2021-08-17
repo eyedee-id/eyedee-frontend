@@ -64,10 +64,11 @@ export class PubSubService {
         this.sendConfides(payload);
       }
     }
+
   }
 
   stop() {
-    if (!this.client) {
+    if (!this.client || !this.client.isConnected()) {
       return;
     }
 
@@ -76,12 +77,20 @@ export class PubSubService {
   }
 
   subscribeTopics(topics: Array<string>) {
+    if (!this.client || !this.client.isConnected()) {
+      return;
+    }
+
     for (let topic of topics) {
       this.client?.subscribe(topic);
     }
   }
 
   unsubscribeTopics(topics: Array<string>) {
+    if (!this.client || !this.client.isConnected()) {
+      return;
+    }
+
     for (let topic of topics) {
       this.client?.unsubscribe(topic);
     }
@@ -96,10 +105,10 @@ export class PubSubService {
   }
 
   iotPolicyAttachConnect(data: { identity_id: string }) {
-    return this.apiService.post('v1/auth/iot/policy/', `/attach-connect`, data);
+    return this.apiService.post('v1/auth/iot/policy/', `attach-connect`, data);
   }
 
-  private getClient(credentials: { accessKeyId: string, secretAccessKey: string, sessionToken: string }): Client {
+  getClient(credentials: { accessKeyId: string, secretAccessKey: string, sessionToken: string }): Client {
     const endpoint = this.createEndpoint(
       'ap-southeast-1',
       this.endpoint,
@@ -124,7 +133,7 @@ export class PubSubService {
     return _client;
   }
 
-  private createEndpoint(regionName: string, awsIotEndpoint: string, accessKey: string, secretKey: string, sessionToken: string) {
+  createEndpoint(regionName: string, awsIotEndpoint: string, accessKey: string, secretKey: string, sessionToken: string) {
     // @ts-ignore
     const time = dayjs().utc();
     const dateStamp = time.format('YYYYMMDD');

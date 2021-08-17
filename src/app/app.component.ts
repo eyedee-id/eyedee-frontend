@@ -8,6 +8,10 @@ import {
   Renderer2
 } from '@angular/core';
 import {AuthService} from '../shared/services/auth.service';
+import {CheckForUpdateService} from "../shared/services/service-worker/check-for-update.service";
+import {HandleUnrecoverableStateService} from "../shared/services/service-worker/handle-unrecoverable-state.service";
+import {LogUpdateService} from "../shared/services/service-worker/log-update.service";
+import {PromptUpdateService} from "../shared/services/service-worker/prompt-update.service";
 
 @Component({
   selector: 'app-root',
@@ -24,6 +28,12 @@ export class AppComponent implements OnInit, AfterViewInit {
     private ref: ChangeDetectorRef,
     private renderer: Renderer2,
     public authService: AuthService,
+
+    // service workers
+    // private swCheckForUpdate: CheckForUpdateService,
+    // private swHandleUnrecoverable: HandleUnrecoverableStateService,
+    // private swLog: LogUpdateService,
+    // private swPrompt: PromptUpdateService,
   ) {
 
     const theme = localStorage.getItem('client.theme');

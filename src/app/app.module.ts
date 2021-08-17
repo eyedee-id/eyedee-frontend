@@ -11,6 +11,10 @@ import {NavigationTopModule} from '../shared/components/navigation-top/navigatio
 import {BrowserAnimationsModule} from "@angular/platform-browser/animations";
 import {PubSubModule} from "../shared/modules/pub-sub.module";
 import { NotFoundComponent } from './not-found/not-found.component';
+import {CheckForUpdateService} from "../shared/services/service-worker/check-for-update.service";
+import {HandleUnrecoverableStateService} from "../shared/services/service-worker/handle-unrecoverable-state.service";
+import {LogUpdateService} from "../shared/services/service-worker/log-update.service";
+import {PromptUpdateService} from "../shared/services/service-worker/prompt-update.service";
 
 
 @NgModule({
@@ -33,7 +37,12 @@ import { NotFoundComponent } from './not-found/not-found.component';
     PubSubModule.forRoot(),
     NavigationTopModule,
   ],
-  providers: [],
+  providers: [
+    CheckForUpdateService,
+    HandleUnrecoverableStateService,
+    LogUpdateService,
+    PromptUpdateService,
+  ],
   bootstrap: [AppComponent],
 })
 export class AppModule {
