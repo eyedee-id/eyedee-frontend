@@ -125,6 +125,7 @@ export class NewConfideComponent implements OnDestroy, AfterContentChecked {
         text: this.formConfide.controls['text'].value,
       },
       private: {
+        type: 'secretbox',
         message: messageEncrypted,
         nonce: nonce,
       },

@@ -9,6 +9,10 @@ const routes: Routes = [
     component: LayoutComponent,
     children: [
       {
+        path: 'to',
+        loadChildren: () => import('./confide-to-user/confide-to-user.module').then(m => m.ConfideToUserModule),
+      },
+      {
         path: 'account',
         loadChildren: () => import('./account/account.module').then(m => m.AccountModule),
         canActivate: [AuthGuard],

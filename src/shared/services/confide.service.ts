@@ -18,6 +18,10 @@ export class ConfideService {
     return this.apiService.put(this.serviceV1, '', data);
   }
 
+  confideNewAnonim(data: any) {
+    return this.apiService.put('v1/anonim/confide', '', data, false);
+  }
+
   confideDetail(confideId: string): Observable<ApiModel<ConfideModel>> {
     return this.apiService.get(this.serviceV1, `/${confideId}`);
   }

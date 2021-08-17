@@ -15,6 +15,10 @@ export class UserService {
     return this.apiService.get(this.serviceV1, `/${username}`);
   }
 
+  userGetAnonim(username: string) {
+    return this.apiService.get('v1/anonim/user', `/${username}`, {}, false);
+  }
+
   userUpdateProfile(property: string, params: any) {
     if (property === 'name_') {
       property = 'name';

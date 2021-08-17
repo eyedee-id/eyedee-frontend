@@ -1,13 +1,13 @@
 @import "../../../shared/styles/Color";
 
-
 .user-profile {
 
   overflow: hidden;
   position: relative;
+  margin-bottom: 1rem;
 
   @media(min-width: 80rem) {
-    margin: 0;
+    margin: 0 0 1rem;
   }
 
   .banner-container {
@@ -192,6 +192,7 @@
     text-align: center;
     border-left: 0.1rem solid $color-quinary;
     border-right: 0.1rem solid $color-quinary;
+    border-bottom: 0.1rem solid $color-quinary;
 
     @media(min-width: 80rem) {
       min-height: 10rem;
@@ -203,52 +204,7 @@
       white-space: pre-wrap;
     }
   }
-
 }
-
-.user-contents {
-  border-top: .5px solid $color-quinary;
-
-  @media(min-width: 80rem) {
-    margin: 0;
-  }
-
-  .nav-sticky {
-    top: 0;
-    position: sticky;
-    background-color: $color-initial;
-  }
-
-  .nav {
-    display: flex;
-    background: $color-tertiary;
-    border: 0.1rem solid $color-quinary;
-    border-top: none;
-
-
-    a {
-      flex: 1;
-      padding: 1rem;
-      text-align: center;
-      cursor: pointer;
-
-      &.active {
-        color: $color-primary;
-        font-weight: bold;
-        border-bottom: 0.1rem solid $color-primary;
-      }
-    }
-  }
-
-  & > div:last-child {
-    padding: 2rem 0;
-
-    //@media(min-width: 80rem) {
-    //  padding: 2rem 0;
-    //}
-  }
-}
-
 
 .user-not-found {
   display: flex;

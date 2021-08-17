@@ -28,23 +28,35 @@ export class ApiService {
   } = {}): Observable<any> {
     const apiUrl = this.generateApiUrl(service, url);
 
-    return fromPromise(Auth.currentSession())
-      .pipe(switchMap(res => {
+    if (auth) {
+      return fromPromise(Auth.currentSession())
+        .pipe(switchMap(res => {
 
-          const $params = new HttpParams({
-            fromObject: params,
-          });
+            const $params = new HttpParams({
+              fromObject: params,
+            });
 
-          // @ts-ignoredd
-          return this.http.get<any>(apiUrl, {
-            headers: new HttpHeaders({
-              'Authorization': 'Bearer ' + res.getIdToken().getJwtToken(),
-            }),
-            params: $params,
-            ...options,
-          });
-        }),
-      );
+            // @ts-ignored
+            return this.http.get<any>(apiUrl, {
+              headers: new HttpHeaders({
+                'Authorization': 'Bearer ' + res.getIdToken().getJwtToken(),
+              }),
+              params: $params,
+              ...options,
+            });
+          }),
+        );
+    }
+
+    const $params = new HttpParams({
+      fromObject: params,
+    });
+
+    // @ts-ignored
+    return this.http.get<any>(apiUrl, {
+      params: $params,
+      ...options,
+    });
   }
 
   post(service: string, url: string, body: any = {}, auth = true, options: {
@@ -80,15 +92,19 @@ export class ApiService {
 
   put(service: string, url: string, body: any = {}, auth = true): Observable<any> {
     const apiUrl = this.generateApiUrl(service, url);
-    return fromPromise(Auth.currentSession())
-      .pipe(switchMap(res => {
-          return this.http.put<any>(apiUrl, body, {
-            headers: new HttpHeaders({
-              'Authorization': 'Bearer ' + res.getIdToken().getJwtToken(),
-            }),
-          });
-        }),
-      );
+    if (auth) {
+      return fromPromise(Auth.currentSession())
+        .pipe(switchMap(res => {
+            return this.http.put<any>(apiUrl, body, {
+              headers: new HttpHeaders({
+                'Authorization': 'Bearer ' + res.getIdToken().getJwtToken(),
+              }),
+            });
+          }),
+        );
+    }
+
+    return this.http.put<any>(apiUrl, body, {});
   }
 
   delete(service: string, url: string) {

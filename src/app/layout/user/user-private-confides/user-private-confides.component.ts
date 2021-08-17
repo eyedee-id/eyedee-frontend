@@ -13,6 +13,7 @@ import {findAndReplaceHashTag} from "../../../../shared/libs/hashtag";
 import {confideAnimation} from "../../../../shared/animations/confide.animation";
 import {secretbox} from "tweetnacl";
 import {decodeBase64, encodeUTF8} from "tweetnacl-util";
+import {sealBoxOpen} from "../../../../shared/libs/seal";
 
 dayjs.extend(relativeTime);
 dayjs.locale('id');
@@ -137,29 +138,46 @@ export class UserPrivateConfidesComponent implements OnInit, OnDestroy {
           const arr2Length = res.data.length;
           if (arr2Length > 0) {
 
+            const publicKey = localStorage.getItem('user.public_key');
             const secretKey = localStorage.getItem('user.secret_key');
-            if (secretKey) {
-
-              // Pre allocate size
-              const arr1Length = this.confides.length;
-              // this.confides.length = arr1Length + arr2Length;
-
+            if (publicKey && secretKey) {
               for (let i = 0; i < arr2Length; i++) {
+                if (res.data[i] && res.data[i].message) {
+                  let cipherTextDecrypted = null;
 
-                if (res.data[i] && res.data[i].message && res.data[i].nonce) {
-                  const cipherTextDecrypted = secretbox.open(
-                    decodeBase64(res.data[i].message as string),
-                    decodeBase64(res.data[i].nonce as string),
-                    decodeBase64(secretKey)
-                  );
+                  if (res.data[i].type === 'sealedbox') {
+                    cipherTextDecrypted = sealBoxOpen(
+                      decodeBase64(res.data[i].message as string),
+                      decodeBase64(publicKey),
+                      decodeBase64(secretKey)
+                    );
+
+                  } else {
+                    cipherTextDecrypted = secretbox.open(
+                      decodeBase64(res.data[i].message as string),
+                      decodeBase64(res.data[i].nonce as string),
+                      decodeBase64(secretKey)
+                    );
+                  }
 
                   if (cipherTextDecrypted) {
                     const messageDecrypted = JSON.parse(encodeUTF8(cipherTextDecrypted));
 
                     messageDecrypted.text = findAndReplaceHashTag(messageDecrypted.text);
                     messageDecrypted.at_created_string = dayjs(messageDecrypted.at_created).fromNow();
-                    this.confides[arr1Length + i] = messageDecrypted;
+
+                    if (res.data[i].type === 'sealedbox') {
+                      messageDecrypted.type = 'sealedbox';
+                    }
+
+                    this.confides.push(messageDecrypted);
                   }
+
+                } else if (res.data[i] && res.data[i].text) {
+                  // data data lama
+                  res.data[i].text = findAndReplaceHashTag(res.data[i].text);
+                  res.data[i].at_created_string = dayjs(res.data[i].at_created).fromNow();
+                  this.confides.push(res.data[i]);
                 }
               }
             }

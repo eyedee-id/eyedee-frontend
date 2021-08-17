@@ -1,3 +1,9 @@
+<ng-container *ngIf="confides.length > 0">
+  <h5>
+    ini curhatan doi yang ditujukan ke publik!
+  </h5>
+</ng-container>
+
 <div class="confides" [@list]="confides.length">
   <ng-container *ngFor="let confide of confides">
     <div class="confide" [@confideAnimation]>

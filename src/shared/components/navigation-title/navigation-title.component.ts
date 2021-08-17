@@ -12,7 +12,7 @@ export class NavigationTitleComponent {
   title: string | null = null;
 
   @Input()
-  routerLink: string | null = null;
+  aRouterLink: string | null = null;
 
   constructor() {
   }

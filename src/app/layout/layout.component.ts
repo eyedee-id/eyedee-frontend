@@ -33,11 +33,13 @@ export class LayoutComponent implements OnInit {
   ngOnInit() {
     Auth.currentCredentials()
       .then(res => {
-        console.debug(res.identityId);
-      })
+        if (!res.identityId) {
+          return;
+        }
 
-    this.pubSubService.startPubSub()
-      .then(() => {
-      });
+        this.pubSubService.startPubSub()
+          .then(() => {
+          });
+      })
   }
 }

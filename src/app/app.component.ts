@@ -17,7 +17,7 @@ import {AuthService} from '../shared/services/auth.service';
 })
 export class AppComponent implements OnInit, AfterViewInit {
 
-  theme = 'light';
+  theme = 'dark';
 
   constructor(
     @Inject(DOCUMENT) private document: Document,

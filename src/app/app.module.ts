@@ -10,12 +10,14 @@ import {environment} from '../environments/environment';
 import {NavigationTopModule} from '../shared/components/navigation-top/navigation-top.module';
 import {BrowserAnimationsModule} from "@angular/platform-browser/animations";
 import {PubSubModule} from "../shared/modules/pub-sub.module";
+import { NotFoundComponent } from './not-found/not-found.component';
 
 
 @NgModule({
   declarations: [
     AppComponent,
     HomeComponent,
+    NotFoundComponent,
   ],
   imports: [
     BrowserModule,

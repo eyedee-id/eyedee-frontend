@@ -16,6 +16,7 @@ export interface ConfideModel {
   is_anonim?: boolean;
 
   order_id?: number;
+  type?: 'secretbox' | 'sealedbox';
   message?: string;
   nonce?: string;
 }

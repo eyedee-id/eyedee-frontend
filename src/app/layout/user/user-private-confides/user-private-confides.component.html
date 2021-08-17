@@ -1,9 +1,16 @@
+<h5>
+  ini curhatan anonim dari lo dan dari anonim buat lo!
+  <h6><i>semua data disini ter-<strong>enkripsi</strong> dan hanya bisa dibuka lo aja!</i></h6>
+</h5>
+
 <div class="confides" [@list]="confides.length">
   <ng-container *ngFor="let confide of confides">
     <div class="confide" [@confideAnimation]>
       <div class="width-100">
 
-        <span><i>anonim</i></span>
+        <ng-container *ngIf="confide?.type === 'sealedbox'">
+          <span><i>dari anonim</i></span>
+        </ng-container>
 
         <div class="user-content">
           <div>

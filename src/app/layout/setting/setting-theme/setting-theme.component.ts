@@ -8,7 +8,7 @@ import {ChangeDetectionStrategy, Component, OnInit} from '@angular/core';
 })
 export class SettingThemeComponent implements OnInit {
 
-  theme = 'light';
+  theme = 'dark';
 
   constructor() {
   }
