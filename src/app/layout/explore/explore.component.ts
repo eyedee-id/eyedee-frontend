@@ -73,7 +73,6 @@ export class ExploreComponent implements OnInit, OnDestroy {
 
     this.subscription.pub_sub = this.pubSubService.clientStatus()
       .subscribe(res => {
-        console.log(res);
         if (res) {
           this.pubSubService.subscribeTopics(['/confides']);
         }

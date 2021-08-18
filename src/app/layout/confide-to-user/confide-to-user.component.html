@@ -1,31 +1,19 @@
 <ng-container *ngIf="!loading.user; else templateLoading">
   <ng-container *ngIf="user; else templateUserNotFound">
-    <div class="user-profile">
-      <div class="banner-container">
-        <div class="banner" #userBanner></div>
-        <div class="fade"></div>
-        <div class="user-header">
-          <div class="name">{{ user.name_ || user.username }}</div>
-          <div class="username">@{{ user.username }}</div>
-        </div>
-      </div>
-      <a class="avatar">
+
+    <div class="card">
+      <div class="banner" #userBanner>
         <img class="inner" [src]="user.avatar_url" fallback="/assets/images/user.png" decoding="async"
              alt="photo profile">
-
-        <!--  @TODO: next feature (user: online status)-->
-        <!--    <div class="indicator online"></div>-->
-      </a>
-      <div class="user-header">
-        <div class="name">{{ user.name_ || user.username }}</div>
-        <div class="username">@{{ user.username }}</div>
       </div>
-
+      <div class="menu">
+      </div>
+      <h3 class="name">{{ user.name_ || user.username }}</h3>
+      <div class="username">@{{ user.username }}</div>
       <div class="bio">
         <p [innerHTML]="user.bio" (click)="onClickUserBio($event)">
         </p>
       </div>
-
     </div>
 
     <app-navigation-title title="jujur ke doi" [aRouterLink]="'/' + username"></app-navigation-title>
