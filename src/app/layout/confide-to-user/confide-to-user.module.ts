@@ -7,7 +7,7 @@ import {NavigationTitleModule} from "../../../shared/components/navigation-title
 import {ReactiveFormsModule} from "@angular/forms";
 import {ConfideService} from "../../../shared/services/confide.service";
 import {UserService} from "../../../shared/services/user.service";
-import {FallbackImgModule} from "../../../shared/directives/fallback-img.module";
+import {FallbackImgModule} from "../../../shared/directives/fallback-img/fallback-img.module";
 
 
 @NgModule({

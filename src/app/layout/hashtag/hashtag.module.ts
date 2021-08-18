@@ -6,7 +6,7 @@ import {HashtagComponent} from './hashtag.component';
 import {NavigationBottomModule} from '../../../shared/components/navigation-bottom/navigation-bottom.module';
 import {ConfideService} from "../../../shared/services/confide.service";
 import {NavigationTitleModule} from "../../../shared/components/navigation-title/navigation-title.module";
-import {FallbackImgModule} from "../../../shared/directives/fallback-img.module";
+import {FallbackImgModule} from "../../../shared/directives/fallback-img/fallback-img.module";
 
 
 @NgModule({

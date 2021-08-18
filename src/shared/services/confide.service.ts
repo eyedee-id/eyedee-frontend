@@ -1,11 +1,13 @@
 import {Injectable} from '@angular/core';
 import {ApiService} from './api.service';
-import {Observable} from 'rxjs';
+import {BehaviorSubject, Observable} from 'rxjs';
 import {ConfideModel} from '../models/confide.model';
 import {ApiModel} from '../models/api.model';
 
 @Injectable()
 export class ConfideService {
+
+  public confides = new BehaviorSubject<Array<ConfideModel>>([]);
 
   private serviceV1 = 'v1/confide';
 

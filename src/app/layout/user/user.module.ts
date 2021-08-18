@@ -8,7 +8,7 @@ import {UserConfidesComponent} from './user-confides/user-confides.component';
 import {UserMentionsComponent} from './user-mentions/user-mentions.component';
 import {ConfideService} from "../../../shared/services/confide.service";
 import {UserService} from "../../../shared/services/user.service";
-import {FallbackImgModule} from "../../../shared/directives/fallback-img.module";
+import {FallbackImgModule} from "../../../shared/directives/fallback-img/fallback-img.module";
 import { UserPrivateConfidesComponent } from './user-private-confides/user-private-confides.component';
 
 

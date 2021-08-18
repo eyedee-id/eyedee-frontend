@@ -1,10 +1,4 @@
-import {
-  ChangeDetectionStrategy,
-  ChangeDetectorRef,
-  Component,
-  OnDestroy,
-  OnInit
-} from '@angular/core';
+import {ChangeDetectionStrategy, ChangeDetectorRef, Component, OnDestroy, OnInit} from '@angular/core';
 import {fromEvent, Subject, Subscription} from 'rxjs';
 import {AuthService} from '../../../shared/services/auth.service';
 import {takeUntil} from 'rxjs/operators';
@@ -83,7 +77,15 @@ export class ExploreComponent implements OnInit, OnDestroy {
       html5: true,
     });
 
-    this.getConfides(true);
+    this.confideService.confides
+      .subscribe(res => {
+        if (res.length > 0) {
+          this.confides = res;
+        } else {
+          this.getConfides(true);
+        }
+      })
+      .unsubscribe();
   }
 
   public trackById(index: number, item: ConfideModel) {
@@ -199,6 +201,8 @@ export class ExploreComponent implements OnInit, OnDestroy {
               res.data[i].at_created_string = dayjs(res.data[i].at_created).fromNow();
               this.confides[arr1Length + i] = res.data[i]
             }
+
+            // this.confideService.confides.next(this.confides);
           }
 
           if (res.meta && res.meta.limit && arr2Length < res.meta.limit) {

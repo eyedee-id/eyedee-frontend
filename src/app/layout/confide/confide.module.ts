@@ -7,7 +7,7 @@ import {ReactiveFormsModule} from "@angular/forms";
 import { CommentNewComponent } from './comment-new/comment-new.component';
 import { CommentListComponent } from './comment-list/comment-list.component';
 import {ConfideService} from "../../../shared/services/confide.service";
-import {FallbackImgModule} from "../../../shared/directives/fallback-img.module";
+import {FallbackImgModule} from "../../../shared/directives/fallback-img/fallback-img.module";
 
 
 @NgModule({
