@@ -1,11 +1,15 @@
 import {Injectable} from '@angular/core';
-import {HttpClient} from '@angular/common/http';
-import {AuthState, CognitoUserInterface} from '@aws-amplify/ui-components';
 import {BehaviorSubject, Observable, of} from 'rxjs';
 import {fromPromise} from 'rxjs/internal-compatibility';
-import {Auth} from 'aws-amplify';
 import {catchError, map, tap} from 'rxjs/operators';
 import {Router} from '@angular/router';
+import {Auth} from '@aws-amplify/auth';
+import {ApiService} from './api.service';
+import {UserModel} from "../models/user.model";
+import {aesDecryptData, aesEncryptData} from "../libs/aes";
+import {decodeUTF8, encodeBase64} from "tweetnacl-util";
+import {box, hash} from "tweetnacl";
+
 
 @Injectable({
   providedIn: 'root'
@@ -13,9 +17,12 @@ import {Router} from '@angular/router';
 export class AuthService {
 
   public loggedIn: BehaviorSubject<boolean>;
+  public user: UserModel | null = null;
+
+  private serviceV1 = 'v1/auth';
 
   constructor(
-    private http: HttpClient,
+    private apiService: ApiService,
     private router: Router,
   ) {
     this.loggedIn = new BehaviorSubject<boolean>(false);
@@ -25,10 +32,17 @@ export class AuthService {
     return fromPromise(Auth.currentAuthenticatedUser())
       .pipe(
         map(result => {
+
+          this.user = {
+            user_id: result?.attributes?.sub,
+            username: result?.username
+          };
+
           this.loggedIn.next(true);
           return true;
         }),
-        catchError(error => {
+        catchError(() => {
+          this.user = null;
           this.loggedIn.next(false);
           return of(false);
         })
@@ -39,17 +53,25 @@ export class AuthService {
   public signOut() {
     fromPromise(Auth.signOut())
       .subscribe(
-        result => {
+        () => {
+          localStorage.clear();
           this.loggedIn.next(false);
           this.router.navigate(['/']);
         },
-        error => console.log(error)
+        error => console.error(error)
       );
   }
 
   /** signup */
-  public signUp(data: { username: string, password: string, email: string }): Observable<any> {
-    return fromPromise(Auth.signUp(data.username, data.password, data.email));
+  public signUp(data: { username: string, password: string, email: string, attributes: {} }): Observable<any> {
+    return fromPromise(Auth.signUp({
+      username: data.username,
+      password: data.password,
+      attributes: {
+        // email: data.email,
+        ...data.attributes,
+      }
+    }));
   }
 
   /** confirm code */
@@ -63,19 +85,56 @@ export class AuthService {
   }
 
   /** signin */
-  public signIn(email: string, password: string): Observable<any> {
-    return fromPromise(Auth.signIn(email, password))
+  public signIn(username: string, password: string): Observable<any> {
+    return fromPromise(Auth.signIn(username, password))
       .pipe(
-        tap(() => this.loggedIn.next(true))
+        tap(res => {
+
+          if (
+            res.attributes['custom:public_key']
+            && res.attributes['custom:secret_key']
+          ) {
+
+            const aesDecrypted = aesDecryptData(
+              res.attributes['custom:secret_key'],
+              encodeBase64(hash(decodeUTF8(password))), // convert hashed password user ke base64
+            );
+
+            // @TODO: ini sementara, nanti akan di ganti pakai indexedDB / web crypto api
+            localStorage.setItem('user.public_key', res.attributes['custom:public_key']);
+            localStorage.setItem('user.secret_key', aesDecrypted);
+
+            return this.loggedIn.next(true);
+          }
+
+          // create new encryption key bagi yang belom punya
+
+          const userKeyPair = box.keyPair();
+
+          const aesEncrypted = aesEncryptData(
+            encodeBase64(userKeyPair.secretKey), // convert secret ke base64
+            encodeBase64(hash(decodeUTF8(password))), // convert hashed password user ke base64
+          );
+
+          Auth
+            .updateUserAttributes(res, {
+              'custom:public_key': encodeBase64(userKeyPair.publicKey),
+              'custom:secret_key': aesEncrypted,
+            })
+            .then(() => {
+              localStorage.setItem('user.public_key', encodeBase64(userKeyPair.publicKey));
+              localStorage.setItem('user.secret_key', encodeBase64(userKeyPair.secretKey));
+
+              return this.loggedIn.next(true);
+            }, () => {
+              return this.loggedIn.next(false);
+            })
+
+        })
       );
   }
 
-  register(
-    data: {
-      username: string,
-      password: string,
-    }
-  ) {
-    return this.http.post('', data);
+  me() {
+    return this.apiService.get(this.serviceV1, '/me');
   }
 }

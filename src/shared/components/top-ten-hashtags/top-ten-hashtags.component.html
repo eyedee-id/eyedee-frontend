@@ -1,0 +1,21 @@
+<ng-container *ngIf="!loading.init; else templateLoading">
+  <h4>yang lagi hits di #hastag</h4>
+  <dl>
+    <dt><a href="#">#comingsoon!</a></dt>
+    <!--  @TODO: next feature (trending)-->
+    <!--    <ng-container *ngFor="let hashtag of top10hashtags">-->
+    <!--      <dt><a [routerLink]="'/hashtag/' + hashtag">#{{hashtag}}</a></dt>-->
+    <!--    </ng-container>-->
+  </dl>
+</ng-container>
+
+<ng-template #templateLoading>
+  <div class="text-center">
+    <div class="lds-ellipsis">
+      <div></div>
+      <div></div>
+      <div></div>
+      <div></div>
+    </div>
+  </div>
+</ng-template>

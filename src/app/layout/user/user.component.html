@@ -1,0 +1,93 @@
+<ng-container *ngIf="!loading.user; else templateLoading">
+  <ng-container *ngIf="user; else templateUserNotFound">
+
+    <div class="card">
+      <div class="banner" #userBanner>
+        <img class="inner" [src]="user.avatar_url" fallback="/assets/images/user.png" decoding="async"
+             alt="photo profile">
+      </div>
+      <div class="menu">
+        <ng-container *ngIf="userCanEdit">
+          <a routerLink="/setting">
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
+                 stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                    d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"/>
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                    d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/>
+            </svg>
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
+              <path fill-rule="evenodd"
+                    d="M11.49 3.17c-.38-1.56-2.6-1.56-2.98 0a1.532 1.532 0 01-2.286.948c-1.372-.836-2.942.734-2.106 2.106.54.886.061 2.042-.947 2.287-1.561.379-1.561 2.6 0 2.978a1.532 1.532 0 01.947 2.287c-.836 1.372.734 2.942 2.106 2.106a1.532 1.532 0 012.287.947c.379 1.561 2.6 1.561 2.978 0a1.533 1.533 0 012.287-.947c1.372.836 2.942-.734 2.106-2.106a1.533 1.533 0 01.947-2.287c1.561-.379 1.561-2.6 0-2.978a1.532 1.532 0 01-.947-2.287c.836-1.372-.734-2.942-2.106-2.106a1.532 1.532 0 01-2.287-.947zM10 13a3 3 0 100-6 3 3 0 000 6z"
+                    clip-rule="evenodd"/>
+            </svg>
+          </a>
+        </ng-container>
+
+        <ng-container *ngIf="!userCanEdit">
+          <a [routerLink]="'/to/' + user.username">
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                    d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z"/>
+            </svg>
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
+              <path fill-rule="evenodd"
+                    d="M18 10c0 3.866-3.582 7-8 7a8.841 8.841 0 01-4.083-.98L2 17l1.338-3.123C2.493 12.767 2 11.434 2 10c0-3.866 3.582-7 8-7s8 3.134 8 7zM7 9H5v2h2V9zm8 0h-2v2h2V9zM9 9h2v2H9V9z"
+                    clip-rule="evenodd"/>
+            </svg>
+          </a>
+        </ng-container>
+      </div>
+      <h3 class="name">{{ user.name_ || user.username }}</h3>
+      <div class="username">@{{ user.username }}</div>
+      <div class="bio">
+        <p [innerHTML]="user.bio" (click)="onClickUserBio($event)">
+        </p>
+      </div>
+    </div>
+
+    <div class="user-contents">
+      <div class="nav-sticky">
+        <div>
+          <div class="nav">
+            <a [ngClass]="{'active': tabActive === 'confides'}" (click)="onChangeTab('confides')">publik</a>
+            <ng-container *ngIf="userCanEdit">
+              <a [ngClass]="{'active': tabActive === 'private_confides'}" (click)="onChangeTab('private_confides')">anonim</a>
+            </ng-container>
+            <!--  @TODO: next feature (user: mentions)-->
+            <!--        <a routerLink="mentions" routerLinkActive="active">mention</a>-->
+          </div>
+        </div>
+      </div>
+
+      <div>
+        <ng-container *ngIf="tabActive === 'confides'">
+          <app-user-confides [userId]="user.user_id"></app-user-confides>
+        </ng-container>
+        <ng-container *ngIf="tabActive === 'private_confides' && userCanEdit">
+          <app-user-private-confides [userId]="user.user_id"></app-user-private-confides>
+        </ng-container>
+      </div>
+    </div>
+  </ng-container>
+</ng-container>
+
+
+<ng-template #templateLoading>
+  <div class="width-100 text-center">
+    <div class="lds-ellipsis">
+      <div></div>
+      <div></div>
+      <div></div>
+      <div></div>
+    </div>
+  </div>
+</ng-template>
+
+<ng-template #templateUserNotFound>
+  <div class="user-not-found">
+    <h1 class="text-danger">404</h1>
+    <h3>lo mau cari apa?</h3>
+    <h5>disini ga ada apa apa</h5>
+  </div>
+</ng-template>

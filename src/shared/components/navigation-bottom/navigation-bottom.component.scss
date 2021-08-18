@@ -1,0 +1,43 @@
+@import "src/shared/styles/Color";
+
+.navigation-bottom {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  width: 100vw;
+  background: $color-initial;
+  border-top: 1px solid $color-quinary;
+  height: 5rem;
+  display: flex;
+
+  @media(min-width: 80rem) {
+    display: none !important;
+  }
+
+
+  a {
+    flex: 1;
+    height: 100%;
+    padding: 0 1rem;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    svg:first-child {
+      display: block;
+    }
+    svg:last-child {
+      display: none;
+    }
+
+    &.active {
+      svg:first-child {
+        display: none;
+      }
+      svg:last-child {
+        display: block;
+      }
+    }
+  }
+
+}

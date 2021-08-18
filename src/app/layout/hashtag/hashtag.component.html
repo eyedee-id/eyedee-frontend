@@ -1,0 +1,80 @@
+<ng-container *ngIf="!loading.confides || confides.length > 0">
+  <app-navigation-title [title]="hashtag"></app-navigation-title>
+</ng-container>
+
+<div class="confides" [@list]="confides.length">
+  <ng-container *ngFor="let confide of confides">
+    <div class="confide" [@confideAnimation]>
+      <div class="width-100">
+
+        <ng-container *ngIf="confide.is_anonim !== true; else templateUserAnonim">
+          <div class="user">
+            <div class="line-height-0">
+              <img [src]="confide.avatar_url" fallback="/assets/images/user.png" alt="" decoding="async">
+            </div>
+            <div class="user-name">
+              {{ confide.name_ || confide.username }}
+            </div>
+            <small class="user-username">
+              <a [routerLink]="'/' + confide.username">@{{ confide.username }}</a>
+            </small>
+          </div>
+        </ng-container>
+
+        <div class="user-content">
+          <div>
+            <div><p (click)="onClickUserText($event)" [innerHTML]="confide.text"></p></div>
+          </div>
+          <div class="footer">
+            <div>
+              <small><a [routerLink]="'/confide/' + confide.confide_id">{{ confide.at_created_string }}</a></small>
+              <small><a [routerLink]="'/confide/' + confide.confide_id">{{ confide.total_comment }} komentar</a></small>
+            </div>
+            <!--            <div class="hashtags">-->
+            <!--              <ng-container *ngFor="let hashtag of confide?.hashtags">-->
+            <!--                <small><a [routerLink]="'/hashtag/' + hashtag">{{ hashtag }}</a></small>-->
+            <!--              </ng-container>-->
+            <!--            </div>-->
+          </div>
+        </div>
+      </div>
+    </div>
+  </ng-container>
+
+</div>
+
+<ng-container *ngIf="!noMoreConfide; else templateNoMoreConfide">
+  <div class="text-center margin-top-3">
+    <ng-container *ngIf="!loading.confides; else templateLoading">
+      <a class="button button-clear button-large" (click)="getConfides()">
+        lihat lainnya
+      </a>
+    </ng-container>
+  </div>
+</ng-container>
+
+<ng-template #templateNoMoreConfide>
+  <div class="text-center margin-top-3">
+    <a class="button button-clear button-large">
+      <ng-container *ngIf="confides.length === 0">
+        ga ada curhatan!
+      </ng-container>
+      <ng-container *ngIf="confides.length > 0">
+        udah mentok, ga ada yang baru lagi!
+      </ng-container>
+    </a>
+  </div>
+</ng-template>
+
+<ng-template #templateLoading>
+  <div class="lds-ellipsis">
+    <div></div>
+    <div></div>
+    <div></div>
+    <div></div>
+  </div>
+</ng-template>
+
+<ng-template #templateUserAnonim>
+  <span><i>anonim</i></span>
+</ng-template>

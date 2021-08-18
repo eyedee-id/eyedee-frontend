@@ -1,0 +1,99 @@
+@import "src/shared/styles/Color";
+
+.navigation {
+  background: $color-tertiary;
+  border-bottom: .1rem solid $color-quinary;
+  display: block;
+  height: 5rem;
+  left: 0;
+  max-width: 100%;
+  position: fixed;
+  right: 0;
+  top: 0;
+  width: 100%;
+  z-index: 2;
+
+  .container {
+    padding-bottom: 0;
+    padding-top: 0;
+    max-width: 100%;
+
+    @media(min-width: 80rem) {
+      max-width: 60%;
+    }
+  }
+}
+
+.navigation-title {
+  display: inline-flex;
+  font-size: 1.6rem;
+  line-height: 5.2rem;
+  padding: 0;
+  text-decoration: none;
+
+  color: $color-secondary;
+  font-family: Gotham Rounded A, Gotham Rounded B, Helvetica Neue, Arial, sans-serif;
+
+  .img {
+    fill: $color-primary;
+    height: 5rem;
+  }
+
+  .title {
+    display: inline;
+    font-size: 1.6rem;
+    line-height: 5.2rem;
+    padding: 0;
+    text-decoration: none;
+    margin-bottom: 0;
+  }
+}
+
+.navigation-list {
+  list-style: none;
+  margin-bottom: 0;
+  margin-right: 5rem;
+  display: none;
+
+  @media(min-width: 80rem) {
+    display: block;
+    margin-right: 0;
+  }
+
+  .navigation-item {
+    float: left;
+    margin-bottom: 0;
+    margin-left: 2.5rem;
+    position: relative;
+
+    .navigation-link {
+      display: inline;
+      font-size: 1.6rem;
+      line-height: 5.2rem;
+      padding: 0;
+      text-decoration: none;
+    }
+  }
+}
+
+.octocat {
+  border: 0;
+  color: $color-tertiary;
+  fill: $color-primary;
+  height: 5.2rem;
+  position: fixed;
+  right: 0;
+  top: 0;
+  width: 5.2rem;
+  z-index: 2
+}
+
+.octocat:hover .octocat-arm {
+  animation: b .56s infinite;
+  transform-origin: 13rem 10.6rem
+}
+
+.octocat .octocat-arm,
+.octocat .octocat-body {
+  fill: $color-tertiary
+}

@@ -3,7 +3,7 @@
   "version": 1,
   "newProjectRoot": "projects",
   "projects": {
-    "eyedee-web": {
+    "eyedee-frontend": {
       "projectType": "application",
       "schematics": {
         "@schematics/angular:component": {
@@ -20,7 +20,7 @@
         "build": {
           "builder": "@angular-devkit/build-angular:browser",
           "options": {
-            "outputPath": "dist/eyedee-web",
+            "outputPath": "dist",
             "index": "src/index.html",
             "main": "src/main.ts",
             "polyfills": "src/polyfills.ts",
@@ -28,12 +28,22 @@
             "inlineStyleLanguage": "scss",
             "assets": [
               "src/favicon.ico",
-              "src/assets"
+              "src/assets",
+              "src/manifest.webmanifest",
+              "src/browserconfig.xml",
+              "src/notification.mp3"
             ],
             "styles": [
               "src/styles.scss"
             ],
-            "scripts": []
+            "scripts": [],
+            "serviceWorker": true,
+            "ngswConfigPath": "ngsw-config.json",
+            "allowedCommonJsDependencies": [
+              "crypto-js",
+              "tweetnacl",
+              "dayjs/locale/id"
+            ]
           },
           "configurations": {
             "production": {
@@ -46,7 +56,7 @@
                 {
                   "type": "anyComponentStyle",
                   "maximumWarning": "2kb",
-                  "maximumError": "4kb"
+                  "maximumError": "10kb"
                 }
               ],
               "fileReplacements": [
@@ -63,7 +73,13 @@
               "vendorChunk": true,
               "extractLicenses": false,
               "sourceMap": true,
-              "namedChunks": true
+              "namedChunks": true,
+              "fileReplacements": [
+                {
+                  "replace": "src/environments/environment.ts",
+                  "with": "src/environments/environment.development.ts"
+                }
+              ]
             }
           },
           "defaultConfiguration": "production"
@@ -72,10 +88,10 @@
           "builder": "@angular-devkit/build-angular:dev-server",
           "configurations": {
             "production": {
-              "browserTarget": "eyedee-web:build:production"
+              "browserTarget": "eyedee-frontend:build:production"
             },
             "development": {
-              "browserTarget": "eyedee-web:build:development"
+              "browserTarget": "eyedee-frontend:build:development"
             }
           },
           "defaultConfiguration": "development"
@@ -83,7 +99,7 @@
         "extract-i18n": {
           "builder": "@angular-devkit/build-angular:extract-i18n",
           "options": {
-            "browserTarget": "eyedee-web:build"
+            "browserTarget": "eyedee-frontend:build"
           }
         },
         "test": {
@@ -96,7 +112,10 @@
             "inlineStyleLanguage": "scss",
             "assets": [
               "src/favicon.ico",
-              "src/assets"
+              "src/assets",
+              "src/manifest.webmanifest",
+              "src/browserconfig.xml",
+              "src/manifest.webmanifest"
             ],
             "styles": [
               "src/styles.scss"
@@ -116,8 +135,9 @@
       }
     }
   },
-  "defaultProject": "eyedee-web",
+  "defaultProject": "eyedee-frontend",
   "cli": {
+    "analytics": "4a4f5a5b-8474-42c8-aa18-0e51f48e2602",
     "defaultCollection": "@angular-eslint/schematics"
   }
 }

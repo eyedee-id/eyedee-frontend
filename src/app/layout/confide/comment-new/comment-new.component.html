@@ -1,0 +1,87 @@
+<div class="display-none display-md-block">
+  <form class="form-confide" [formGroup]="formComment" (ngSubmit)="commentSubmit()">
+    <fieldset [disabled]="loading.comment">
+      <textarea [maxLength]="commentMaxLength"
+                placeholder="tulis komentar lo disini!" formControlName="text"></textarea>
+      <ng-container *ngIf="!loading.comment; else templateLoading">
+        <ng-container *ngIf="formComment.controls['text'].value">
+          <div>
+            <div>
+              <div>
+                <ng-container *ngIf="error.comment">
+                  <small class="text-danger margin-0 margin-left-1">
+                    * {{ error.comment }}
+                  </small>
+                </ng-container>
+                <button class="button" [disabled]="formComment.invalid">komentar sekarang!</button>
+              </div>
+              <div class="options">
+                <hr>
+                <div>
+                  <label class="label-inline" for="is-anonim">komentar sebagai anonim</label>
+                  <input type="checkbox" id="is-anonim" formControlName="is_anonim">
+                </div>
+              </div>
+            </div>
+            <div class="words-left">
+              <small>opsi</small>
+              <p>
+                <small>{{ formComment.controls['text'].value?.length }} / {{ commentMaxLength }}</small>
+              </p>
+            </div>
+          </div>
+        </ng-container>
+      </ng-container>
+    </fieldset>
+  </form>
+</div>
+
+<div class="comment-navigation-bottom">
+  <form class="form-confide" [formGroup]="formComment" (ngSubmit)="commentSubmit()">
+    <fieldset [disabled]="loading.comment">
+      <textarea [maxLength]="commentMaxLength"
+                placeholder="tulis komentar lo disini!" formControlName="text"></textarea>
+      <ng-container *ngIf="!loading.comment; else templateLoading">
+        <ng-container *ngIf="formComment.controls['text'].value">
+          <div>
+            <div>
+              <div>
+                <ng-container *ngIf="error.comment">
+                  <small class="text-danger margin-0 margin-left-1">
+                    * {{ error.comment }}
+                  </small>
+                </ng-container>
+                <button class="button" [disabled]="formComment.invalid">komentar sekarang!</button>
+                <button class="button button-clear" (click)="commentCancel()">batal</button>
+              </div>
+              <div class="options">
+                <hr>
+                <div>
+                  <label class="label-inline" for="is-anonim-mobile">komentar sebagai anonim</label>
+                  <input type="checkbox" id="is-anonim-mobile" formControlName="is_anonim">
+                </div>
+              </div>
+            </div>
+            <div class="words-left">
+              <small>opsi</small>
+              <p>
+                <small>{{ formComment.controls['text'].value?.length }} / {{ commentMaxLength }}</small>
+              </p>
+            </div>
+          </div>
+        </ng-container>
+      </ng-container>
+    </fieldset>
+  </form>
+</div>
+
+<ng-template #templateLoading>
+  <div class="width-100 text-center">
+    <div class="lds-ellipsis">
+      <div></div>
+      <div></div>
+      <div></div>
+      <div></div>
+    </div>
+  </div>
+</ng-template>

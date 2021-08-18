@@ -80,7 +80,7 @@ export class LoginComponent implements OnInit, OnDestroy {
 
     this.authService.signIn(this.form.value.username, this.form.value.password)
       .subscribe(res => {
-        this.router.navigate(['/pages']);
+        this.router.navigate(['/explore']);
       }, err => {
         this.loading.login = false;
         if (err?.message === 'User is not confirmed.') {

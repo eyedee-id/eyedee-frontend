@@ -1,0 +1,16 @@
+<app-navigation-title aRouterLink="../" title="pengaturan tema"></app-navigation-title>
+
+<form>
+  <fieldset>
+    <div>
+      <label class="label-inline" for="theme-light">terang</label>
+      <input type="radio" id="theme-light" name="theme" value="light"
+             (ngModelChange)="changeTheme($event)" [(ngModel)]="theme">
+    </div>
+    <div>
+      <label class="label-inline" for="theme-dark">gelap</label>
+      <input type="radio" id="theme-dark" name="theme" value="dark"
+             (ngModelChange)="changeTheme($event)" [(ngModel)]="theme">
+    </div>
+  </fieldset>
+</form>

@@ -1,0 +1,63 @@
+<ng-container *ngIf="confides.length > 0">
+  <h5>
+    ini curhatan doi yang ditujukan ke publik!
+  </h5>
+</ng-container>
+
+<div class="confides" [@list]="confides.length">
+  <ng-container *ngFor="let confide of confides">
+    <div class="confide" [@confideAnimation]>
+      <div class="width-100">
+        <div class="user-content">
+          <div>
+            <div><p (click)="onClickUserText($event)" [innerHTML]="confide.text"></p></div>
+          </div>
+          <div class="footer">
+            <div>
+              <small><a [routerLink]="'/confide/' + confide.confide_id">{{ confide.at_created_string }}</a></small>
+              <ng-container *ngIf="!confide.is_anonim">
+                <small><a [routerLink]="'/confide/' + confide.confide_id">{{ confide.total_comment }}
+                  komentar</a></small>
+              </ng-container>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </ng-container>
+</div>
+
+<ng-container *ngIf="!noMoreConfide; else templateNoMoreConfide">
+  <div class="text-center margin-top-3">
+    <ng-container *ngIf="!loading.confides; else templateLoading">
+      <a class="button button-clear button-large" (click)="getConfides()">
+        lihat lainnya
+      </a>
+    </ng-container>
+  </div>
+</ng-container>
+
+<ng-template #templateNoMoreConfide>
+  <div class="text-center margin-top-3">
+    <a class="button button-clear button-large">
+      <ng-container *ngIf="confides.length === 0">
+        ga ada curhatan!
+      </ng-container>
+      <ng-container *ngIf="confides.length > 0">
+        udah mentok, ga ada yang baru lagi!
+      </ng-container>
+    </a>
+  </div>
+</ng-template>
+
+
+<ng-template #templateLoading>
+  <div class="lds-ellipsis">
+    <div></div>
+    <div></div>
+    <div></div>
+    <div></div>
+  </div>
+</ng-template>
+
+

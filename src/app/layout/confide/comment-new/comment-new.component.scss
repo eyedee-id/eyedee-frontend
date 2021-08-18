@@ -1,0 +1,63 @@
+@import "src/shared/styles/Color";
+
+form {
+  margin-bottom: 0 !important;
+
+  textarea {
+    min-height: 5rem;
+  }
+}
+
+.comment-navigation-bottom {
+  position: fixed;
+  bottom: 5rem;
+  left: 0;
+  min-height: 5rem;
+  padding: 1rem 2rem 0.5rem;
+  width: 100vw;
+  background-color: $color-initial;
+  border-top: 1px solid $color-quinary;;
+
+  @media(min-width: 80rem) {
+    display: none !important;
+  }
+
+
+  form {
+    margin-bottom: 0 !important;
+
+    input {
+      margin: 0;
+    }
+
+    textarea {
+      margin: 0 !important;
+      min-height: 4rem !important;
+    }
+  }
+
+  fieldset > div {
+    display: flex;
+    flex-direction: column-reverse;
+
+    p {
+      margin: 0;
+      text-align: right;
+    }
+
+    & > div:first-child {
+      display: flex;
+      flex-direction: column-reverse;
+
+
+      button {
+        margin: 0;
+        width: 100%;
+      }
+
+      button:first-child {
+        margin: 1rem 0;
+      }
+    }
+  }
+}

@@ -1,0 +1,72 @@
+<ng-container *ngIf="!loading.user; else templateLoading">
+  <ng-container *ngIf="user; else templateUserNotFound">
+
+    <div class="card">
+      <div class="banner" #userBanner>
+        <img class="inner" [src]="user.avatar_url" fallback="/assets/images/user.png" decoding="async"
+             alt="photo profile">
+      </div>
+      <div class="menu">
+      </div>
+      <h3 class="name">{{ user.name_ || user.username }}</h3>
+      <div class="username">@{{ user.username }}</div>
+      <div class="bio">
+        <p [innerHTML]="user.bio" (click)="onClickUserBio($event)">
+        </p>
+      </div>
+    </div>
+
+    <app-navigation-title title="jujur ke doi" [aRouterLink]="'/' + username"></app-navigation-title>
+    <h5>
+      <h6>
+        pesan anonim ini akan ter-<strong>enkripsi</strong>, dan hanya @{{ username }} yang tau kalo pesan ini ditujukan ke dia
+      </h6>
+    </h5>
+
+
+    <form class="form-confide" [formGroup]="formConfide" (ngSubmit)="confideSubmit()">
+      <fieldset [disabled]="loading.confide">
+        <textarea [maxLength]="confideMaxLength"
+                  placeholder="tulis unek unek lo ke doi disini!" formControlName="text"></textarea>
+        <ng-container *ngIf="!loading.confide; else templateLoading">
+          <ng-container *ngIf="formConfide.controls['text'].value">
+            <div>
+              <div>
+                <div>
+                  <ng-container *ngIf="error.confide">
+                    <small class="text-danger margin-0 margin-left-1">
+                      * {{ error.confide }}
+                    </small>
+                  </ng-container>
+                  <button class="button" [disabled]="formConfide.invalid">jujur sekarang!</button>
+                </div>
+              </div>
+              <div class="words-left">
+                <p>
+                  <small>{{ formConfide.controls['text'].value?.length }} / {{ confideMaxLength }}</small>
+                </p>
+              </div>
+            </div>
+          </ng-container>
+        </ng-container>
+      </fieldset>
+    </form>
+  </ng-container>
+</ng-container>
+
+<ng-template #templateLoading>
+  <div class="lds-ellipsis">
+    <div></div>
+    <div></div>
+    <div></div>
+    <div></div>
+  </div>
+</ng-template>
+
+<ng-template #templateUserNotFound>
+  <div class="user-not-found">
+    <h1 class="text-danger">404</h1>
+    <h3>lo mau cari apa?</h3>
+    <h5>disini ga ada apa apa</h5>
+  </div>
+</ng-template>

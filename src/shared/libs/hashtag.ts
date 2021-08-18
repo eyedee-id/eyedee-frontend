@@ -1,0 +1,16 @@
+export function findAndReplaceHashTag(text: string, hashtag?: string | null) {
+  if (!text) {
+    return '';
+  }
+
+  return text
+    .replace(/#[\p{L}]+/ugi, i => {
+      const h = i.replace('#', '').toLowerCase();
+
+      if (hashtag === h) {
+        return `<a class="font-weight-bold text-danger cursor-pointer">${i}</a>`;
+      }
+
+      return `<a value="/hashtag/${h}" class="cursor-pointer">${i}</a>`;
+    });
+}

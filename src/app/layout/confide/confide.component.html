@@ -1,0 +1,67 @@
+<ng-container *ngIf="!loading.confide; else templateLoading">
+  <div class="confide-detail">
+
+    <ng-container *ngIf="confide">
+      <div class="confide" [@confideAnimation]>
+        <div class="width-100">
+
+          <ng-container *ngIf="confide.is_anonim !== true; else templateUserAnonim">
+            <div class="user">
+              <div class="line-height-0">
+                <img [src]="confide.avatar_url" fallback="/assets/images/user.png" alt="" decoding="async">
+              </div>
+              <div class="user-name">
+                {{ confide.name_ || confide.username }}
+              </div>
+              <small class="user-username">
+                <a [routerLink]="'/' + confide.username">@{{ confide.username }}</a>
+              </small>
+            </div>
+          </ng-container>
+
+          <div class="user-content">
+            <div>
+              <div><p (click)="onClickUserText($event)" [innerHTML]="confide.text"></p></div>
+            </div>
+            <div class="footer">
+              <div>
+                <small><a [routerLink]="'/confide/' + confide.confide_id">{{ confide.at_created_string }}</a></small>
+                <small><a [routerLink]="'/confide/' + confide.confide_id">{{ confide.total_comment }}
+                  komentar</a></small>
+              </div>
+<!--              <div class="hashtags">-->
+<!--                <ng-container *ngFor="let hashtag of confide?.hashtags">-->
+<!--                  <small><a [routerLink]="'/hashtag/' + hashtag">#{{ hashtag }}</a></small>-->
+<!--                </ng-container>-->
+<!--              </div>-->
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="comments-header">
+        <h4>
+          komentar netizen
+        </h4>
+        <app-comment-new [confideId]="confide.confide_id" (commentCreated)="getConfide()"></app-comment-new>
+      </div>
+
+      <app-comment-list [confideId]="confide.confide_id"></app-comment-list>
+    </ng-container>
+  </div>
+</ng-container>
+
+<ng-template #templateLoading>
+  <div class="width-100 text-center">
+    <div class="lds-ellipsis">
+      <div></div>
+      <div></div>
+      <div></div>
+      <div></div>
+    </div>
+  </div>
+</ng-template>
+
+<ng-template #templateUserAnonim>
+  <span><i>anonim</i></span>
+</ng-template>

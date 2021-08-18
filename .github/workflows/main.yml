@@ -25,15 +25,15 @@ jobs:
           npm install
           npm install -g @nrwl/cli > /dev/null
       - name: Lint
-        run: ng lint
+        run: npx ng lint
       - name: Build
-        run: ng build --prod
+        run: npx ng build --prod
 #      - name: Test
 #        run: nx affected:test
 #      - name: E2E
 #        run: nx affected:e2e
-      - name: Coveralls
-        uses: coverallsapp/github-action@master
-        with:
-          github-token: ${{ secrets.GITHUB_TOKEN }}
-          path-to-lcov: "./coverage/eyedee-web/lcov.info"
+#      - name: Coveralls
+#        uses: coverallsapp/github-action@master
+#        with:
+#          github-token: ${{ secrets.GITHUB_TOKEN }}
+#          path-to-lcov: "./coverage/eyedee-frontend/lcov.info"

@@ -1,0 +1,36 @@
+@import "src/shared/styles/Color";
+
+.comments {
+  font-size: 0.9em;
+
+  .confide {
+    padding: 0.75rem;
+
+    .user {
+      margin-bottom: 0.5rem;
+    }
+  }
+
+  p {
+    margin-bottom: 1rem;
+  }
+
+  .confide:first-child {
+    border-top-right-radius: 0.5rem;
+    border-top-left-radius: 0.5rem;
+  }
+
+  .confide:last-child {
+    border-bottom-right-radius: 0.5rem;
+    border-bottom-left-radius: 0.5rem;
+  }
+
+  .confide:nth-child(even) {
+    border-top: none;
+    border-bottom: none;
+  }
+
+  .confide:last-child:nth-child(even) {
+    border-bottom: 1px solid $color-quinary;
+  }
+}

@@ -1,5 +1,5 @@
 {
-  "name": "eyedee-web",
+  "name": "eyedee-frontend",
   "version": "0.0.0",
   "scripts": {
     "ng": "ng",
@@ -19,12 +19,27 @@
     "@angular/platform-browser": "~12.1.2",
     "@angular/platform-browser-dynamic": "~12.1.2",
     "@angular/router": "~12.1.2",
-    "@aws-amplify/ui-angular": "^1.0.15",
-    "aws-amplify": "^4.2.0",
+    "@angular/service-worker": "~12.1.2",
+    "@aws-amplify/auth": "^4.1.2",
+    "@capacitor/android": "^3.1.2",
+    "@capacitor/angular": "^1.0.3",
+    "@capacitor/core": "latest",
+    "@capacitor/ios": "^3.1.2",
+    "blakejs": "^1.1.1",
+    "crypto-js": "^4.1.1",
+    "dayjs": "^1.10.6",
+    "hammerjs": "^2.0.8",
+    "howler": "^2.2.3",
     "milligram": "^1.4.1",
+    "nanoid": "^3.1.25",
+    "ngx-image-cropper": "^4.0.1",
     "normalize.css": "^8.0.1",
+    "paho-mqtt": "^1.1.0",
     "rxjs": "~6.6.0",
     "tslib": "^2.2.0",
+    "tweetnacl": "^1.0.3",
+    "tweetnacl-util": "^0.15.1",
+    "util": "^0.12.4",
     "zone.js": "~0.11.4"
   },
   "devDependencies": {
@@ -36,9 +51,14 @@
     "@angular-eslint/template-parser": "12.3.1",
     "@angular/cli": "~12.1.2",
     "@angular/compiler-cli": "~12.1.2",
+    "@types/crypto-js": "^4.0.2",
     "@types/graphql": "^14.5.0",
+    "@types/hammerjs": "^2.0.40",
+    "@types/howler": "^2.2.3",
     "@types/jasmine": "~3.8.0",
     "@types/node": "^12.11.1",
+    "@types/paho-mqtt": "^1.0.5",
+    "@types/ws": "^7.4.7",
     "@typescript-eslint/eslint-plugin": "4.28.2",
     "@typescript-eslint/parser": "4.28.2",
     "eslint": "^7.26.0",
@@ -49,6 +69,7 @@
     "karma-coverage": "~2.0.3",
     "karma-jasmine": "~4.0.0",
     "karma-jasmine-html-reporter": "~1.7.0",
-    "typescript": "~4.3.2"
+    "typescript": "~4.3.2",
+    "@capacitor/cli": "latest"
   }
 }

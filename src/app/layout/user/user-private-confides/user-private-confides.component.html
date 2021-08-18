@@ -1,0 +1,63 @@
+<h5>
+  ini curhatan anonim dari lo dan dari anonim buat lo!
+  <h6><i>semua data disini ter-<strong>enkripsi</strong> dan hanya bisa dibuka lo aja!</i></h6>
+</h5>
+
+<div class="confides" [@list]="confides.length">
+  <ng-container *ngFor="let confide of confides">
+    <div class="confide" [@confideAnimation]>
+      <div class="width-100">
+
+        <ng-container *ngIf="confide?.type === 'sealedbox'">
+          <span><i>dari anonim</i></span>
+        </ng-container>
+
+        <div class="user-content">
+          <div>
+            <div><p (click)="onClickUserText($event)" [innerHTML]="confide.text"></p></div>
+          </div>
+          <div class="footer">
+            <div>
+              <small><a [routerLink]="'/confide/' + confide.confide_id">{{ confide.at_created_string }}</a></small>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </ng-container>
+</div>
+
+<ng-container *ngIf="!noMoreConfide; else templateNoMoreConfide">
+  <div class="text-center margin-top-3">
+    <ng-container *ngIf="!loading.confides; else templateLoading">
+      <a class="button button-clear button-large" (click)="getConfides()">
+        lihat lainnya
+      </a>
+    </ng-container>
+  </div>
+</ng-container>
+
+<ng-template #templateNoMoreConfide>
+  <div class="text-center margin-top-3">
+    <a class="button button-clear button-large">
+      <ng-container *ngIf="confides.length === 0">
+        ga ada curhatan!
+      </ng-container>
+      <ng-container *ngIf="confides.length > 0">
+        udah mentok, ga ada yang baru lagi!
+      </ng-container>
+    </a>
+  </div>
+</ng-template>
+
+
+<ng-template #templateLoading>
+  <div class="lds-ellipsis">
+    <div></div>
+    <div></div>
+    <div></div>
+    <div></div>
+  </div>
+</ng-template>
+
+
