@@ -20,7 +20,7 @@
     "@angular/platform-browser-dynamic": "~12.1.2",
     "@angular/router": "~12.1.2",
     "@aws-amplify/ui-angular": "^1.0.15",
-    "aws-amplify": "^4.2.0",
+    "aws-amplify": "^5.2.6",
     "milligram": "^1.4.1",
     "normalize.css": "^8.0.1",
     "rxjs": "~6.6.0",
